@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Træning i at differentiere</title>
+
+  <!-- Algebrite 1.4.0 -->
+  <script src="https://cdn.jsdelivr.net/npm/algebrite@1.4.0/dist/algebrite.bundle-for-browser.min.js"></script>
+
+  <script>
+    window.MathJax = {
+      tex: {
+        packages: {'[+]': ['ams']},
+        macros: {
+          sin: '\\operatorname{sin}',
+          cos: '\\operatorname{cos}',
+          tan: '\\operatorname{tan}',
+          ln: '\\operatorname{ln}',
+          log: '\\operatorname{ln}',
+          exp: '\\operatorname{exp}'
+        }
+      },
+      startup: {
+        ready: () => {
+          MathJax.startup.defaultReady();
+          visOpgave();
+        }
+      }
+    };
+  </script>
+
+  <!-- MathJax -->
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <style>
+  body {
+  font-family: Arial, sans-serif;
+  padding: 2em 2em 2em; /* Giver plads til sidebar */
+  background: #f9f9f9;
+  }
+
+    .container {
+      max-width: 600px;
+      background: white;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-left: calc(220px + 2em);
+    }
+    .sidebar {
+      position: fixed;
+      width: 220px;
+      padding: 1em;
+      background: #ffe6f0; /* Lyserød baggrund */
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      font-size: 0.95em;
+      line-height: 1.3em;
+    }
+    .notation-block {
+      margin-bottom: 1em;
+    }
+    .notation-block div {
+      margin-bottom: 0.2em;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5em;
+      font-size: 1.1em;
+      margin-top: 0.5em;
+    }
+    button {
+      margin-top: 1em;
+      padding: 0.5em 1em;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .feedback {
+      margin-top: 1em;
+      font-weight: bold;
+    }
+    .facit {
+      margin-top: 1em;
+      color: #444;
+    }
+    .sidebar code {
+      display: block;
+      margin: 0.3em 0;
+      background: #f0f0f0;
+      padding: 0.3em;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <h3>Notation der skal benyttes til input af svar.</h3>
+
+    <div class="notation-block">
+      <div><strong>Matematisk:</strong> \( e^x \)</div>
+      <div><strong>Man skriver:</strong> <code>e^x</code></div>
+    </div>
+
+    <div class="notation-block">
+      <div><strong>Matematisk:</strong> \( \sqrt{x} \)</div>
+      <div><strong>Man skriver:</strong> <code>sqrt(x)</code></div>
+    </div>
+
+    <div class="notation-block">
+      <div><strong>Matematisk:</strong> \( \frac{1}{x+2} \)</div>
+      <div><strong>Man skriver:</strong> <code>1/(x+2)</code></div>
+    </div>
+
+    <div class="notation-block">
+      <div><strong>Matematisk:</strong> \( 3x^3 - 2x + 5 \)</div>
+      <div><strong>Man skriver:</strong> <code>3x^3 - 2x + 5</code></div>
+    </div>
+
+    <p style="margin-top: 1em; font-size: 0.85em">
+      <a href="https://opensource.org/license/mit/" target="_blank">Siden er udgivet under MIT-licens</a><br>
+      Udviklet af Jens Kaalby Thomsen.
+    </p>
+  </div>
+
+  <div class="container">
+    <h1>📘 Træning i at differentiere</h1>
+    <div><strong>Noter at polynomier er skrevet omvendt af, hvad der normalt optræder i opgaver. Man får en ny opgave ved at klikke på 'Ny opgave'.</strong></div>
+    <div id="opgaveLatex">Opgave indlæses...</div>
+    <input type="text" id="svarInput" placeholder="Skriv f'(x) her...">
+    <button onclick="tjekSvar()">Tjek svar</button>
+    <div class="feedback" id="feedback"></div>
+    <div class="facit" id="facitDet" style="display:none;"></div>
+    <button onclick="visOpgave()">Ny opgave</button>
+  </div>
+
+  <script>
+    let nuværendeFunktion = "";
+    let korrektAfledt = "";
+
+    function toDisplayLatex(expr) {
+      return expr
+        .replace(/\\operatorname\{log\}/g, '\\ln')
+        .replace(/\\log/g, '\\ln')
+        .replace(/\blog\b/g, '\\ln')
+        .replace(/\b(?<!\\)sin\b/g, '\\sin')
+        .replace(/\b(?<!\\)cos\b/g, '\\cos')
+        .replace(/\b(?<!\\)exp\b/g, '\\exp');
+    }
+
+    function rengørInput(input) {
+      return input
+        .replace(/\s+/g, '')
+        .replace(/\+\-/g, '-')
+        .replace(/\-\+/g, '-')
+        .replace(/\-\-/g, '+')
+        .replace(/\+\+/g, '+');
+    }
+
+    function linUdtryk(a, b) {
+      const bStr = b < 0 ? ` - ${Math.abs(b)}` : ` + ${b}`;
+      return `${a}*x${bStr}`;
+    }
+
+    function plus(a, b) {
+      if (typeof b === 'number') {
+        return b < 0 ? `${a} - ${Math.abs(b)}` : `${a} + ${b}`;
+      } else if (typeof b === 'string' && b.startsWith('-')) {
+        return `${a} - ${b.slice(1)}`;
+      } else {
+        return `${a} + ${b}`;
+      }
+    }
+
+    function genererFunktion() {
+      let a;
+      do {
+        a = Math.floor(Math.random() * 11) - 5;
+      } while (a === 0);
+      let b = Math.floor(Math.random() * 11) - 5;
+
+      const typer = [
+        () => `(${linUdtryk(a, b)})^2`,
+        () => `(${linUdtryk(a, b)})^3`,
+        () => `(${linUdtryk(a, b)})^2`,
+        () => `(${linUdtryk(a, b)})^3`,
+        () => `log(${linUdtryk(a, b)})`,
+        () => `sqrt(${linUdtryk(a, b)})`,
+        () => `sin(${linUdtryk(a, b)})`,
+        () => `cos(${linUdtryk(a, b)})`,
+        () => `exp(${linUdtryk(a, b)})`,
+        () => `1/(${linUdtryk(a, b)})`
+      ];
+
+      return typer[Math.floor(Math.random() * typer.length)]();
+    }
+
+    async function visOpgave() {
+      nuværendeFunktion = genererFunktion();
+      try {
+        const renFunktion = rengørInput(nuværendeFunktion);
+        const parsedExpr = Algebrite.run(`simplify(${renFunktion})`);
+        korrektAfledt = Algebrite.run(`d(${renFunktion})`);
+        const latexStr = Algebrite.run(`printlatex(${parsedExpr})`);
+
+        document.getElementById('opgaveLatex').innerHTML = `\\[ f(x) = ${toDisplayLatex(latexStr)} \\]`;
+        await MathJax.typesetPromise();
+
+        document.getElementById('svarInput').value = '';
+        document.getElementById('feedback').textContent = '';
+        document.getElementById('facitDet').style.display = 'none';
+      } catch (e) {
+        console.error('Fejl ved visOpgave:', e);
+        document.getElementById('opgaveLatex').textContent = 'Fejl i opgavegenerering';
+      }
+    }
+
+    async function tjekSvar() {
+      const svarRå = document.getElementById('svarInput').value;
+      if (!svarRå) return;
+
+      const svar = rengørInput(svarRå);
+
+      try {
+        const forskel = Algebrite.run(`simplify((${svar}) - (${korrektAfledt}))`);
+        const latexSvar = Algebrite.run(`printlatex(${svar})`);
+
+        document.getElementById('feedback').innerHTML = `Dit svar: \\[ f'(x) = ${toDisplayLatex(latexSvar)} \\]`;
+        await MathJax.typesetPromise();
+
+        if (forskel === "0") {
+          document.getElementById('feedback').innerHTML += '<br><span style="color:green">✅ Korrekt!</span>';
+        } else {
+          document.getElementById('feedback').innerHTML += '<br><span style="color:red">❌ Det er ikke korrekt.</span>';
+          const facitLatex = Algebrite.run(`printlatex(${korrektAfledt})`);
+          document.getElementById('facitDet').style.display = 'block';
+          document.getElementById('facitDet').innerHTML = `Facit: \\[ f'(x) = ${toDisplayLatex(facitLatex)} \\]`;
+          await MathJax.typesetPromise();
+        }
+      } catch (e) {
+        console.error(e);
+        document.getElementById('feedback').textContent = '⚠️ Der er en fejl i dit input';
+      }
+    }
+
+    window.onload = () => {
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+      }
+    };
+  </script>
+</body>
+</html>
