@@ -2,9 +2,8 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8" />
-  <title>📘 Statistik for grupperede data</title>
+  <title>📘 Statistik for grupperede data med fraktil linjer</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 2rem; }
     textarea, input, select, button { width: 100%; margin-bottom: 1rem; padding: 0.5rem; }
@@ -15,77 +14,109 @@
     th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: center; }
     th { background-color: #f3f3f3; }
     h1, h2 { margin-top: 2rem; }
+    .fraktil-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .fraktil-group > div {
+      flex: 1 1 150px;
+    }
   </style>
 </head>
 <body>
-  <h1>📘 Statistik for grupperede data</h1>
+  <h1>📘 Statistik for grupperede data med fraktil linjer</h1>
 
   <div class="row">
     <div class="col">
       <label for="intervals">Intervaller (ét pr. linje, fx 10-20):</label>
-      <textarea id="intervals" rows="8"></textarea>
+      <textarea id="intervals" rows="8" placeholder="fx 10-20"></textarea>
     </div>
     <div class="col">
       <label for="frequencies">Hyppigheder (ét pr. linje, fx 4):</label>
-      <textarea id="frequencies" rows="8"></textarea>
+      <textarea id="frequencies" rows="8" placeholder="fx 4"></textarea>
     </div>
   </div>
 
   <button onclick="processData()">🚀 Beregn og vis data</button>
 
-  <div id="exportButtons" style="display:none; margin-top: 1rem;">
-    <button onclick="downloadCSV()">⬇️ Download CSV</button>
-    <button onclick="downloadPDF()">🧾 Download PDF</button>
-    <button onclick="downloadPlot('sumkurveCanvas', 'sumkurve.png')">⬇️ Download Sumkurve</button>
-    <button onclick="downloadPlot('histogramCanvas', 'histogram.png')">⬇️ Download Histogram</button>
-  </div>
-
   <div id="results"></div>
 
-  <h2>📍 Fraktilberegning</h2>
-  <div class="row">
-    <div class="col">
-      <label for="fraktilInput">Fraktil p (fx 0.25):</label>
-      <input type="number" id="fraktilInput" step="0.01" min="0" max="1" />
+  <h2>📍 Fraktiler og x-værdier</h2>
+  <div class="fraktil-group">
+    <div>
+      <label for="fraktilInput1">Fraktil p₁ (0-1):</label>
+      <input type="number" id="fraktilInput1" step="0.01" min="0" max="1" placeholder="fx 0.25" />
     </div>
-    <div class="col">
-      <label for="xInput">Værdi x (for at finde p):</label>
-      <input type="number" id="xInput" step="0.1" />
+    <div>
+      <label for="fraktilInput2">Fraktil p₂ (0-1):</label>
+      <input type="number" id="fraktilInput2" step="0.01" min="0" max="1" placeholder="fx 0.5" />
+    </div>
+    <div>
+      <label for="fraktilInput3">Fraktil p₃ (0-1):</label>
+      <input type="number" id="fraktilInput3" step="0.01" min="0" max="1" placeholder="fx 0.75" />
     </div>
   </div>
-  <button onclick="beregnFraktil()">📍 Beregn fraktil</button>
+  <div class="fraktil-group">
+    <div>
+      <label for="xInput1">Værdi x₁ (for p):</label>
+      <input type="number" id="xInput1" step="0.1" placeholder="fx 12" />
+    </div>
+    <div>
+      <label for="xInput2">Værdi x₂ (for p):</label>
+      <input type="number" id="xInput2" step="0.1" placeholder="fx 18" />
+    </div>
+  </div>
+  <button onclick="beregnFraktiler()">📍 Beregn fraktiler og vis linjer</button>
   <div id="fraktilResultat"></div>
 
   <h2>📈 Sumkurve</h2>
   <canvas id="sumkurveCanvas" width="800" height="400"></canvas>
 
-  <h2>📊 Histogram</h2>
-  <canvas id="histogramCanvas" width="800" height="400"></canvas>
-
   <script>
     let globalData = {};
-    let sumChart, histogramChart;
+    let sumChart;
 
     function processData() {
-      const intervals = document.getElementById("intervals").value.trim().split("\n").map(line => {
-        const [a, b] = line.split("-").map(Number);
-        return [a, b];
+      const intervalsRaw = document.getElementById("intervals").value.trim();
+      const frequenciesRaw = document.getElementById("frequencies").value.trim();
+      if (!intervalsRaw || !frequenciesRaw) {
+        alert("Indtast venligst både intervaller og hyppigheder.");
+        return;
+      }
+      const intervals = intervalsRaw.split("\n").map(line => {
+        const parts = line.trim().split("-");
+        if (parts.length !== 2) {
+          alert("Intervaller skal være på formatet a-b");
+          throw new Error("Forkert interval format");
+        }
+        return [Number(parts[0]), Number(parts[1])];
       });
-      const frequencies = document.getElementById("frequencies").value.trim().split("\n").map(Number);
+      const frequencies = frequenciesRaw.split("\n").map(x => Number(x.trim()));
+
       if (intervals.length !== frequencies.length) {
         alert("Antallet af intervaller og hyppigheder skal være det samme.");
         return;
       }
 
       const N = frequencies.reduce((a, b) => a + b, 0);
+      if (N === 0) {
+        alert("Samlet hyppighed må ikke være nul.");
+        return;
+      }
       const midpoints = intervals.map(([a, b]) => (a + b) / 2);
       const mean = frequencies.reduce((sum, f, i) => sum + f * midpoints[i], 0) / N;
       const varPop = frequencies.reduce((sum, f, i) => sum + f * (midpoints[i] - mean) ** 2, 0) / N;
       const stdPop = Math.sqrt(varPop);
       const varSample = N > 1 ? frequencies.reduce((sum, f, i) => sum + f * (midpoints[i] - mean) ** 2, 0) / (N - 1) : NaN;
       const stdSample = Math.sqrt(varSample);
-      const cumFreq = []; let sum = 0;
-      for (let f of frequencies) { sum += f; cumFreq.push(sum); }
+      const cumFreq = [];
+      let sum = 0;
+      for (let f of frequencies) {
+        sum += f;
+        cumFreq.push(sum);
+      }
 
       const rows = intervals.map((interval, i) => {
         return `
@@ -117,166 +148,186 @@
           </table>
         </div>`;
 
-      document.getElementById("exportButtons").style.display = "block";
       globalData = { intervals, frequencies, N, cumFreq, midpoints };
+
       showSumkurve();
-      showHistogram();
+      document.getElementById("fraktilResultat").innerHTML = "";
+    }
+
+    function interpolateXforP(p) {
+      // Beregn x-værdi (fraktil) for givet p (0 < p < 1)
+      const { intervals, frequencies, N, cumFreq } = globalData;
+      if (!intervals) return null;
+      const target = p * N;
+      for (let i = 0; i < frequencies.length; i++) {
+        if (cumFreq[i] >= target) {
+          const [a, b] = intervals[i];
+          const F = i > 0 ? cumFreq[i - 1] : 0;
+          const f_i = frequencies[i];
+          const h = b - a;
+          const xVal = a + ((target - F) / f_i) * h;
+          return xVal;
+        }
+      }
+      return null;
+    }
+
+    function interpolatePforX(x) {
+      // Beregn p (kumuleret frekvens) for givet x
+      const { intervals, frequencies, N, cumFreq } = globalData;
+      if (!intervals) return null;
+      for (let i = 0; i < intervals.length; i++) {
+        const [a, b] = intervals[i];
+        if (x <= b) {
+          const F = i > 0 ? cumFreq[i - 1] : 0;
+          const f_i = frequencies[i];
+          const h = b - a;
+          const pVal = (F + f_i * (x - a) / h) / N;
+          return pVal;
+        }
+      }
+      return 1;
     }
 
     function showSumkurve() {
       const { intervals, cumFreq } = globalData;
-      const xVals = [intervals[0][0], ...intervals.map(i => i[1])];
-      const yVals = [0, ...cumFreq];
+      if (!intervals) return;
+      // Lav data med x,y punkter til lineær x-akse
+      const points = [{x: intervals[0][0], y:0}];
+      for(let i=0; i<intervals.length; i++) {
+        points.push({x: intervals[i][1], y: cumFreq[i]});
+      }
 
       const ctx = document.getElementById("sumkurveCanvas").getContext("2d");
-      if (sumChart) sumChart.destroy();
+      if(sumChart) sumChart.destroy();
+
       sumChart = new Chart(ctx, {
         type: "line",
         data: {
-          labels: xVals,
           datasets: [{
             label: "Kumulativ hyppighed",
-            data: yVals,
+            data: points,
             borderColor: "orange",
             backgroundColor: "transparent",
             tension: 0,
             fill: false,
-            pointRadius: 0,
-            pointHoverRadius: 0
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            showLine: true,
           }]
         },
         options: {
           responsive: true,
           scales: {
-            y: { beginAtZero: true, title: { display: true, text: "Kumulativ hyppighed" } },
-            x: { title: { display: true, text: "Intervalgrænse" } }
-          }
+            x: {
+              type: "linear",
+              title: { display: true, text: "Intervalgrænse" },
+              min: intervals[0][0],
+              max: intervals[intervals.length-1][1],
+              ticks: { stepSize: 1 }
+            },
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "Kumulativ hyppighed" }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          },
+          animation: false,
         }
       });
     }
 
-    function showHistogram() {
-      const { intervals, frequencies } = globalData;
-      const labels = intervals.map(([a, b]) => `${a}–${b}`);
-      const ctx = document.getElementById("histogramCanvas").getContext("2d");
-      if (histogramChart) histogramChart.destroy();
-      histogramChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels,
-          datasets: [{
-            label: "Hyppighed",
-            data: frequencies,
-            backgroundColor: "rgba(100,149,237,0.7)",
-            borderColor: "rgba(100,149,237,1)",
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: { beginAtZero: true, title: { display: true, text: "Hyppighed" } },
-            x: { title: { display: true, text: "Interval" } }
-          }
-        }
+    function beregnFraktiler() {
+      const pInputs = [
+        Number(document.getElementById("fraktilInput1").value),
+        Number(document.getElementById("fraktilInput2").value),
+        Number(document.getElementById("fraktilInput3").value),
+      ].filter(v => !isNaN(v) && v > 0 && v < 1);
+
+      const xInputs = [
+        Number(document.getElementById("xInput1").value),
+        Number(document.getElementById("xInput2").value),
+      ].filter(v => !isNaN(v));
+
+      if(!globalData.intervals) {
+        alert("Indtast og beregn først data.");
+        return;
+      }
+      const N = globalData.N;
+      const cumFreq = globalData.cumFreq;
+
+      // For p-fraktiler: find x-værdier
+      const pPoints = pInputs.map(p => {
+        const xVal = interpolateXforP(p);
+        const yVal = p * N;
+        return {x: xVal, y: yVal, p};
       });
-    }
 
-    function beregnFraktil() {
-      const { intervals, frequencies, N, cumFreq } = globalData;
-      const p = parseFloat(document.getElementById("fraktilInput").value);
-      const x = parseFloat(document.getElementById("xInput").value);
-      let output = "";
+      // For x-inputs: find p-værdier og y (kumulativ frekvens)
+      const xPoints = xInputs.map(xVal => {
+        const p = interpolatePforX(xVal);
+        const y = p * N;
+        return {x: xVal, y, p};
+      });
 
-      if (!isNaN(p) && p > 0 && p < 1) {
-        const target = p * N;
-        for (let i = 0; i < frequencies.length; i++) {
-          if (cumFreq[i] >= target) {
-            const [a, b] = intervals[i];
-            const F = cumFreq[i - 1] || 0;
-            const f_i = frequencies[i];
-            const h = b - a;
-            const fraktilværdi = a + ((target - F) / f_i) * h;
-            output += `<p>🎯 Fraktilværdi for p=${p} er <strong>${fraktilværdi.toFixed(2)}</strong></p>`;
-            break;
-          }
-        }
-      }
+      // Saml alle punkter (undgå dubletter fx hvis x=NaN)
+      const points = [...pPoints, ...xPoints].filter(pt => pt.x !== null && !isNaN(pt.x) && !isNaN(pt.y));
 
-      if (!isNaN(x)) {
-        for (let i = 0; i < intervals.length; i++) {
-          const [a, b] = intervals[i];
-          if (x <= b) {
-            const F = cumFreq[i - 1] || 0;
-            const f_i = frequencies[i];
-            const h = b - a;
-            const p_beregnet = (F + f_i * (x - a) / h) / N;
-            output += `<p>📍 Fraktil p for x=${x} er <strong>${p_beregnet.toFixed(2)}</strong></p>`;
-            break;
-          }
-        }
-      }
-
-      document.getElementById("fraktilResultat").innerHTML = output;
-    }
-
-    function downloadCSV() {
-      const { intervals, frequencies, midpoints, cumFreq, N } = globalData;
-      let csv = "Interval,Hyppighed,Midtpunkt,Kumulativ,Kum. frekvens (%)\n";
-      for (let i = 0; i < intervals.length; i++) {
-        const [a, b] = intervals[i];
-        csv += `${a}-${b},${frequencies[i]},${midpoints[i].toFixed(2)},${cumFreq[i]},${(cumFreq[i]/N*100).toFixed(2)}%\n`;
-      }
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "statistik_data.csv";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-
-    function downloadPDF() {
-      const element = document.getElementById("exportContent");
-      html2pdf().set({
-        margin: 0.5,
-        filename: 'statistik_data.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-      }).from(element).save();
-    }
-
-    // Ny funktion til download af canvas som billede med hvid baggrund
-    function downloadPlot(canvasId, filename) {
-      const originalCanvas = document.getElementById(canvasId);
-      if (!originalCanvas) {
-        alert("Canvas ikke fundet!");
+      // Opdater plot med stiplede linjer
+      if(!sumChart) {
+        alert("Sumkurve findes ikke - beregn først data.");
         return;
       }
 
-      // Lav et nyt canvas med samme dimensioner
-      const canvas = document.createElement("canvas");
-      canvas.width = originalCanvas.width;
-      canvas.height = originalCanvas.height;
-      const ctx = canvas.getContext("2d");
+      // Fjern tidligere linjer (undtagen sumkurven)
+      sumChart.data.datasets = sumChart.data.datasets.slice(0,1);
 
-      // Tegn hvid baggrund
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Tilføj for hver punkt to stiplede linjer: lodret og vandret
+      points.forEach(({x,y,p}, i) => {
+        // Lodret linje
+        sumChart.data.datasets.push({
+          label: ``,
+          data: [{x:x, y:0}, {x:x, y:y}],
+          borderColor: "blue",
+          borderDash: [5,5],
+          fill: false,
+          pointRadius: 0,
+          tension: 0,
+          showLine: true,
+          // for tooltip: set to false to avoid clutter
+          hoverRadius: 0,
+          hitRadius: 0,
+          order: 1,
+        });
+        // Vandret linje
+        sumChart.data.datasets.push({
+          label: ``,
+          data: [{x:0, y:y}, {x:x, y:y}],
+          borderColor: "blue",
+          borderDash: [5,5],
+          fill: false,
+          pointRadius: 0,
+          tension: 0,
+          showLine: true,
+          hoverRadius: 0,
+          hitRadius: 0,
+          order: 1,
+        });
+      });
 
-      // Tegn det originale canvas ovenpå
-      ctx.drawImage(originalCanvas, 0, 0);
+      sumChart.update();
 
-      // Gem som blob med hvid baggrund
-      canvas.toBlob(function(blob) {
-        const link = document.createElement("a");
-        link.download = filename;
-        link.href = URL.createObjectURL(blob);
-        link.click();
-        URL.revokeObjectURL(link.href);
-      }, "image/png");
+      // Vis resultat som tekst
+      let txt = points.map(({x,y,p}, i) => {
+        if(p) {
+          return `p = ${p.toFixed(2)}: x = ${x.toFixed(2)}, y (kum.) = ${y.toFixed(0)}`;
+        }
+        return "";
+      }).join("<br>");
+
+      document.getElementById("fraktilResultat").innerHTML = txt || "Ingen fraktiler/x-værdier valgt.";
     }
   </script>
 </body>
