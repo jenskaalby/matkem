@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boksplot Træning</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; max-width: 800px; }
+    h2 { margin-top: 2rem; }
+    .small-input input { height: 2em; padding: 3px; font-size: 0.9em; text-align:center; }
+    .inputs { display: flex; gap:1rem; margin-bottom:1rem; }
+    .input-group { flex:1; text-align:center; }
+    .feedback { margin-top:0.5rem; height:1.2em; }
+    .success { color:green; }
+    .error { color:red; }
+    .info-panel { background:#f0f8ff; padding:1rem; margin-top:1rem; border-left: 4px solid #17a2b8; }
+    button { margin-right:0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>📊 Aflæs et boksplot</h1>
+  <canvas id="boxChart" height="100"></canvas>
+  <div id="obsCount"></div>
+
+  <h2>✏️ Indtast aflæste værdier</h2>
+  <div class="inputs" id="inputContainer"></div>
+  <button onclick="tjekSvar()">Tjek svar</button>
+  <button onclick="genererNy()">🔁 Ny opgave</button>
+
+  <div id="result"></div>
+  
+  <script>
+    const labels = ["Minimum","Q1","Median","Q3","Maksimum"];
+    let dataArr = [], answers = {};
+
+    function randomInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+    function generateData(){
+      const minv = randomInt(0,71);
+      const maxv = minv + randomInt(30,40);
+      const size = randomInt(10,19);
+      const arr = Array.from({length:size},()=>randomInt(minv,maxv));
+      return arr;
+    }
+    function calcQuartiles(arr){
+      arr.sort((a,b)=>a-b);
+      return {
+        "Minimum": arr[0],
+        "Q1": arr[Math.floor((arr.length-1)*0.25)],
+        "Median": arr[Math.floor((arr.length-1)*0.5)],
+        "Q3": arr[Math.floor((arr.length-1)*0.75)],
+        "Maksimum": arr[arr.length-1]
+      };
+    }
+
+    const ctx = document.getElementById('boxChart').getContext('2d');
+    let boxChart;
+
+    function drawChart(){
+      const vals = labels.map(l => answers[l]);
+      const min = answers.Minimum, max = answers.Maksimum;
+      const step = 5;
+      const xMin = Math.floor(min/5)*5;
+      const xMax = Math.ceil(max/5)*5;
+      if(boxChart) boxChart.destroy();
+      boxChart = new Chart(ctx, {
+        type: 'boxplot',
+        data: {
+          labels: ['Data'],
+          datasets: [{
+            label: 'Boksplot',
+            data: [{
+              min: answers.Minimum,
+              q1: answers.Q1,
+              median: answers.Median,
+              q3: answers.Q3,
+              max: answers.Maksimum
+            }],
+            backgroundColor: 'skyblue',
+            borderColor: 'black',
+            itemRadius: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { type: 'linear', position: 'bottom', min: xMin, max: xMax, ticks:{stepSize: step} },
+            y: { display: false }
+          }
+        }
+      });
+    }
+
+    function renderInputs(){
+      const cont = document.getElementById('inputContainer');
+      cont.innerHTML = '';
+      labels.forEach(l => {
+        cont.innerHTML += `
+          <div class="input-group">
+            <div><b>${l}</b></div>
+            <input type="text" id="inp_${l}" class="small-input" placeholder="Tal" />
+            <div id="fb_${l}" class="feedback"></div>
+          </div>`;
+      });
+    }
+
+    function tjekSvar(){
+      const result = document.getElementById('result'); result.innerHTML='';
+      let ok = true;
+      labels.forEach(l => {
+        const inp = document.getElementById(`inp_${l}`).value.trim();
+        const fb = document.getElementById(`fb_${l}`);
+        const val = parseInt(inp,10);
+        if(isNaN(val)){
+          fb.textContent = '⚠️ Indtast et heltal';
+          fb.className = 'feedback error';
+          ok = false;
+        } else if(val !== answers[l]){
+          fb.textContent = `❌ (${answers[l]})`;
+          fb.className = 'feedback error';
+          ok = false;
+        } else {
+          fb.textContent = '✅';
+          fb.className = 'feedback success';
+        }
+      });
+      if(ok){
+        result.innerHTML = '<div class="info-panel">🎉 Alle værdier er korrekte!</div>';
+      } else {
+        result.innerHTML = '<div class="info-panel">Se feedback ovenfor.</div>';
+      }
+    }
+
+    function genererNy(){
+      dataArr = generateData();
+      answers = calcQuartiles([...dataArr]);
+      drawChart();
+      document.getElementById('obsCount').textContent = `🔢 Antal observationer: ${dataArr.length}`;
+      renderInputs();
+      document.getElementById('result').innerHTML = '';
+    }
+
+    // Registrer boxplot plugin
+    Chart.register({
+      id: 'boxplot',
+      beforeInit(chart){
+        chart.config.type = 'boxplot';
+      }
+    });
+
+    // Start
+    // Indlæs boxplot plugin via CDN alternativt: chartjs-chart-box-and-violin plugin
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chartjs-chart-box-and-violin-plot/build/Chart.BoxPlot.js';
+    script.onload = genererNy;
+    document.head.appendChild(script);
+    renderInputs();
+  </script>
+</body>
+</html>
