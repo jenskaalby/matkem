@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Læringsportal for kemi og matematik på STX</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background: linear-gradient(to bottom, #f0f8ff, #ffffff);
+      color: #333;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+  nav li {
+    margin: 0.5rem 0;
+  }
+  nav a {
+    text-decoration: none;
+    color: #0066cc;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+    section {
+      margin-top: 2rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background-color: #eaf3ff;
+    }
+    h2 {
+      color: #003366;
+    }
+    .icon {
+      width: 32px;
+      vertical-align: middle;
+      margin-right: 0.5em;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9em;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📘 STX Læringsportal</h1>
+  <p>Vælg et fagområde:</p>
+  <nav>
+    <ul>
+  <h2>
+    <li><a href="./matematik/index.html">📐 Matematik</a></li>
+    <li><a href="./kemi/index.html">⚗️ Kemi</a></li>
+  </h2>
+  </ul>
+  </nav>
+</header>
+
+<main>
+
+  <section>
+    <h2>📐 Matematik</h2>
+    <p>
+      Udforsk funktioner, differentialregning og statistik og meget mere.
+  </section>
+
+  <section>
+    <h2>⚗️ Kemi</h2>
+    <p>
+      Læs om periodesystemet, kemiske reaktioner, syre-basereaktioner og meget mere.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    Lad viden og kundskab være frit for alle: Alt eget udviklet materiale på disse sider er udgivet under 
+    <a href="https://opensource.org/licenses/MIT" target="_blank">MIT-licens</a>.
+  </p>
+</footer>
+
+</body>
+</html>
