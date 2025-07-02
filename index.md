@@ -7,16 +7,14 @@ title: "Læringsportal for kemi og matematik på STX"
 
 Lad viden og kundskab være frit for alle: Alt eget udviklet materiale på disse sider er udgivet under [MIT-licens](https://opensource.org/licenses/MIT). Materialet er udviklet af Jens Kaalby Thomsen.
 
-Vælg et fagområde:
+## Vælg et fagområde:
 
-## Fagområder
+# - [📐 Matematik](./matematik/index.html)
+# - [⚗️ Kemi](./kemi/index.html)
 
-## - [📐 Matematik](./matematik/index.html)
-## - [⚗️ Kemi](./kemi/index.html)
+--- 
 
--- 
-
-## Eksterne sider som er meget nyttige i kemi
+### Eksterne sider som er meget nyttige i kemi
 - Periodesystemet. [Periodesystemet](https://ptable.com/?lang=da#Egenskaber/Serie)
 
 - Jonas Niemanns sider om kemi i gymnasiet. Inkluderer videomateriale. [Gymnasiekemi](https://www.gymnasiekemi.com/).
