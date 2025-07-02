@@ -19,6 +19,7 @@ Der er fx links til videomateriale og undervisningsmateriale.
 
 #### [Eksterne sider som er nyttige i matematik](./ekst_mat/index.md)
 Der er fx links til undervisningsmateriale og YouTube-kanaler med videobeviser.
+
 ---
 
 
