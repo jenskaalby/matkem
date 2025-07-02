@@ -28,7 +28,7 @@ $$
 </div>
 - [Kemiske reaktioners hastigheder](./hasti/index.html)
 - [Kemisk ligevægte](./ligevaeg/index.html)
-- [Fedtstoffer - triglycerider](./fedtst/index.html)
+- [Fedtstoffer - triglycerider](./fedtst/index.html )
 
 <div style="text-align: center;">
 [Tilbage til forsiden](https://jenskaalby.github.io/matkem/) 
