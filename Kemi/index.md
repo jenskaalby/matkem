@@ -12,9 +12,9 @@ Velkommen til kemi-delen af læringsportalen!
 - Redoxreaktioner
 - Syre-basereaktioner
 
-$
+$$
 \ce{CH3COOH + H2O \rightleftharpoons CH3COO- + H3O+}
-$
+$$
 - Kemiske reaktioners hastigheder
 - Kemisk ligevægte
 - Fedtstoffer - triglycerider
