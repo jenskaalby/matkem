@@ -11,9 +11,9 @@ Velkommen til kemi-delen af læringsportalen!
 - Organiske kemi
 - Redoxreaktioner
 - Syre-basereaktioner
-$$
-\ce{CH3COOH + H20 \rightleftharpoons CH3COO- + H3O+} \quad \text{eller} \quad \ce{CO2 + C -> 2 CO}
-$$
+$
+\ce{CH3COOH + H2O \rightleftharpoons CH3COO- + H3O+} \quad \text{eller} \quad \ce{CO2 + C -> 2 CO}
+$
 - Kemiske reaktioners hastigheder
 - Kemisk ligevægte
 - Fedtstoffer - triglycerider
