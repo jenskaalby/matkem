@@ -15,7 +15,7 @@ title: "Eksterne links til matematik"
 - Webmatematik B [Webmatematik B](https://www.webmatematik.dk/lektioner/matematik-b).
 - Webmatematik A [Webmatematik A](https://www.webmatematik.dk/lektioner/matematik-a).
 - Webmatematik HTX [Webmatematik HTX](https://www.webmatematik.dk/lektioner/saerligt-for-htx)
-- Webmatematik beviser (enkelte udvalgte) [https://www.webmatematik.dk/lektioner/beviser]
+- Webmatematik beviser (enkelte udvalgte) [Webmatematik - beviser](https://www.webmatematik.dk/lektioner/beviser)
 
 
 
@@ -29,3 +29,7 @@ title: "Eksterne links til matematik"
 - Michael Grankvist Sørensens YouTube-kanal. Direkte link til playlister. [Grankvist](https://www.youtube.com/@michaelgrankvistsrensen4337/playlists).
 
 - Dennis Pipenbrings YouTube-kanal. Direkte link til playlister. [MATX.DK](https://www.youtube.com/@DennisPipenbring/playlists).
+
+<div style="text-align: center;">
+[Tilbage til forsiden](https://jenskaalby.github.io/matkem/) 
+</div>
