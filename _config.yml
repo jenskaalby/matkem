@@ -1,4 +1,11 @@
 theme: minima
+
+# Brug kramdown som markdown engine
 markdown: kramdown
+
 kramdown:
-  math_engine: mathjax
+  input: GFM                  # Brug GitHub-flavored markdown
+  parse_block_html: true      # Tillad HTML i markdown
+  hard_wrap: false            # Undgå automatisk linjeskift
+  math_engine: mathjax        # Brug MathJax til matematik
+  math_engine_opts: {}        # Standardindstillinger for MathJax
