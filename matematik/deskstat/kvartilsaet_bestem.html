@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bestem det udvidede kvartilsæt, kvartilbredden og variationsbredden</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      max-width: 1000px;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    .tal-liste {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .input-label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    input[type="text"] {
+      max-width: 100px;
+      font-size: 16px;
+    }
+    .kolonner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .kolonne {
+      flex: 1;
+      min-width: 120px;
+    }
+    .feedback {
+      font-size: 18px;
+      margin-top: 0.3rem;
+    }
+    .success {
+      background: #d4edda;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-left: 5px solid #28a745;
+    }
+    .error {
+      background: #f8d7da;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-left: 5px solid #dc3545;
+    }
+    .info {
+      background: #d1ecf1;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-left: 5px solid #17a2b8;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bestem det udvidede kvartilsæt, kvartilbredden og variationsbredden</h1>
+
+  <h3>Rækken af tal der skal benyttes (i tilfældig rækkefølge):</h3>
+  <div id="talListe" class="tal-liste"></div>
+
+  <h3>Indtast dine svar:</h3>
+  <div class="kolonner" id="inputContainer"></div>
+
+  <button onclick="tjekSvar()">Tjek svar</button>
+  <button onclick="visLoesning()">Vis løsning</button>
+  <button onclick="genererNy()">Ny opgave</button>
+
+  <div id="resultat"></div>
+
+  <script>
+    let tal = [];
+    let rigtige = [];
+    const labels = ["minimum", "Q<sub>1</sub>", "median", "Q<sub>3</sub>", "maksimum", "kvartilbredde", "variationsbredde"];
+    const keys = ["min", "q1", "median", "q3", "maks", "iqr", "variation"];
+
+    function genererTal() {
+      const n = Math.floor(Math.random() * 7) + 10; // 10 til 16
+      let unikke_tal;
+      if (n > 12) {
+        const m = Math.floor(Math.random() * 4) + 5;
+        unikke_tal = Array.from(new Set([...Array(40).keys()].map(x => x + 1))).sort(() => 0.5 - Math.random()).slice(0, m);
+      } else {
+        unikke_tal = Array.from(new Set([...Array(100).keys()].map(x => x + 1))).sort(() => 0.5 - Math.random()).slice(0, n);
+      }
+      return Array.from({ length: n }, () => unikke_tal[Math.floor(Math.random() * unikke_tal.length)]).sort(() => 0.5 - Math.random());
+    }
+
+    function median(liste) {
+      const m = liste.length;
+      const midt = Math.floor(m / 2);
+      return m % 2 === 0 ? (liste[midt - 1] + liste[midt]) / 2 : liste[midt];
+    }
+
+    function beregnKvartiler(tal) {
+      const sorteret = [...tal].sort((a, b) => a - b);
+      const n = sorteret.length;
+      const min = sorteret[0];
+      const max = sorteret[n - 1];
+      const med = median(sorteret);
+      const nedre = sorteret.slice(0, Math.floor(n / 2));
+      const oevre = sorteret.slice(n % 2 === 0 ? Math.floor(n / 2) : Math.floor(n / 2) + 1);
+      const q1 = median(nedre);
+      const q3 = median(oevre);
+      const iqr = q3 - q1;
+      const variation = max - min;
+      return [min, q1, med, q3, max, iqr, variation];
+    }
+
+    function visTal() {
+      document.getElementById("talListe").textContent = tal.join(", ");
+    }
+
+    function visInputs() {
+      const container = document.getElementById("inputContainer");
+      container.innerHTML = "";
+      for (let i = 0; i < labels.length; i++) {
+        const div = document.createElement("div");
+        div.className = "kolonne";
+        div.innerHTML = `
+          <div class="input-label">${labels[i]}</div>
+          <input type="text" id="${keys[i]}" />
+          <div id="fb_${keys[i]}" class="feedback"></div>
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    function tjekSvar() {
+      const resultDiv = document.getElementById("resultat");
+      resultDiv.innerHTML = "";
+      let fejl = [];
+      for (let i = 0; i < keys.length; i++) {
+        const inp = document.getElementById(keys[i]).value.replace(",", ".");
+        const val = parseFloat(inp);
+        const rigtig = rigtige[i];
+        const fb = document.getElementById("fb_" + keys[i]);
+        if (isNaN(val) || val !== rigtig) {
+          fejl.push(`❌ ${labels[i]} er forkert. Rigtigt svar: ${rigtig}`);
+          fb.textContent = "❌";
+        } else {
+          fb.textContent = "✅";
+        }
+      }
+      if (fejl.length > 0) {
+        const d = document.createElement("div");
+        d.className = "error";
+        d.innerHTML = "<b>Der er fejl i dine svar:</b><br>" + fejl.join("<br>");
+        resultDiv.appendChild(d);
+      } else {
+        const d = document.createElement("div");
+        d.className = "success";
+        d.textContent = "✅ Alle svar er korrekte! Godt gået! 🎉";
+        resultDiv.appendChild(d);
+      }
+    }
+
+    function visLoesning() {
+      const div = document.createElement("div");
+      div.className = "info";
+      div.innerHTML = `<b>Løsning:</b><br>
+        - Minimum: ${rigtige[0]}<br>
+        - Q1: ${rigtige[1]}<br>
+        - Median: ${rigtige[2]}<br>
+        - Q3: ${rigtige[3]}<br>
+        - Maksimum: ${rigtige[4]}<br>
+        - Kvartilbredde (Q3 - Q1): ${rigtige[5]}<br>
+        - Variationsbredde (Maks - Min): ${rigtige[6]}`;
+      document.getElementById("resultat").appendChild(div);
+    }
+
+    function genererNy() {
+      tal = genererTal();
+      rigtige = beregnKvartiler(tal);
+      visTal();
+      visInputs();
+      document.getElementById("resultat").innerHTML = "";
+    }
+
+    // Init
+    genererNy();
+  </script>
+</body>
+
+<footer>
+  <p>
+    Udgivet under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT-licensen</a>.
+  </p>
+  <p>
+    Udviklet af Jens Kaalby Thomsen .
+  </p>
+</footer>
+
+</html>
