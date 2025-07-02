@@ -1,3 +1,5 @@
+layout: default
+
 ---
 title: "Læringsportal for kemi og matematik på STX"
 ---
