@@ -7,16 +7,17 @@ title: "Læringsportal for kemi og matematik på STX"
 
 Lad viden og kundskab være frit for alle: Alt eget udviklet materiale på disse sider er udgivet under [MIT-licens](https://opensource.org/licenses/MIT). Materialet er udviklet af Jens Kaalby Thomsen.
 
-## Vælg et fagområde:
+### Vælg et fagområde:
 
-### - [⚗️ Kemi](./Kemi/index.html)
-### - [📐 Matematik](./matematik/index.html)
+###  [⚗️ Kemi](./Kemi/index.html)
+###  [📐 Matematik](./matematik/index.html)
 
 --- 
 
-### [Eksterne sider som er nyttige i kemi](./ekst_kem/index.md) 
+#### [Eksterne sider som er nyttige i kemi](./ekst_kem/index.md) 
 
-### [Eksterne sider som er nyttige i matematik](./ekst_mat/index.md)
+#### [Eksterne sider som er nyttige i matematik](./ekst_mat/index.md)
+---
 
 
 
