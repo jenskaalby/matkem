@@ -18,7 +18,7 @@ Vælg et fagområde:
 
 Udforsk funktioner, differentialregning og statistik og meget mere.
 
-Her er en ligning: $2x=16$
+Her er en ligning: \(2x=16\)
 
 $$
 4x=16+3
