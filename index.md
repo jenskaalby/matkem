@@ -14,9 +14,9 @@ Lad viden og kundskab være frit for alle: Alt eget udviklet materiale på disse
 
 --- 
 
-## [Eksterne sider som er meget nyttige i kemi](./ekst_kem/index.md) 
+### [Eksterne sider som er nyttige i kemi](./ekst_kem/index.md) 
 
-## [Eksterne sider som er meget nyttige i matematik](./ekst_mat/index.md)
+### [Eksterne sider som er nyttige i matematik](./ekst_mat/index.md)
 
 
 
