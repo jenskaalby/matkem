@@ -29,3 +29,7 @@ $$
 - Kemiske reaktioners hastigheder
 - Kemisk ligevægte
 - Fedtstoffer - triglycerider
+
+<div style="text-align: center;">
+###[Tilbage til forsiden](https://jenskaalby.github.io/matkem/) 
+</div>
