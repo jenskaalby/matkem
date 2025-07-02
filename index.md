@@ -3,7 +3,7 @@ layout: default
 title: "Læringsportal for kemi og matematik på STX"
 ---
 
-# 📘 STX Læringsportal for kemi og matematik
+# 📘 STX læringsportal for kemi og matematik
 
 Lad viden og kundskab være frit for alle: Alt eget udviklet materiale på disse sider er udgivet under [MIT-licens](https://opensource.org/licenses/MIT). Materialet er udviklet af Jens Kaalby Thomsen.
 
