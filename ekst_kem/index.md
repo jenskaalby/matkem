@@ -21,7 +21,9 @@ title: "Eksterne links for kemi"
 
 - Chemistry LibreTexts. Søgbare sider på engelsk om kemi. [Chemistry Library](https://chem.libretexts.org/)
 
-
+<div style="text-align: center;">
+[Tilbage til forsiden](https://jenskaalby.github.io/matkem/) 
+</div>
 
 
 
