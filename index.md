@@ -17,7 +17,7 @@ Vælg et fagområde:
 
 Udforsk funktioner, differentialregning og statistik og meget mere.
 $2x=16$
-
+dklæsa
 ---
 
 ## ⚗️ Kemi
