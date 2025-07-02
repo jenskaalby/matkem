@@ -17,8 +17,13 @@ Vælg et fagområde:
 ## 📐 Matematik
 
 Udforsk funktioner, differentialregning og statistik og meget mere.
-$2x=16$
-dklæsa
+
+Her er en ligning: $2x=16$
+
+$$
+4x=16+3
+$$
+
 ---
 
 ## ⚗️ Kemi
