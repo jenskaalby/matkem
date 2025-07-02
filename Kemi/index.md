@@ -10,7 +10,7 @@ Velkommen til kemi-delen af læringsportalen!
 - Ioner og ionforbindelser
 <div style="text-align: center;">
 $$
-\ce{Na+, Cl-, SO42-, NH4+}
+\ce{Na+, Cl-, SO4^{2-}, NH4+}
 $$
 </div>
 - Organisk kemi
