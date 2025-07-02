@@ -8,13 +8,14 @@ title: "Kemi - STX Læringsportal"
 Velkommen til kemi-delen af læringsportalen!
 
 - Ioner og ionforbindelser
-- Organiske kemi
+- Organisk kemi
 - Redoxreaktioner
 - Syre-basereaktioner
-
+<div style="text-align: center;">
 $$
 \ce{CH3COOH + H2O \rightleftharpoons CH3COO- + H3O+}
 $$
+</div>
 - Kemiske reaktioners hastigheder
 - Kemisk ligevægte
 - Fedtstoffer - triglycerider
