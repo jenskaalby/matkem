@@ -15,19 +15,6 @@ Vælg et fagområde:
 - [⚗️ Kemi](./kemi/index.html)
 
 -- 
-<!--
-## 📐 Matematik
-
-Udforsk funktioner, differentialregning og statistik og meget mere.
-
----
-
-## ⚗️ Kemi
-
-Læs om periodesystemet, kemiske reaktioner, syre-basereaktioner og meget mere.
-
----
--->
 
 ## Eksterne sider som er meget nyttige i kemi
 - Jonas Niemanns sider om kemi i gymnasiet. Inkluderer videomateriale. [Gymnasiekemi](https://www.gymnasiekemi.com/).
