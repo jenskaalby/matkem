@@ -9,7 +9,7 @@ Lad viden og kundskab være frit for alle: Alt eget udviklet materiale på disse
 
 ## Vælg et fagområde:
 
-### - [⚗️ Kemi](./kemi/index.html)
+### - [⚗️ Kemi](./Kemi/index.html)
 ### - [📐 Matematik](./matematik/index.html)
 
 --- 
