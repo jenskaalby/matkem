@@ -7,6 +7,18 @@ title: "Kemi - STX Læringsportal"
 
 Velkommen til kemi-delen af læringsportalen!
 
+- Ioner og ionforbindelser
+- Organiske kemi
+- Redoxreaktioner
+- Syre-basereaktioner
+$$
+\ce{CH3COOH + H20 \rightleftharpoons CH3COO- + H3O+} \quad \text{eller} \quad \ce{CO2 + C -> 2 CO}
+$$
+- Kemiske reaktioners hastigheder
+- Kemisk ligevægte
+- Fedtstoffer - triglycerider
+
+
 Her kan du skrive kemiske formler som denne:
 
 $$
