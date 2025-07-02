@@ -3,7 +3,7 @@ layout: default
 title: "Matematik - STX Læringsportal"
 ---
 
-# ⚗️ Kemi
+# 📐 Matematik 
 
 Velkommen til matematikdelen af læringsportalen!
 
