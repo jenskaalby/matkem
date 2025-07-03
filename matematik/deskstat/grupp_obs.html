@@ -102,7 +102,7 @@
 
   <button onclick="beregnFraktiler()">Beregn fraktiler / p-værdier</button>
 
-  <div id="fraktilResultat" style="margin-top: 1em; font-weight: bold;"></div>
+  <div id="fraktilResultat" style="margin-top: 1em; font-weight: bold; white-space: pre-line;"></div>
 
   <!-- Histogram -->
   <canvas id="histogramCanvas"></canvas>
@@ -207,67 +207,71 @@ function interpolateXforP(p) {
 }
 
 function interpolatePforX(x) {
-  const { intervals, frequencies, N, cumFreq } = globalData;
+  const { intervals, frequencies, N } = globalData;
   if (!intervals) return null;
+  let totalFreq = 0;
   for (let i = 0; i < intervals.length; i++) {
     const [a, b] = intervals[i];
-    if (x <= b) {
-      const F = i > 0 ? cumFreq[i - 1] : 0;
+    if (x < a) {
+      return 0;
+    }
+    if (x >= a && x <= b) {
       const f_i = frequencies[i];
       const h = b - a;
-      const pVal = (F + f_i * (x - a) / h) / N;
-      return pVal;
+      const partialFreq = ((x - a) / h) * f_i;
+      const cumFreqBefore = intervals.slice(0, i).reduce((sum, intv, idx) => sum + frequencies[idx], 0);
+      return (cumFreqBefore + partialFreq) / N;
     }
+    totalFreq += frequencies[i];
   }
   return 1;
 }
 
 function showSumkurve() {
-  const { intervals, cumFreq, N } = globalData;
+  const { intervals, frequencies, N, cumFreq, midpoints } = globalData;
   if (!intervals) return;
-  const points = [{ x: intervals[0][0], y: 0 }];
-  for (let i = 0; i < intervals.length; i++) {
-    points.push({ x: intervals[i][1], y: cumFreq[i] / N });
-  }
+  const labels = intervals.map(([a, b]) => `${a}–${b}`);
+  const cumFreqPercent = cumFreq.map(f => (f / N) * 100);
 
   const ctx = document.getElementById("sumkurveCanvas").getContext("2d");
   if (sumChart) sumChart.destroy();
 
   sumChart = new Chart(ctx, {
-    type: "line",
+    type: 'line',
     data: {
+      labels: midpoints,
       datasets: [{
-        label: "Kumulativ frekvens",
-        data: points,
-        borderColor: "orange",
-        backgroundColor: "transparent",
-        tension: 0,
+        label: 'Kumulativ frekvens (%)',
+        data: cumFreqPercent,
+        borderColor: 'green',
         fill: false,
+        stepped: true,
+        tension: 0,
         pointRadius: 3,
-        pointHoverRadius: 5,
-        showLine: true,
+        pointHoverRadius: 6,
       }]
     },
     options: {
       responsive: true,
       scales: {
         x: {
-          type: "linear",
-          title: { display: true, text: "Intervalgrænse" },
-          min: intervals[0][0],
-          max: intervals[intervals.length - 1][1],
-          ticks: { stepSize: 1 }
+          type: 'linear',
+          title: { display: true, text: 'x' },
+          min: Math.min(...midpoints) - 1,
+          max: Math.max(...midpoints) + 1,
         },
         y: {
-          beginAtZero: true,
-          max: 1,
-          title: { display: true, text: "Kumulativ frekvens" }
+          title: { display: true, text: 'Kumulativ frekvens (%)' },
+          min: 0,
+          max: 100,
+          ticks: { stepSize: 10 },
         }
       },
       plugins: {
-        legend: { display: false }
+        legend: {
+          display: true
+        }
       },
-      animation: false,
     }
   });
 }
@@ -275,58 +279,62 @@ function showSumkurve() {
 function showHistogram() {
   const { intervals, frequencies } = globalData;
   if (!intervals) return;
+  const labels = intervals.map(([a, b]) => `${a}–${b}`);
   const ctx = document.getElementById("histogramCanvas").getContext("2d");
   if (histogramChart) histogramChart.destroy();
 
-  const labels = intervals.map(interval => `${interval[0]}–${interval[1]}`);
-
   histogramChart = new Chart(ctx, {
-    type: "bar",
+    type: 'bar',
     data: {
-      labels: labels,
+      labels,
       datasets: [{
-        label: "Hyppighed",
+        label: 'Hyppighed',
         data: frequencies,
-        backgroundColor: "rgba(0, 123, 255, 0.7)",
-        borderColor: "rgba(0, 123, 255, 1)",
-        borderWidth: 1,
-        barPercentage: 1.0,
-        categoryPercentage: 1.0,
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
       }]
     },
     options: {
       responsive: true,
       scales: {
         x: {
-          title: { display: true, text: "Interval" },
-          grid: { display: false }
+          title: { display: true, text: 'Interval' }
         },
         y: {
           beginAtZero: true,
-          title: { display: true, text: "Hyppighed" },
-          ticks: { precision: 0 }
+          title: { display: true, text: 'Hyppighed' }
         }
       },
       plugins: {
-        legend: { display: true }
-      },
-      animation: false,
+        legend: { display: false }
+      }
     }
   });
 }
 
 function beregnFraktiler() {
-  const pInputs = [
+  // Indsaml og filtrer p-fraktil inputs
+  const pInputsRaw = [
     document.getElementById("fraktilInput1").value,
     document.getElementById("fraktilInput2").value,
     document.getElementById("fraktilInput3").value,
-  ].map(v => Number(v)).filter(v => !isNaN(v) && v > 0 && v < 1);
+  ];
+  const pInputs = pInputsRaw
+    .map(v => Number(v))
+    .filter(v => !isNaN(v) && v > 0 && v < 1);
 
-  const xInputs = [
+  // Indsaml og filtrer x-værdi inputs
+  const xInputsRaw = [
     document.getElementById("xInput1").value,
     document.getElementById("xInput2").value,
     document.getElementById("xInput3").value,
-  ].map(v => Number(v)).filter(v => !isNaN(v));
+  ];
+  const xInputs = xInputsRaw
+    .map(v => v.trim())
+    .filter(v => v !== "")
+    .map(v => Number(v))
+    .filter(v => !isNaN(v));
 
   const fraktiler = [];
   for (let p of pInputs) {
@@ -337,25 +345,24 @@ function beregnFraktiler() {
   const pVaerdier = [];
   for (let x of xInputs) {
     const pVal = interpolatePforX(x);
-    if (pVal !== null) pVaerdier.push({ x, pVal });
+    if (pVal !== null && pVal >= 0 && pVal <= 1) pVaerdier.push({ x, pVal });
   }
 
-  // Vi laver nu et array til at tegne stiplede linjer på sumkurven
-  const ctx = document.getElementById("sumkurveCanvas").getContext("2d");
-
-  // Genindlæs sumkurven data uden ekstra linjer først
+  // Genindlæs sumkurven for at fjerne tidligere ekstra linjer
   showSumkurve();
 
-  // Tegn stiplede linjer for fraktiler
+  const ctx = document.getElementById("sumkurveCanvas").getContext("2d");
+
+  // Tegn stiplede linjer for fraktiler (grøn)
   fraktiler.forEach(({ p, xVal }) => {
-    drawDottedLine(ctx, xVal, 0, xVal, p, "green");
-    drawDottedLine(ctx, 0, p, xVal, p, "green");
+    drawDottedLine(ctx, xVal, 0, xVal, p * 100, "green");  // lodret linje (p skaleret til procent)
+    drawDottedLine(ctx, 0, p * 100, xVal, p * 100, "green");    // vandret linje (fra x=0 til xVal)
   });
 
-  // Tegn stiplede linjer for p-værdier
+  // Tegn stiplede linjer for p-værdier (blå)
   pVaerdier.forEach(({ x, pVal }) => {
-    drawDottedLine(ctx, x, 0, x, pVal, "blue");
-    drawDottedLine(ctx, 0, pVal, x, pVal, "blue");
+    drawDottedLine(ctx, x, 0, x, pVal * 100, "blue");    // lodret linje (p skaleret til procent)
+    drawDottedLine(ctx, 0, pVal * 100, x, pVal * 100, "blue"); // vandret linje (fra x=0 til x)
   });
 
   let tekst = "";
@@ -378,7 +385,7 @@ function drawDottedLine(ctx, x1, y1, x2, y2, color) {
   const chartArea = sumChart.chartArea;
   if (!chartArea) return;
 
-  // Konverter datapunkter til pixels i chartet:
+  // Omregn data-koordinater til pixels på canvas
   const px1 = sumChart.scales.x.getPixelForValue(x1);
   const py1 = sumChart.scales.y.getPixelForValue(y1);
   const px2 = sumChart.scales.x.getPixelForValue(x2);
@@ -388,11 +395,19 @@ function drawDottedLine(ctx, x1, y1, x2, y2, color) {
   ctx.strokeStyle = color;
   ctx.setLineDash([5, 5]);
   ctx.beginPath();
-  ctx.moveTo(px1, py1);
-  ctx.lineTo(px2, py2);
+
+  // Sørg for linjen går fra lavere til højere pixel x for vandrette linjer
+  if (y1 === y2 && px2 < px1) {
+    ctx.moveTo(px2, py2);
+    ctx.lineTo(px1, py1);
+  } else {
+    ctx.moveTo(px1, py1);
+    ctx.lineTo(px2, py2);
+  }
   ctx.stroke();
   ctx.restore();
 }
 </script>
+
 </body>
 </html>
