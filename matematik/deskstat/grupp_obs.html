@@ -11,11 +11,16 @@
       margin: 20px;
       max-width: 900px;
     }
+    .input-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1em;
+    }
     textarea {
-      width: 100%;
+      flex: 1;
       height: 100px;
       font-size: 14px;
-      margin-bottom: 1em;
+      resize: vertical;
     }
     input[type="number"] {
       width: 80px;
@@ -60,8 +65,11 @@
   <h1>Sumkurve med kumulativ frekvens + histogram</h1>
 
   <p>Indtast intervaller (f.eks. 0-10) og hyppigheder, én pr. linje:</p>
-  <textarea id="intervals" placeholder="fx&#10;0-10&#10;10-20&#10;20-30"></textarea>
-  <textarea id="frequencies" placeholder="fx&#10;5&#10;12&#10;8"></textarea>
+
+  <div class="input-row">
+    <textarea id="intervals" placeholder="fx&#10;0-10&#10;10-20&#10;20-30"></textarea>
+    <textarea id="frequencies" placeholder="fx&#10;5&#10;12&#10;8"></textarea>
+  </div>
 
   <button onclick="processData()">Beregn og vis sumkurve + histogram</button>
 
@@ -273,24 +281,23 @@ function showSumkurve() {
 }
 
 function showHistogram() {
-  const { intervals, frequencies } = globalData;
+  const { intervals, frequencies, N } = globalData;
   if (!intervals) return;
   const ctx = document.getElementById("histogramCanvas").getContext("2d");
   if (histogramChart) histogramChart.destroy();
 
-  // Vi laver et datasæt med en bar pr interval,
-  // hvor hver bar dækker hele intervallets bredde.
-
-  // Labels som fx "0-10", "10-20" osv
   const labels = intervals.map(interval => `${interval[0]}–${interval[1]}`);
+
+  // Beregn frekvenser som hyppighed / N
+  const frekvenser = frequencies.map(f => f / N);
 
   histogramChart = new Chart(ctx, {
     type: "bar",
     data: {
       labels: labels,
       datasets: [{
-        label: "Hyppighed",
-        data: frequencies,
+        label: "Frekvens",
+        data: frekvenser,
         backgroundColor: "rgba(0, 123, 255, 0.7)",
         borderColor: "rgba(0, 123, 255, 1)",
         borderWidth: 1,
@@ -307,8 +314,9 @@ function showHistogram() {
         },
         y: {
           beginAtZero: true,
-          title: { display: true, text: "Hyppighed" },
-          ticks: { precision: 0 }
+          max: 1,
+          title: { display: true, text: "Frekvens" },
+          ticks: { precision: 2 }
         }
       },
       plugins: {
@@ -345,58 +353,142 @@ function beregnFraktiler() {
   });
 
   const xPoints = xInputs.map(xVal => {
-    const p = interpolatePforX(xVal);
-    return { x: xVal, y: p, p };
+    const pVal = interpolatePforX(xVal);
+    const x = xVal;
+    return { x, y: pVal, pVal };
   });
 
-  const points = [...pPoints, ...xPoints].filter(pt => pt.x !== null && !isNaN(pt.x) && !isNaN(pt.y));
-
-  if (!sumChart) {
-    alert("Sumkurve findes ikke - beregn først data.");
-    return;
+  // Opdater sumkurven med punkter og lodrette / vandrette streger
+  const { intervals, cumFreq, N } = globalData;
+  const points = [{ x: intervals[0][0], y: 0 }];
+  for (let i = 0; i < intervals.length; i++) {
+    points.push({ x: intervals[i][1], y: cumFreq[i] / N });
   }
 
-  sumChart.data.datasets = sumChart.data.datasets.slice(0, 1);
+  // Tilføj de lodrette og vandrette stiplede linjer for p-punkterne
+  const extraDatasets = [];
 
-  points.forEach(({ x, y, p }) => {
-    sumChart.data.datasets.push({
-      label: "",
-      data: [{ x: x, y: 0 }, { x: x, y: y }],
-      borderColor: "blue",
+  pPoints.forEach((pt, i) => {
+    if (pt.x === null) return;
+    // lodret stiplet linje
+    extraDatasets.push({
+      label: `p=${pt.p.toFixed(2)} (lodret)`,
+      data: [
+        { x: pt.x, y: 0 },
+        { x: pt.x, y: pt.y }
+      ],
+      borderColor: "red",
+      borderWidth: 1,
       borderDash: [5, 5],
       fill: false,
+      showLine: true,
       pointRadius: 0,
       tension: 0,
-      showLine: true,
-      hoverRadius: 0,
-      hitRadius: 0,
-      order: 1,
     });
-    sumChart.data.datasets.push({
-      label: "",
-      data: [{ x: 0, y: y }, { x: x, y: y }],
-      borderColor: "blue",
+    // vandret stiplet linje
+    extraDatasets.push({
+      label: `p=${pt.p.toFixed(2)} (vandret)`,
+      data: [
+        { x: intervals[0][0], y: pt.y },
+        { x: pt.x, y: pt.y }
+      ],
+      borderColor: "red",
+      borderWidth: 1,
       borderDash: [5, 5],
       fill: false,
+      showLine: true,
       pointRadius: 0,
       tension: 0,
-      showLine: true,
-      hoverRadius: 0,
-      hitRadius: 0,
-      order: 1,
     });
   });
 
-  sumChart.update();
+  xPoints.forEach((pt, i) => {
+    if (pt.y === null) return;
+    // lodret stiplet linje
+    extraDatasets.push({
+      label: `x=${pt.x.toFixed(2)} (lodret)`,
+      data: [
+        { x: pt.x, y: 0 },
+        { x: pt.x, y: pt.y }
+      ],
+      borderColor: "green",
+      borderWidth: 1,
+      borderDash: [5, 5],
+      fill: false,
+      showLine: true,
+      pointRadius: 0,
+      tension: 0,
+    });
+    // vandret stiplet linje
+    extraDatasets.push({
+      label: `x=${pt.x.toFixed(2)} (vandret)`,
+      data: [
+        { x: intervals[0][0], y: pt.y },
+        { x: pt.x, y: pt.y }
+      ],
+      borderColor: "green",
+      borderWidth: 1,
+      borderDash: [5, 5],
+      fill: false,
+      showLine: true,
+      pointRadius: 0,
+      tension: 0,
+    });
+  });
 
-  let txt = points.map(({ x, y, p }) => {
-    if (p) {
-      return `p = ${p.toFixed(2)}: x = ${x.toFixed(2)}, kumuleret hyppighed = ${(y * globalData.N).toFixed(0)}`;
+  const ctx = document.getElementById("sumkurveCanvas").getContext("2d");
+  if (sumChart) sumChart.destroy();
+
+  const mainDataset = {
+    label: "Kumulativ frekvens",
+    data: points,
+    borderColor: "orange",
+    backgroundColor: "transparent",
+    tension: 0,
+    fill: false,
+    pointRadius: 3,
+    pointHoverRadius: 5,
+    showLine: true,
+  };
+
+  sumChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      datasets: [mainDataset, ...extraDatasets]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          type: "linear",
+          title: { display: true, text: "Intervalgrænse" },
+          min: intervals[0][0],
+          max: intervals[intervals.length - 1][1],
+          ticks: { stepSize: 1 }
+        },
+        y: {
+          beginAtZero: true,
+          max: 1,
+          title: { display: true, text: "Kumulativ frekvens" }
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      },
+      animation: false,
     }
-    return "";
+  });
+
+  // Vis resultater
+  const fraktilTekst = pPoints.map(pt => {
+    return `p = ${pt.p.toFixed(2)} → x ≈ ${pt.x.toFixed(2)}`;
+  }).join("<br>");
+  const pTekst = xPoints.map(pt => {
+    return `x = ${pt.x.toFixed(2)} → p ≈ ${pt.y.toFixed(3)}`;
   }).join("<br>");
 
-  document.getElementById("fraktilResultat").innerHTML = txt || "Ingen fraktiler/x-værdier valgt.";
+  document.getElementById("fraktilResultat").innerHTML =
+    `<div style="margin-top:1em;"><b>Fraktiler:</b><br>${fraktilTekst}<br><b>p-værdier:</b><br>${pTekst}</div>`;
 }
 </script>
 </body>
