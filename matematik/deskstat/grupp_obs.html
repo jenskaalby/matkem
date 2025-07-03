@@ -37,6 +37,7 @@
       max-width: 100%;
       height: 300px;
       margin-top: 30px;
+      margin-bottom: 30px;
     }
     .flex-row {
       display: flex;
@@ -64,6 +65,11 @@
 
   <button onclick="processData()">Beregn og vis sumkurve</button>
 
+  <div id="results"></div>
+
+  <canvas id="sumkurveCanvas"></canvas>
+
+  <!-- Beregningsfelter og resultater flyttet herunder sumkurven -->
   <div class="flex-row">
     <div>
       <label for="fraktilInput1">p-fraktil (0–1):</label>
@@ -97,10 +103,6 @@
   <button onclick="beregnFraktiler()">Beregn fraktiler / p-værdier</button>
 
   <div id="fraktilResultat" style="margin-top: 1em; font-weight: bold;"></div>
-
-  <div id="results"></div>
-
-  <canvas id="sumkurveCanvas"></canvas>
 
 <script>
 let globalData = {};
