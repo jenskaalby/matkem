@@ -23,6 +23,17 @@
     .fraktil-group > div {
       flex: 1 1 150px;
     }
+    /* Layout til side om side på bred skærm for sumkurver */
+    .sumkurver-container {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .sumkurve-box {
+      flex: 1 1 400px;
+      min-width: 300px;
+    }
   </style>
 </head>
 <body>
@@ -75,12 +86,22 @@
   <button onclick="beregnFraktiler()">📍 Beregn fraktiler og vis linjer</button>
   <div id="fraktilResultat"></div>
 
-  <h2>📈 Sumkurve</h2>
-  <canvas id="sumkurveCanvas" width="800" height="400"></canvas>
+  <h2>📈 Sumkurver</h2>
+  <div class="sumkurver-container">
+    <div class="sumkurve-box">
+      <h3>Kumulativ hyppighed</h3>
+      <canvas id="sumkurveHyppighedCanvas" width="800" height="400"></canvas>
+    </div>
+    <div class="sumkurve-box">
+      <h3>Kumulativ frekvens</h3>
+      <canvas id="sumkurveFrekvensCanvas" width="800" height="400"></canvas>
+    </div>
+  </div>
 
   <script>
     let globalData = {};
-    let sumChart;
+    let sumChartHyppighed;
+    let sumChartFrekvens;
 
     function processData() {
       const intervalsRaw = document.getElementById("intervals").value.trim();
@@ -154,58 +175,25 @@
 
       globalData = { intervals, frequencies, N, cumFreq, midpoints };
 
-      showSumkurve();
-      document.getElementById("fraktilResultat").innerHTML = "";
+      showSumkurveHyppighed();
+      showSumkurveFrekvens();
+
+      clearFraktilLinjer();
     }
 
-    function interpolateXforP(p) {
-      // Beregn x-værdi (fraktil) for givet p (0 < p < 1)
-      const { intervals, frequencies, N, cumFreq } = globalData;
-      if (!intervals) return null;
-      const target = p * N;
-      for (let i = 0; i < frequencies.length; i++) {
-        if (cumFreq[i] >= target) {
-          const [a, b] = intervals[i];
-          const F = i > 0 ? cumFreq[i - 1] : 0;
-          const f_i = frequencies[i];
-          const h = b - a;
-          const xVal = a + ((target - F) / f_i) * h;
-          return xVal;
-        }
-      }
-      return null;
-    }
-
-    function interpolatePforX(x) {
-      // Beregn p (kumuleret frekvens) for givet x
-      const { intervals, frequencies, N, cumFreq } = globalData;
-      if (!intervals) return null;
-      for (let i = 0; i < intervals.length; i++) {
-        const [a, b] = intervals[i];
-        if (x <= b) {
-          const F = i > 0 ? cumFreq[i - 1] : 0;
-          const f_i = frequencies[i];
-          const h = b - a;
-          const pVal = (F + f_i * (x - a) / h) / N;
-          return pVal;
-        }
-      }
-      return 1;
-    }
-
-    function showSumkurve() {
+    function showSumkurveHyppighed() {
       const { intervals, cumFreq } = globalData;
-      if (!intervals) return;
-      // Lav data med x,y punkter til lineær x-akse
-      const points = [{x: intervals[0][0], y:0}];
-      for(let i=0; i<intervals.length; i++) {
-        points.push({x: intervals[i][1], y: cumFreq[i]});
+      if (!intervals || !cumFreq) return;
+
+      const points = [{ x: intervals[0][0], y: 0 }];
+      for (let i = 0; i < intervals.length; i++) {
+        points.push({ x: intervals[i][1], y: cumFreq[i] });
       }
 
-      const ctx = document.getElementById("sumkurveCanvas").getContext("2d");
-      if(sumChart) sumChart.destroy();
+      const ctx = document.getElementById("sumkurveHyppighedCanvas").getContext("2d");
+      if (sumChartHyppighed) sumChartHyppighed.destroy();
 
-      sumChart = new Chart(ctx, {
+      sumChartHyppighed = new Chart(ctx, {
         type: "line",
         data: {
           datasets: [{
@@ -227,12 +215,63 @@
               type: "linear",
               title: { display: true, text: "Intervalgrænse" },
               min: intervals[0][0],
-              max: intervals[intervals.length-1][1],
+              max: intervals[intervals.length - 1][1],
               ticks: { stepSize: 1 }
             },
             y: {
               beginAtZero: true,
-              title: { display: true, text: "Kumulativ hyppighed" }
+              title: { display: true, text: "Kumulativ hyppighed" },
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          },
+          animation: false,
+        }
+      });
+    }
+
+    function showSumkurveFrekvens() {
+      const { intervals, cumFreq, N } = globalData;
+      if (!intervals || !cumFreq || !N) return;
+
+      const points = [{ x: intervals[0][0], y: 0 }];
+      for (let i = 0; i < intervals.length; i++) {
+        points.push({ x: intervals[i][1], y: cumFreq[i] / N });
+      }
+
+      const ctx = document.getElementById("sumkurveFrekvensCanvas").getContext("2d");
+      if (sumChartFrekvens) sumChartFrekvens.destroy();
+
+      sumChartFrekvens = new Chart(ctx, {
+        type: "line",
+        data: {
+          datasets: [{
+            label: "Kumulativ frekvens",
+            data: points,
+            borderColor: "green",
+            backgroundColor: "transparent",
+            tension: 0,
+            fill: false,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            showLine: true,
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              type: "linear",
+              title: { display: true, text: "Intervalgrænse" },
+              min: intervals[0][0],
+              max: intervals[intervals.length - 1][1],
+              ticks: { stepSize: 1 }
+            },
+            y: {
+              beginAtZero: true,
+              max: 1,
+              title: { display: true, text: "Kumulativ frekvens" },
             }
           },
           plugins: {
@@ -244,108 +283,73 @@
     }
 
     function beregnFraktiler() {
-      const pInputs = [
-        Number(document.getElementById("fraktilInput1").value),
-        Number(document.getElementById("fraktilInput2").value),
-        Number(document.getElementById("fraktilInput3").value),
-      ].filter(v => !isNaN(v) && v > 0 && v < 1);
+      const p1 = parseFloat(document.getElementById("fraktilInput1").value);
+      const p2 = parseFloat(document.getElementById("fraktilInput2").value);
+      const p3 = parseFloat(document.getElementById("fraktilInput3").value);
+      const pValues = [p1, p2, p3].filter(p => !isNaN(p) && p >= 0 && p <= 1);
 
-      const xInputs = [
-      "xInput1", "xInput2", "xInput3"
-      ].map(id => {
-      const val = document.getElementById(id).value;
-      return val === "" ? null : parseFloat(val);
-      }).filter(v => !isNaN(v));
-
-
-      if(!globalData.intervals) {
-        alert("Indtast og beregn først data.");
-        return;
-      }
-      const N = globalData.N;
-      const cumFreq = globalData.cumFreq;
-
-      // For p-fraktiler: find x-værdier
-      const pPoints = pInputs.map(p => {
-        const xVal = interpolateXforP(p);
-        const yVal = p * N;
-        return {x: xVal, y: yVal, p};
-      });
-
-      // For x-inputs: find p-værdier og y (kumulativ frekvens)
-      const xPoints = xInputs.map(xVal => {
-        const p = interpolatePforX(xVal);
-        const y = p * N;
-        return {x: xVal, y, p};
-      });
-
-      // Saml alle punkter (undgå dubletter fx hvis x=NaN)
-      const points = [...pPoints, ...xPoints].filter(pt => pt.x !== null && !isNaN(pt.x) && !isNaN(pt.y));
-
-      // Opdater plot med stiplede linjer
-      if(!sumChart) {
-        alert("Sumkurve findes ikke - beregn først data.");
+      if (!sumChartFrekvens) {
+        alert("Sumkurve for frekvens findes ikke - beregn først data.");
         return;
       }
 
-      // Fjern tidligere linjer (undtagen sumkurven)
-      sumChart.data.datasets = sumChart.data.datasets.slice(0,1);
+      // Fjern tidligere fraktil linjer
+      sumChartFrekvens.data.datasets = sumChartFrekvens.data.datasets.slice(0, 1);
 
-      // Tilføj for hver punkt to stiplede linjer: lodret og vandret
-      points.forEach(({x,y,p}, i) => {
-        // Lodret linje
-        sumChart.data.datasets.push({
-          label: ``,
-          data: [{x:x, y:0}, {x:x, y:y}],
+      const { intervals, cumFreq, N } = globalData;
+      if (!intervals || !cumFreq || !N) return;
+
+      let outputHtml = "<h3>Fraktiler (ud fra kumulativ frekvens)</h3><ul>";
+
+      pValues.forEach((p, idx) => {
+        // Find interval hvor kum.frekvens passerer p
+        let i = cumFreq.findIndex(cf => cf / N >= p);
+        if (i === -1) i = cumFreq.length - 1;
+
+        const L = intervals[i][0];
+        const w = intervals[i][1] - intervals[i][0];
+        const F = i === 0 ? 0 : cumFreq[i - 1];
+        const f = globalData.frequencies[i];
+        const n = N;
+
+        // Formel for fraktil x_p:
+        // x_p = L + ((p*n - F)/f)*w
+        const x_p = L + ((p * n - F) / f) * w;
+
+        outputHtml += `<li>p = ${p.toFixed(2)} → xₚ = ${x_p.toFixed(2)}</li>`;
+
+        // Tilføj lodret linje på grafen (grøn streg)
+        sumChartFrekvens.data.datasets.push({
+          label: `Fraktil p=${p.toFixed(2)}`,
+          data: [
+            { x: x_p, y: 0 },
+            { x: x_p, y: p }
+          ],
           borderColor: "blue",
-          borderDash: [5,5],
+          borderDash: [6, 6],
           fill: false,
           pointRadius: 0,
           tension: 0,
           showLine: true,
-          // for tooltip: set to false to avoid clutter
-          hoverRadius: 0,
-          hitRadius: 0,
-          order: 1,
-        });
-        // Vandret linje
-        sumChart.data.datasets.push({
-          label: ``,
-          data: [{x:0, y:y}, {x:x, y:y}],
-          borderColor: "blue",
-          borderDash: [5,5],
-          fill: false,
-          pointRadius: 0,
-          tension: 0,
-          showLine: true,
-          hoverRadius: 0,
-          hitRadius: 0,
-          order: 1,
         });
       });
 
-      sumChart.update();
+      sumChartFrekvens.update();
 
-      // Vis resultat som tekst
-      let txt = points.map(({x,y,p}, i) => {
-        if(p) {
-          return `p = ${p.toFixed(2)}: x = ${x.toFixed(2)}, y (kum.) = ${y.toFixed(0)}`;
-        }
-        return "";
-      }).join("<br>");
+      document.getElementById("fraktilResultat").innerHTML = outputHtml + "</ul>";
+    }
 
-      document.getElementById("fraktilResultat").innerHTML = txt || "Ingen fraktiler/x-værdier valgt.";
+    function clearFraktilLinjer() {
+      if (sumChartFrekvens) {
+        sumChartFrekvens.data.datasets = sumChartFrekvens.data.datasets.slice(0, 1);
+        sumChartFrekvens.update();
+      }
+      document.getElementById("fraktilResultat").innerHTML = "";
+      // Clear fraktil input felter
+      ["fraktilInput1","fraktilInput2","fraktilInput3","xInput1","xInput2","xInput3"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
     }
   </script>
 </body>
-
-<footer>
-  <p>
-    Udgivet under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT-licensen</a>.
-  </p>
-  <p>
-    Udviklet af Jens Kaalby Thomsen .
-  </p>
-</footer>
-
 </html>
