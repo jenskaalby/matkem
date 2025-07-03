@@ -25,25 +25,6 @@
     input[type="number"] {
       width: 80px;
     }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-bottom: 1em;
-    }
-    th, td {
-      border: 1px solid #aaa;
-      padding: 6px 8px;
-      text-align: center;
-    }
-    th {
-      background-color: #eee;
-    }
-    #sumkurveCanvas, #histogramCanvas {
-      max-width: 100%;
-      height: 300px;
-      margin-top: 30px;
-      margin-bottom: 30px;
-    }
     .flex-row {
       display: flex;
       gap: 15px;
@@ -59,6 +40,16 @@
       font-size: 14px;
       cursor: pointer;
     }
+    #sumkurveCanvas, #histogramCanvas {
+      max-width: 100%;
+      height: 300px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+    #fraktilResultat {
+      font-weight: bold;
+      margin-top: 1em;
+    }
   </style>
 </head>
 <body>
@@ -73,11 +64,10 @@
 
   <button onclick="processData()">Beregn og vis sumkurve + histogram</button>
 
-  <div id="results"></div>
-
+  <!-- Sumkurve øverst -->
   <canvas id="sumkurveCanvas"></canvas>
 
-  <!-- Beregningsfelter og resultater -->
+  <!-- Fraktil beregning felter under sumkurven -->
   <div class="flex-row">
     <div>
       <label for="fraktilInput1">p-fraktil (0–1):</label>
@@ -92,7 +82,6 @@
       <input id="fraktilInput3" type="number" step="0.01" min="0" max="1" />
     </div>
   </div>
-
   <div class="flex-row">
     <div>
       <label for="xInput1">x-værdi:</label>
@@ -110,9 +99,9 @@
 
   <button onclick="beregnFraktiler()">Beregn fraktiler / p-værdier</button>
 
-  <div id="fraktilResultat" style="margin-top: 1em; font-weight: bold;"></div>
+  <div id="fraktilResultat"></div>
 
-  <!-- Histogram -->
+  <!-- Histogram nederst -->
   <canvas id="histogramCanvas"></canvas>
 
 <script>
@@ -148,47 +137,13 @@ function processData() {
     return;
   }
   const midpoints = intervals.map(([a, b]) => (a + b) / 2);
-  const mean = frequencies.reduce((sum, f, i) => sum + f * midpoints[i], 0) / N;
-  const varPop = frequencies.reduce((sum, f, i) => sum + f * (midpoints[i] - mean) ** 2, 0) / N;
-  const stdPop = Math.sqrt(varPop);
-  const varSample = N > 1 ? frequencies.reduce((sum, f, i) => sum + f * (midpoints[i] - mean) ** 2, 0) / (N - 1) : NaN;
-  const stdSample = Math.sqrt(varSample);
+
   const cumFreq = [];
   let sum = 0;
   for (let f of frequencies) {
     sum += f;
     cumFreq.push(sum);
   }
-
-  const rows = intervals.map((interval, i) => {
-    return `
-      <tr>
-        <td>${interval[0]}–${interval[1]}</td>
-        <td>${frequencies[i]}</td>
-        <td>${midpoints[i].toFixed(2)}</td>
-        <td>${cumFreq[i]}</td>
-        <td>${(cumFreq[i] / N * 100).toFixed(2)}%</td>
-      </tr>`;
-  });
-
-  document.getElementById("results").innerHTML = `
-    <div id="exportContent">
-      <h2>📊 Oversigt over data</h2>
-      <table>
-        <tr><th>Interval</th><th>Hyppighed</th><th>Midtpunkt</th><th>Kum. hyppighed</th><th>Kum. frekvens (%)</th></tr>
-        ${rows.join("")}
-      </table>
-      <h2>📋 Statistik</h2>
-      <table>
-        <tr><th>Parameter</th><th>Værdi</th></tr>
-        <tr><td>n</td><td>${N}</td></tr>
-        <tr><td>Middelværdi</td><td>${mean.toFixed(2)}</td></tr>
-        <tr><td>Populationsvarians</td><td>${varPop.toFixed(2)}</td></tr>
-        <tr><td>Populationsspredning</td><td>${stdPop.toFixed(2)}</td></tr>
-        <tr><td>Stikprøvevarians</td><td>${varSample.toFixed(2)}</td></tr>
-        <tr><td>Stikprøvespredning</td><td>${stdSample.toFixed(2)}</td></tr>
-      </table>
-    </div>`;
 
   globalData = { intervals, frequencies, N, cumFreq, midpoints };
 
@@ -287,8 +242,6 @@ function showHistogram() {
   if (histogramChart) histogramChart.destroy();
 
   const labels = intervals.map(interval => `${interval[0]}–${interval[1]}`);
-
-  // Beregn frekvenser som hyppighed / N
   const frekvenser = frequencies.map(f => f / N);
 
   histogramChart = new Chart(ctx, {
@@ -328,54 +281,52 @@ function showHistogram() {
 }
 
 function beregnFraktiler() {
-  const pInputs = [
-    Number(document.getElementById("fraktilInput1").value),
-    Number(document.getElementById("fraktilInput2").value),
-    Number(document.getElementById("fraktilInput3").value),
-  ].filter(v => !isNaN(v) && v > 0 && v < 1);
-
-  const xInputs = [
-    "xInput1", "xInput2", "xInput3"
-  ].map(id => {
-    const val = document.getElementById(id).value;
-    return val === "" ? null : parseFloat(val);
-  }).filter(v => !isNaN(v));
-
   if (!globalData.intervals) {
     alert("Indtast og beregn først data.");
     return;
   }
 
+  const pInputs = [
+    Number(document.getElementById("fraktilInput1").value),
+    Number(document.getElementById("fraktilInput2").value),
+    Number(document.getElementById("fraktilInput3").value),
+  ].filter(v => !isNaN(v) && v >= 0 && v <= 1);
+
+  const xInputs = [
+    Number(document.getElementById("xInput1").value),
+    Number(document.getElementById("xInput2").value),
+    Number(document.getElementById("xInput3").value),
+  ].filter(v => !isNaN(v));
+
+  // Beregn x for p
   const pPoints = pInputs.map(p => {
     const xVal = interpolateXforP(p);
-    const yVal = p;
-    return { x: xVal, y: yVal, p };
+    return { p, x: xVal };
   });
 
+  // Beregn p for x
   const xPoints = xInputs.map(xVal => {
     const pVal = interpolatePforX(xVal);
-    const x = xVal;
-    return { x, y: pVal, pVal };
+    return { x: xVal, y: pVal, pVal };
   });
 
-  // Opdater sumkurven med punkter og lodrette / vandrette streger
+  // Opdater sumkurven med lodrette/vandrette stiplede linjer
   const { intervals, cumFreq, N } = globalData;
   const points = [{ x: intervals[0][0], y: 0 }];
   for (let i = 0; i < intervals.length; i++) {
     points.push({ x: intervals[i][1], y: cumFreq[i] / N });
   }
 
-  // Tilføj de lodrette og vandrette stiplede linjer for p-punkterne
   const extraDatasets = [];
 
-  pPoints.forEach((pt, i) => {
+  pPoints.forEach(pt => {
     if (pt.x === null) return;
-    // lodret stiplet linje
+    // lodret stiplet linje (rød)
     extraDatasets.push({
       label: `p=${pt.p.toFixed(2)} (lodret)`,
       data: [
         { x: pt.x, y: 0 },
-        { x: pt.x, y: pt.y }
+        { x: pt.x, y: interpolatePforX(pt.x) }
       ],
       borderColor: "red",
       borderWidth: 1,
@@ -385,12 +336,12 @@ function beregnFraktiler() {
       pointRadius: 0,
       tension: 0,
     });
-    // vandret stiplet linje
+    // vandret stiplet linje (rød)
     extraDatasets.push({
       label: `p=${pt.p.toFixed(2)} (vandret)`,
       data: [
-        { x: intervals[0][0], y: pt.y },
-        { x: pt.x, y: pt.y }
+        { x: intervals[0][0], y: interpolatePforX(pt.x) },
+        { x: pt.x, y: interpolatePforX(pt.x) }
       ],
       borderColor: "red",
       borderWidth: 1,
@@ -402,9 +353,9 @@ function beregnFraktiler() {
     });
   });
 
-  xPoints.forEach((pt, i) => {
+  xPoints.forEach(pt => {
     if (pt.y === null) return;
-    // lodret stiplet linje
+    // lodret stiplet linje (grøn)
     extraDatasets.push({
       label: `x=${pt.x.toFixed(2)} (lodret)`,
       data: [
@@ -419,7 +370,7 @@ function beregnFraktiler() {
       pointRadius: 0,
       tension: 0,
     });
-    // vandret stiplet linje
+    // vandret stiplet linje (grøn)
     extraDatasets.push({
       label: `x=${pt.x.toFixed(2)} (vandret)`,
       data: [
@@ -479,17 +430,20 @@ function beregnFraktiler() {
     }
   });
 
-  // Vis resultater
+  // Vis resultattekst med fraktiler og p-værdier
   const fraktilTekst = pPoints.map(pt => {
+    if (pt.x === null) return `p = ${pt.p.toFixed(2)} → x: kan ikke beregnes`;
     return `p = ${pt.p.toFixed(2)} → x ≈ ${pt.x.toFixed(2)}`;
   }).join("<br>");
   const pTekst = xPoints.map(pt => {
+    if (pt.y === null) return `x = ${pt.x.toFixed(2)} → p: kan ikke beregnes`;
     return `x = ${pt.x.toFixed(2)} → p ≈ ${pt.y.toFixed(3)}`;
   }).join("<br>");
 
   document.getElementById("fraktilResultat").innerHTML =
-    `<div style="margin-top:1em;"><b>Fraktiler:</b><br>${fraktilTekst}<br><b>p-værdier:</b><br>${pTekst}</div>`;
+    `<div><b>Fraktiler:</b><br>${fraktilTekst}<br><b>p-værdier:</b><br>${pTekst}</div>`;
 }
 </script>
+
 </body>
 </html>
