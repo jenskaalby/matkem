@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Typetal og Middelværdi Øvelse</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2rem;
+      max-width: 600px;
+    }
+    input {
+      margin-bottom: 1rem;
+      width: 100%;
+      padding: 0.5rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+    .wrong {
+      color: red;
+      font-weight: bold;
+    }
+    .numbers {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Typetal og Middelværdi</h1>
+  <div class="numbers" id="numberList"></div>
+
+  <label for="modeInput">Indtast typetal (kommaadskilt hvis flere):</label>
+  <input type="text" id="modeInput" placeholder="f.eks. 3, 7">
+
+  <label for="meanInput">Indtast middelværdi:</label>
+  <input type="number" id="meanInput" step="any" placeholder="f.eks. 4.2">
+
+  <button onclick="checkAnswers()">Tjek svar</button>
+  <button onclick="generateNumbers()">Ny opgave</button>
+
+  <div id="feedback"></div>
+
+  <script>
+    let numbers = [];
+
+    function generateNumbers() {
+      const counts = [2, 3, 2, 1, 1, 2]; // sikre gentagelser
+      numbers = [];
+
+      for (let count of counts) {
+        let n = Math.floor(Math.random() * 10) + 1;
+        for (let i = 0; i < count; i++) {
+          numbers.push(n);
+        }
+      }
+
+      // Trim til mellem 12-20 tal
+      numbers = numbers.slice(0, Math.floor(Math.random() * 8) + 12);
+      shuffle(numbers);
+      document.getElementById("numberList").textContent = "Tal: " + numbers.join(", ");
+      document.getElementById("feedback").innerHTML = "";
+      document.getElementById("modeInput").value = "";
+      document.getElementById("meanInput").value = "";
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function checkAnswers() {
+      const userMode = document.getElementById("modeInput").value
+        .split(",")
+        .map(s => parseInt(s.trim()))
+        .filter(n => !isNaN(n))
+        .sort((a, b) => a - b);
+
+      const userMean = parseFloat(document.getElementById("meanInput").value);
+
+      const correctMean = (
+        numbers.reduce((a, b) => a + b, 0) / numbers.length
+      ).toFixed(2);
+
+      const frequency = {};
+      for (let n of numbers) {
+        frequency[n] = (frequency[n] || 0) + 1;
+      }
+
+      const maxFreq = Math.max(...Object.values(frequency));
+      const correctModes = Object.keys(frequency)
+        .filter(k => frequency[k] === maxFreq)
+        .map(Number)
+        .sort((a, b) => a - b);
+
+      let modeCorrect = JSON.stringify(userMode) === JSON.stringify(correctModes);
+      let meanCorrect = Math.abs(userMean - correctMean) < 0.01;
+
+      const feedback = document.getElementById("feedback");
+      feedback.innerHTML = `
+        <p class="${modeCorrect ? 'correct' : 'wrong'}">
+          Typetal: ${modeCorrect ? 'Korrekt!' : 'Forkert. Rigtige typetal: ' + correctModes.join(', ')}
+        </p>
+        <p class="${meanCorrect ? 'correct' : 'wrong'}">
+          Middelværdi: ${meanCorrect ? 'Korrekt!' : 'Forkert. Rigtig middelværdi: ' + correctMean}
+        </p>
+      `;
+    }
+
+    generateNumbers(); // første gang siden loader
+  </script>
+</body>
+</html>
