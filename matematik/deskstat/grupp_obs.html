@@ -278,10 +278,6 @@ function showHistogram() {
   const ctx = document.getElementById("histogramCanvas").getContext("2d");
   if (histogramChart) histogramChart.destroy();
 
-  // Vi laver et datasæt med en bar pr interval,
-  // hvor hver bar dækker hele intervallets bredde.
-
-  // Labels som fx "0-10", "10-20" osv
   const labels = intervals.map(interval => `${interval[0]}–${interval[1]}`);
 
   histogramChart = new Chart(ctx, {
@@ -289,7 +285,7 @@ function showHistogram() {
     data: {
       labels: labels,
       datasets: [{
-        label: "Frekvens",              // Ændret fra "Hyppighed" til "Frekvens"
+        label: "Hyppighed",
         data: frequencies,
         backgroundColor: "rgba(0, 123, 255, 0.7)",
         borderColor: "rgba(0, 123, 255, 1)",
@@ -307,7 +303,7 @@ function showHistogram() {
         },
         y: {
           beginAtZero: true,
-          title: { display: true, text: "Frekvens" }, // Ændret fra "Hyppighed"
+          title: { display: true, text: "Hyppighed" },
           ticks: { precision: 0 }
         }
       },
@@ -321,53 +317,81 @@ function showHistogram() {
 
 function beregnFraktiler() {
   const pInputs = [
-    Number(document.getElementById("fraktilInput1").value),
-    Number(document.getElementById("fraktilInput2").value),
-    Number(document.getElementById("fraktilInput3").value),
-  ].filter(v => !isNaN(v) && v > 0 && v < 1);
+    document.getElementById("fraktilInput1").value,
+    document.getElementById("fraktilInput2").value,
+    document.getElementById("fraktilInput3").value,
+  ].map(v => Number(v)).filter(v => !isNaN(v) && v > 0 && v < 1);
 
   const xInputs = [
-    "xInput1", "xInput2", "xInput3"
-  ].map(id => {
-    const val = document.getElementById(id).value;
-    return val === "" ? null : parseFloat(val);
-  }).filter(v => !isNaN(v));
+    document.getElementById("xInput1").value,
+    document.getElementById("xInput2").value,
+    document.getElementById("xInput3").value,
+  ].map(v => Number(v)).filter(v => !isNaN(v));
 
-  if (!globalData.intervals) {
-    alert("Indtast og beregn først data.");
-    return;
-  }
-
-  const pPoints = pInputs.map(p => {
+  const fraktiler = [];
+  for (let p of pInputs) {
     const xVal = interpolateXforP(p);
-    const yVal = p;
-    return { x: xVal, y: yVal, p };
-  });
-
-  const xPoints = xInputs.map(xVal => {
-    const p = interpolatePforX(xVal);
-    return { x: xVal, y: p, p };
-  });
-
-  let tekst = "<h3>Resultater:</h3>";
-
-  if (pPoints.length > 0) {
-    tekst += "<h4>p-fraktiler (x-værdier for givet p):</h4><ul>";
-    for (const pt of pPoints) {
-      tekst += `<li>p = ${pt.p.toFixed(2)} → x = ${pt.x.toFixed(2)}</li>`;
-    }
-    tekst += "</ul>";
+    if (xVal !== null) fraktiler.push({ p, xVal });
   }
 
-  if (xPoints.length > 0) {
-    tekst += "<h4>p-værdier for givne x-værdier:</h4><ul>";
-    for (const pt of xPoints) {
-      tekst += `<li>x = ${pt.x.toFixed(2)} → p = ${pt.y.toFixed(2)}</li>`;
-    }
-    tekst += "</ul>";
+  const pVaerdier = [];
+  for (let x of xInputs) {
+    const pVal = interpolatePforX(x);
+    if (pVal !== null) pVaerdier.push({ x, pVal });
   }
 
-  document.getElementById("fraktilResultat").innerHTML = tekst;
+  // Vi laver nu et array til at tegne stiplede linjer på sumkurven
+  const ctx = document.getElementById("sumkurveCanvas").getContext("2d");
+
+  // Genindlæs sumkurven data uden ekstra linjer først
+  showSumkurve();
+
+  // Tegn stiplede linjer for fraktiler
+  fraktiler.forEach(({ p, xVal }) => {
+    drawDottedLine(ctx, xVal, 0, xVal, p, "green");
+    drawDottedLine(ctx, 0, p, xVal, p, "green");
+  });
+
+  // Tegn stiplede linjer for p-værdier
+  pVaerdier.forEach(({ x, pVal }) => {
+    drawDottedLine(ctx, x, 0, x, pVal, "blue");
+    drawDottedLine(ctx, 0, pVal, x, pVal, "blue");
+  });
+
+  let tekst = "";
+  if (fraktiler.length > 0) {
+    tekst += "Fraktiler:\n";
+    fraktiler.forEach(({ p, xVal }) => {
+      tekst += `p = ${p.toFixed(3)} → x = ${xVal.toFixed(3)}\n`;
+    });
+  }
+  if (pVaerdier.length > 0) {
+    tekst += "\nP-værdier:\n";
+    pVaerdier.forEach(({ x, pVal }) => {
+      tekst += `x = ${x.toFixed(3)} → p = ${pVal.toFixed(3)}\n`;
+    });
+  }
+  document.getElementById("fraktilResultat").textContent = tekst.trim();
+}
+
+function drawDottedLine(ctx, x1, y1, x2, y2, color) {
+  const chartArea = sumChart.chartArea;
+  if (!chartArea) return;
+
+  // Konverter datapunkter til pixels i chartet:
+  const px1 = sumChart.scales.x.getPixelForValue(x1);
+  const py1 = sumChart.scales.y.getPixelForValue(y1);
+  const px2 = sumChart.scales.x.getPixelForValue(x2);
+  const py2 = sumChart.scales.y.getPixelForValue(y2);
+
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath();
+  ctx.moveTo(px1, py1);
+  ctx.lineTo(px2, py2);
+  ctx.stroke();
+  ctx.restore();
 }
 </script>
 </body>
