@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sumkurve med kumulativ frekvens</title>
+  <title>Sumkurve med kumulativ frekvens + histogram</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -33,7 +33,7 @@
     th {
       background-color: #eee;
     }
-    #sumkurveCanvas {
+    #sumkurveCanvas, #histogramCanvas {
       max-width: 100%;
       height: 300px;
       margin-top: 30px;
@@ -57,19 +57,19 @@
   </style>
 </head>
 <body>
-  <h1>Sumkurve med kumulativ frekvens</h1>
+  <h1>Sumkurve med kumulativ frekvens + histogram</h1>
 
   <p>Indtast intervaller (f.eks. 0-10) og hyppigheder, én pr. linje:</p>
   <textarea id="intervals" placeholder="fx&#10;0-10&#10;10-20&#10;20-30"></textarea>
   <textarea id="frequencies" placeholder="fx&#10;5&#10;12&#10;8"></textarea>
 
-  <button onclick="processData()">Beregn og vis sumkurve</button>
+  <button onclick="processData()">Beregn og vis sumkurve + histogram</button>
 
   <div id="results"></div>
 
   <canvas id="sumkurveCanvas"></canvas>
 
-  <!-- Beregningsfelter og resultater flyttet herunder sumkurven -->
+  <!-- Beregningsfelter og resultater -->
   <div class="flex-row">
     <div>
       <label for="fraktilInput1">p-fraktil (0–1):</label>
@@ -104,9 +104,13 @@
 
   <div id="fraktilResultat" style="margin-top: 1em; font-weight: bold;"></div>
 
+  <!-- Histogram -->
+  <canvas id="histogramCanvas"></canvas>
+
 <script>
 let globalData = {};
 let sumChart;
+let histogramChart;
 
 function processData() {
   const intervalsRaw = document.getElementById("intervals").value.trim();
@@ -181,6 +185,7 @@ function processData() {
   globalData = { intervals, frequencies, N, cumFreq, midpoints };
 
   showSumkurve();
+  showHistogram();
   document.getElementById("fraktilResultat").innerHTML = "";
 }
 
@@ -261,6 +266,53 @@ function showSumkurve() {
       },
       plugins: {
         legend: { display: false }
+      },
+      animation: false,
+    }
+  });
+}
+
+function showHistogram() {
+  const { intervals, frequencies } = globalData;
+  if (!intervals) return;
+  const ctx = document.getElementById("histogramCanvas").getContext("2d");
+  if (histogramChart) histogramChart.destroy();
+
+  // Vi laver et datasæt med en bar pr interval,
+  // hvor hver bar dækker hele intervallets bredde.
+
+  // Labels som fx "0-10", "10-20" osv
+  const labels = intervals.map(interval => `${interval[0]}–${interval[1]}`);
+
+  histogramChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Hyppighed",
+        data: frequencies,
+        backgroundColor: "rgba(0, 123, 255, 0.7)",
+        borderColor: "rgba(0, 123, 255, 1)",
+        borderWidth: 1,
+        barPercentage: 1.0,
+        categoryPercentage: 1.0,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: { display: true, text: "Interval" },
+          grid: { display: false }
+        },
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: "Hyppighed" },
+          ticks: { precision: 0 }
+        }
+      },
+      plugins: {
+        legend: { display: true }
       },
       animation: false,
     }
