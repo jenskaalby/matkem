@@ -5,7 +5,7 @@ title: "Deskriptiv statistik"
 
 # Deskriptiv statistik
 
-- [Applikation: Bestem typetal og middelværdi](./kvartilsaet_bestem.html)
+- [Applikation: Bestem typetal og middelværdi](./type_mid.html)
 - [Applikation: Bestem kvartilsæt](./kvartilsaet_bestem.html)
 - [Applikation: Aflæs boksplot](./boksplot_aflaesning.html)
 - [Applikation: Ugrupperede observationer](./ugrupp_obs.html)
