@@ -251,9 +251,12 @@
       ].filter(v => !isNaN(v) && v > 0 && v < 1);
 
       const xInputs = [
-        Number(document.getElementById("xInput1").value),
-        Number(document.getElementById("xInput2").value),
-      ].filter(v => !isNaN(v));
+      "xInput1", "xInput2", "xInput3"
+      ].map(id => {
+      const val = document.getElementById(id).value;
+      return val === "" ? null : parseFloat(val);
+      }).filter(v => !isNaN(v));
+
 
       if(!globalData.intervals) {
         alert("Indtast og beregn først data.");
