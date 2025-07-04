@@ -44,7 +44,7 @@
       gap: 15px;
       margin-bottom: 1em;
       flex-wrap: wrap;
-      align-items: center;
+      align-items: flex-start;
     }
     label {
       margin-right: 5px;
@@ -58,10 +58,24 @@
 </head>
 <body>
   <h1>Sumkurve med kumulativ frekvens + histogram</h1>
+  <!-- TILFØJET: Inputfelt til x-akse label -->
+<div style="margin-bottom: 15px;">
+  <label for="xAxisLabelInput">X-akse label:</label>
+  <input type="text" id="xAxisLabelInput" placeholder="F.eks. højde" />
+</div>
 
   <p>Indtast intervaller (f.eks. 0-10) og hyppigheder, én pr. linje:</p>
-  <textarea id="intervals" placeholder="fx&#10;0-10&#10;10-20&#10;20-30"></textarea>
-  <textarea id="frequencies" placeholder="fx&#10;5&#10;12&#10;8"></textarea>
+  <div class="flex-row">
+  <div style="flex: 1">
+    <label for="intervals">Intervaller:</label><br>
+    <textarea id="intervals" placeholder="fx&#10;0-10&#10;10-20&#10;20-30"></textarea>
+  </div>
+  <div style="flex: 1">
+    <label for="frequencies">Hyppigheder:</label><br>
+    <textarea id="frequencies" placeholder="fx&#10;5&#10;12&#10;8"></textarea>
+  </div>
+</div>
+
 
   <button onclick="processData()">Beregn og vis sumkurve + histogram</button>
 
@@ -72,16 +86,16 @@
   <!-- Beregningsfelter og resultater -->
   <div class="flex-row">
     <div>
-      <label for="fraktilInput1">p-fraktil (0–1):</label>
-      <input id="fraktilInput1" type="number" step="0.01" min="0" max="1" />
+      <label for="fraktilInput1">p-fraktil (%):</label>
+      <input id="fraktilInput1" type="number" step="0.01" min="0" max="100" />
     </div>
     <div>
-      <label for="fraktilInput2">p-fraktil (0–1):</label>
-      <input id="fraktilInput2" type="number" step="0.01" min="0" max="1" />
+      <label for="fraktilInput2">p-fraktil (%):</label>
+      <input id="fraktilInput2" type="number" step="0.01" min="0" max="100" />
     </div>
     <div>
-      <label for="fraktilInput3">p-fraktil (0–1):</label>
-      <input id="fraktilInput3" type="number" step="0.01" min="0" max="1" />
+      <label for="fraktilInput3">p-fraktil (%):</label>
+      <input id="fraktilInput3" type="number" step="0.01" min="0" max="100" />
     </div>
   </div>
 
@@ -186,8 +200,23 @@ function processData() {
 
   showSumkurve();
   showHistogram();
+  updateXAxisLabels();  // TILFØJET: Opdater x-akse labels efter graferne vises
   document.getElementById("fraktilResultat").innerHTML = "";
 }
+
+// TILFØJET: Funktion til at opdatere x-akse label på begge grafer
+function updateXAxisLabels() {
+  const newLabel = document.getElementById("xAxisLabelInput").value.trim() || "x";
+  if (sumChart) {
+    sumChart.options.scales.x.title.text = newLabel;
+    sumChart.update();
+  }
+  if (histogramChart) {
+    histogramChart.options.scales.x.title.text = newLabel;
+    histogramChart.update();
+  }
+}
+
 
 function interpolateXforP(p) {
   const { intervals, frequencies, N, cumFreq } = globalData;
@@ -225,207 +254,206 @@ function interpolatePforX(x) {
 function showSumkurve() {
   const { intervals, cumFreq, N } = globalData;
   if (!intervals) return;
-  const canvas = document.getElementById("sumkurveCanvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = canvas.clientWidth;
-  canvas.height = 300;
 
-  // Clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const points = [{ x: intervals[0][0], y: 0 }];
+  for (let i = 0; i < intervals.length; i++) {
+    points.push({ x: intervals[i][1], y: (cumFreq[i] / N) * 100 });
+  }
 
-  // Tegn akser
-  ctx.beginPath();
-  ctx.moveTo(50, 10);
-  ctx.lineTo(50, 280);
-  ctx.lineTo(850, 280);
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 2;
-  ctx.stroke();
+  const ctx = document.getElementById("sumkurveCanvas").getContext("2d");
+  if (sumChart) sumChart.destroy();
 
-  // Skaleringsparametre
   const xMin = intervals[0][0];
   const xMax = intervals[intervals.length - 1][1];
-  const yMax = N;
+  const margin = (xMax - xMin) * 0.05;
 
-  // Tegn kumulativ frekvens trin
-  ctx.beginPath();
-  ctx.strokeStyle = "red";
-  ctx.lineWidth = 2;
-  let px = 50;
-  let py = 280;
-  ctx.moveTo(px, py);
-  for (let i = 0; i < intervals.length; i++) {
-    const [a, b] = intervals[i];
-    const y = 280 - (cumFreq[i] / yMax) * 270;
-    const xA = 50 + ((a - xMin) / (xMax - xMin)) * 800;
-    const xB = 50 + ((b - xMin) / (xMax - xMin)) * 800;
-    ctx.lineTo(xA, py);
-    ctx.lineTo(xB, y);
-    px = xB;
-    py = y;
-  }
-  ctx.stroke();
-
-  // Gem kontekst globalt for andre funktioner
-  window.ctx = ctx;
-  window.xMin = xMin;
-  window.xMax = xMax;
-  window.yMax = yMax;
-
-  // Tegn akseetiketter
-  ctx.fillStyle = "black";
-  ctx.font = "14px Arial";
-  ctx.fillText("x", 860, 285);
-  ctx.fillText("Kumulativ hyppighed", 5, 20);
-
-  // Tegn streger langs x-aksen for intervalgrænser
-  ctx.strokeStyle = "#ccc";
-  ctx.lineWidth = 1;
-  intervals.forEach(([a,b]) => {
-    const x = 50 + ((a - xMin) / (xMax - xMin)) * 800;
-    ctx.beginPath();
-    ctx.moveTo(x, 280);
-    ctx.lineTo(x, 270);
-    ctx.stroke();
-    ctx.fillText(a, x-10, 295);
-  });
-  // Sidste interval slutværdi
-  const xEnd = 50 + ((intervals[intervals.length-1][1] - xMin) / (xMax - xMin)) * 800;
-  ctx.fillText(intervals[intervals.length-1][1], xEnd-10, 295);
-}
-
-function drawDottedLine(ctx, x1, y1, x2, y2, color) {
-  ctx.save();
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1;
-  ctx.setLineDash([5, 5]);
-  // Skaler til canvas koordinater
-  const canvasX1 = 50 + ((x1 - window.xMin) / (window.xMax - window.xMin)) * 800;
-  const canvasX2 = 50 + ((x2 - window.xMin) / (window.xMax - window.xMin)) * 800;
-  const canvasY1 = 280 - (y1 / window.yMax) * 270;
-  const canvasY2 = 280 - (y2 / window.yMax) * 270;
-  ctx.beginPath();
-  ctx.moveTo(canvasX1, canvasY1);
-  ctx.lineTo(canvasX2, canvasY2);
-  ctx.stroke();
-  ctx.restore();
-}
-
-function beregnFraktiler() {
-  // Hent og filtrer p-fraktil input: kun tal mellem 0 og 1 (eksklusiv)
-  const pInputsRaw = [
-    document.getElementById("fraktilInput1").value,
-    document.getElementById("fraktilInput2").value,
-    document.getElementById("fraktilInput3").value,
-  ];
-  const pInputs = pInputsRaw
-    .map(v => v.trim())
-    .filter(v => v !== "")  // kun ikke-tomme felter
-    .map(v => Number(v))
-    .filter(v => !isNaN(v) && v > 0 && v < 1);
-
-  // Hent og filtrer x-værdi input: kun gyldige tal
-  const xInputsRaw = [
-    document.getElementById("xInput1").value,
-    document.getElementById("xInput2").value,
-    document.getElementById("xInput3").value,
-  ];
-  const xInputs = xInputsRaw
-    .map(v => v.trim())
-    .filter(v => v !== "")
-    .map(v => Number(v))
-    .filter(v => !isNaN(v));
-
-  if (pInputs.length === 0 && xInputs.length === 0) {
-    document.getElementById("fraktilResultat").textContent = "Indtast venligst mindst én gyldig p-fraktil eller x-værdi.";
-    return;
-  }
-
-  const fraktiler = [];
-  for (let p of pInputs) {
-    const xVal = interpolateXforP(p);
-    if (xVal !== null) fraktiler.push({ p, xVal });
-  }
-
-  const pVaerdier = [];
-  for (let x of xInputs) {
-    const pVal = interpolatePforX(x);
-    if (pVal !== null) pVaerdier.push({ x, pVal });
-  }
-
-  // Genindlæs sumkurve uden ekstra linjer først
-  showSumkurve();
-
-  // Tegn stiplede linjer for fraktiler (grøn)
-  fraktiler.forEach(({ p, xVal }) => {
-    drawDottedLine(window.ctx, xVal, 0, xVal, p * globalData.N, "green");
-    drawDottedLine(window.ctx, 0, p * globalData.N, xVal, p * globalData.N, "green");
-  });
-
-  // Tegn stiplede linjer for p-værdier (blå)
-  pVaerdier.forEach(({ x, pVal }) => {
-    drawDottedLine(window.ctx, x, 0, x, pVal * globalData.N, "blue");
-    drawDottedLine(window.ctx, 0, pVal * globalData.N, x, pVal * globalData.N, "blue");
-  });
-
-  // Vis resultattekst
-  let tekst = "";
-  if (fraktiler.length > 0) {
-    tekst += "Fraktiler:\n";
-    fraktiler.forEach(({ p, xVal }) => {
-      tekst += `p = ${p.toFixed(3)} → x = ${xVal.toFixed(3)}\n`;
-    });
-  }
-  if (pVaerdier.length > 0) {
-    tekst += (tekst ? "\n" : "") + "P-værdier:\n";
-    pVaerdier.forEach(({ x, pVal }) => {
-      tekst += `x = ${x.toFixed(3)} → p = ${pVal.toFixed(3)}\n`;
-    });
-  }
-  document.getElementById("fraktilResultat").textContent = tekst.trim();
-}
-
-function showHistogram() {
-  const { intervals, frequencies } = globalData;
-  if (!intervals) return;
-  const ctx = document.getElementById("histogramCanvas").getContext("2d");
-
-  if (histogramChart) {
-    histogramChart.destroy();
-  }
-
-  const labels = intervals.map(i => `${i[0]}–${i[1]}`);
-  histogramChart = new Chart(ctx, {
-    type: "bar",
+  sumChart = new Chart(ctx, {
+    type: "line",
     data: {
-      labels,
       datasets: [{
-        label: "Hyppighed",
-        data: frequencies,
-        backgroundColor: "rgba(54, 162, 235, 0.6)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
+        label: "Kumulativ frekvens",
+        data: points,
+        borderColor: "orange",
+        backgroundColor: "transparent",
+        tension: 0,
+        fill: false,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        showLine: true,
       }]
     },
     options: {
+      responsive: true,
       scales: {
+        x: {
+          type: "linear",
+          title: { display: true, text: "Intervalgrænse" },
+          min: Math.max(0, xMin - margin),  // sikrer min ikke bliver negativ
+          max: xMax + margin,
+          ticks: {
+  callback: function(value) {
+    return Math.round(value);
+  }
+}
+
+        },
         y: {
           beginAtZero: true,
-          title: {
-            display: true,
-            text: "Hyppighed"
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: "Intervaller"
+          max: 105,
+          title: { display: true, text: "Kumulativ frekvens (%)" },
+          ticks: {
+            callback: function(value) {
+              return value === 105 ? "" : value + "%";
+            }
           }
         }
-      }
+      },
+      plugins: {
+        legend: { display: false }
+      },
+      animation: false,
     }
   });
 }
+
+
+
+function showHistogram() {
+  const { intervals, frequencies, N } = globalData;
+  if (!intervals) return;
+
+  const ctx = document.getElementById("histogramCanvas").getContext("2d");
+  if (histogramChart) histogramChart.destroy();
+
+  const labels = intervals.map(interval => `${interval[0]}–${interval[1]}`);
+  const freqValues = frequencies.map(f => (f / N) * 100);
+
+  histogramChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Frekvens",
+        data: freqValues,
+        backgroundColor: "rgba(0, 123, 255, 0.7)",
+        borderColor: "rgba(0, 123, 255, 1)",
+        borderWidth: 1,
+        barPercentage: 1.0,
+        categoryPercentage: 1.0,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: { display: true, text: "Interval" },
+          grid: { display: false }
+        },
+        y: {
+  beginAtZero: true,
+  max: Math.ceil(Math.max(...freqValues) * 1.05),
+  title: { display: true, text: "Frekvens (%)" },
+  ticks: {
+  callback: function(value, index, ticks) {
+    const maxTick = Math.max(...ticks.map(t => t.value));
+    return value === maxTick ? "" : value + "%";
+        }
+      }
+    }
+      },
+      plugins: {
+        legend: { display: true }
+      },
+      animation: false,
+    }
+  });
+}
+
+function beregnFraktiler() {
+  const pInputs = [
+    Number(document.getElementById("fraktilInput1").value) /100,
+    Number(document.getElementById("fraktilInput2").value) /100,
+    Number(document.getElementById("fraktilInput3").value) /100,
+  ].filter(v => !isNaN(v) && v > 0 && v < 1);
+
+  const xInputs = [
+    "xInput1", "xInput2", "xInput3"
+  ].map(id => {
+    const val = document.getElementById(id).value;
+    return val === "" ? null : parseFloat(val);
+  }).filter(v => !isNaN(v));
+
+  if (!globalData.intervals) {
+    alert("Indtast og beregn først data.");
+    return;
+  }
+
+  const pPoints = pInputs.map(p => {
+    const xVal = interpolateXforP(p);
+    const yVal = p;
+    return { x: xVal, y: yVal, p };
+  });
+
+  const xPoints = xInputs.map(xVal => {
+    const p = interpolatePforX(xVal);
+    return { x: xVal, y: p, p };
+  });
+
+  const points = [...pPoints, ...xPoints].filter(pt => pt.x !== null && !isNaN(pt.x) && !isNaN(pt.y));
+
+  if (!sumChart) {
+    alert("Sumkurve findes ikke - beregn først data.");
+    return;
+  }
+
+  sumChart.data.datasets = sumChart.data.datasets.slice(0, 1);
+
+  points.forEach(({ x, y, p }) => {
+  const y100 = y * 100;
+  sumChart.data.datasets.push({
+    label: "",
+    data: [{ x: x, y: 0 }, { x: x, y: y100 }],
+    borderColor: "blue",
+    borderDash: [5, 5],
+    fill: false,
+    pointRadius: 0,
+    tension: 0,
+    showLine: true,
+    hoverRadius: 0,
+    hitRadius: 0,
+    order: 1,
+  });
+  sumChart.data.datasets.push({
+    label: "",
+    data: [{ x: 0, y: y100 }, { x: x, y: y100 }],
+    borderColor: "blue",
+    borderDash: [5, 5],
+    fill: false,
+    pointRadius: 0,
+    tension: 0,
+    showLine: true,
+    hoverRadius: 0,
+    hitRadius: 0,
+    order: 1,
+  });
+});
+
+
+  sumChart.update();
+
+  let txt = points.map(({ x, y, p }) => {
+    if (p) {
+      return `p = ${(p*100).toFixed(2)}: x = ${x.toFixed(2)}, kumuleret hyppighed = ${(y * globalData.N).toFixed(0)}`;
+    }
+    return "";
+  }).join("<br>");
+
+  document.getElementById("fraktilResultat").innerHTML = txt || "Ingen fraktiler/x-værdier valgt.";
+}
+// TILFØJET: Opdater x-akse label live når input ændres
+document.getElementById("xAxisLabelInput").addEventListener("input", () => {
+  updateXAxisLabels();
+});
 </script>
 </body>
 </html>
