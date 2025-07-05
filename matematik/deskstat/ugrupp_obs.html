@@ -118,19 +118,20 @@
         : arr[mid];
     }
 
-    function renderStats(stats) {
-      document.getElementById("statsOutput").textContent = `
-Typetal: ${stats.modes.join(", ")}
-Middelværdi: ${stats.mean.toFixed(2)}
-Minimum: ${stats.min}
-Nedre kvartil (Q1): ${stats.q1}
-Median (Q2): ${stats.median}
-Øvre kvartil (Q3): ${stats.q3}
-Maksimum: ${stats.max}
-Varians: ${stats.variance.toFixed(2)}
+function renderStats(stats) {
+  document.getElementById("statsOutput").innerHTML = `
+Typetal: ${stats.modes.join(", ")}<br>
+Middelværdi: ${stats.mean.toFixed(2)}<br>
+Minimum: ${stats.min}<br>
+Nedre kvartil (Q<sub>1</sub>): ${stats.q1}<br>
+Median (Q<sub>2</sub>): ${stats.median}<br>
+Øvre kvartil (Q<sub>3</sub>): ${stats.q3}<br>
+Maksimum: ${stats.max}<br>
+Varians: ${stats.variance.toFixed(2)}<br>
 Spredning (Std.dev): ${stats.stddev.toFixed(2)}
-      `;
-    }
+  `;
+}
+
 
     function drawBarChart(freqMap) {
       const x = Object.keys(freqMap);
@@ -147,7 +148,7 @@ Spredning (Std.dev): ${stats.stddev.toFixed(2)}
           },
         ],
         {
-          title: "Hyppighed (Søjlediagram)",
+          title: "Søjlediagram (hyppighed)",
           yaxis: { autorange: true },
         }
       );
@@ -196,7 +197,7 @@ function drawStepChart(freqMap) {
       },
     ],
     {
-      title: "Kumulativ hyppighed (Trappediagram)",
+      title: "Trappediagram (kumulativ hyppighed)",
       yaxis: {
         range: [0, maxCumFreq * 1.05],
         autorange: false,
@@ -232,7 +233,7 @@ function drawFreqBarChart(freqMap) {
       },
     ],
     {
-      title: "Hyppighed i procent (Søjlediagram)",
+      title: "Søjlediagram (frekvens)",
       yaxis: {
         range: [0, maxFreqPercent],
         ticksuffix: "%",
@@ -289,7 +290,7 @@ function drawFreqBarChart(freqMap) {
       },
     ],
     {
-      title: "Kumulativ frekvens i procent (Trappediagram)",
+      title: "Trappediagram (kumulativ frekvens)",
       yaxis: {
         range: [0, 105],
         ticksuffix: "%",
