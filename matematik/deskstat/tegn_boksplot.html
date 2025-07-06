@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Boksplot Visualisering</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 40px;
+      max-width: 800px;
+    }
+    label {
+      display: block;
+      margin-top: 1em;
+      font-weight: bold;
+    }
+    input {
+      width: 80px;
+      margin: 2px;
+    }
+    .set {
+      margin-bottom: 1em;
+      padding: 1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tegn boksplot</h1>
+  <form id="dataForm">
+    <div id="setsContainer"></div>
+    <button type="button" onclick="addSet()">Tilføj kvartilsæt</button>
+    <button type="submit">Tegn</button>
+  </form>
+
+  <div id="plot" style="margin-top:40px;"></div>
+
+  <script>
+    let setCount = 0;
+    const maxSets = 5;
+
+    function addSet() {
+      if (setCount >= maxSets) return;
+
+      const container = document.getElementById("setsContainer");
+      const div = document.createElement("div");
+      div.className = "set";
+      div.innerHTML = `
+        <label>Sæt ${setCount + 1} navn:</label>
+        <input type="text" name="name${setCount}" placeholder="f.eks. dreng" required>
+        <label>Kvartilsæt (min, Q1, median, Q3, max):</label>
+        <input type="number" step="any" name="min${setCount}" required>
+        <input type="number" step="any" name="q1${setCount}" required>
+        <input type="number" step="any" name="median${setCount}" required>
+        <input type="number" step="any" name="q3${setCount}" required>
+        <input type="number" step="any" name="max${setCount}" required>
+      `;
+      container.appendChild(div);
+      setCount++;
+    }
+
+    document.getElementById("dataForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const traces = [];
+      const formData = new FormData(e.target);
+      const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd'];
+
+      for (let i = 0; i < setCount; i++) {
+        const name = formData.get(`name${i}`);
+        const min = parseFloat(formData.get(`min${i}`));
+        const q1 = parseFloat(formData.get(`q1${i}`));
+        const median = parseFloat(formData.get(`median${i}`));
+        const q3 = parseFloat(formData.get(`q3${i}`));
+        const max = parseFloat(formData.get(`max${i}`));
+
+        traces.push({
+          type: 'box',
+          x: [min, q1, median, q3, max],
+          y: [name, name, name, name, name],
+          orientation: 'h',
+          boxpoints: false,
+          marker: {color: colors[i]},
+          name: name,
+          boxmean: false,
+          line: {
+            width: 2
+          },
+          quartilemethod: "inclusive"
+        });
+      }
+
+      Plotly.newPlot('plot', traces, {
+        title: 'Boksplot',
+        margin: { l: 100 },
+        yaxis: {
+          automargin: true
+        },
+        xaxis: {
+          title: "Værdi"
+        }
+      });
+    });
+
+    // Start med ét sæt
+    addSet();
+  </script>
+</body>
+</html>
