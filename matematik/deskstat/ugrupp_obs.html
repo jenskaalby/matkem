@@ -149,7 +149,6 @@ Stikprøve-spredning (s): ${stats.stddevSample.toFixed(2)}
   `;
 }
 
-
 function drawBarChart(freqMap) {
   const x = Object.keys(freqMap).map(Number).sort((a, b) => a - b);
   const y = x.map((v) => freqMap[v]);
