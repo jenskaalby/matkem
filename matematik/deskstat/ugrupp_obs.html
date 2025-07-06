@@ -88,28 +88,43 @@
       return data;
     }
 
-    function calculateStats(data) {
-      data.sort((a, b) => a - b);
-      const n = data.length;
-      const sum = data.reduce((a, b) => a + b, 0);
-      const mean = sum / n;
-      const median = calcMedian(data);
-      const q1 = calcMedian(data.slice(0, Math.floor(n / 2)));
-      const q3 = calcMedian(data.slice(Math.ceil(n / 2)));
-      const min = data[0];
-      const max = data[n - 1];
-      const variance =
-        data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / n;
-      const stddev = Math.sqrt(variance);
-      const freqMap = {};
-      data.forEach((val) => (freqMap[val] = (freqMap[val] || 0) + 1));
-      const maxFreq = Math.max(...Object.values(freqMap));
-      const modes = Object.keys(freqMap)
-        .filter((key) => freqMap[key] === maxFreq)
-        .map(Number);
+function calculateStats(data) {
+  data.sort((a, b) => a - b);
+  const n = data.length;
+  const sum = data.reduce((a, b) => a + b, 0);
+  const mean = sum / n;
+  const median = calcMedian(data);
+  const q1 = calcMedian(data.slice(0, Math.floor(n / 2)));
+  const q3 = calcMedian(data.slice(Math.ceil(n / 2)));
+  const min = data[0];
+  const max = data[n - 1];
 
-      return { mean, median, q1, q3, min, max, variance, stddev, modes, freqMap };
-    }
+  const variancePopulation = n > 0
+    ? data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / n
+    : 0;
+
+  const varianceSample = n > 1
+    ? data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (n - 1)
+    : 0;
+
+  const stddevPopulation = Math.sqrt(variancePopulation);
+  const stddevSample = Math.sqrt(varianceSample);
+
+  const freqMap = {};
+  data.forEach((val) => (freqMap[val] = (freqMap[val] || 0) + 1));
+  const maxFreq = Math.max(...Object.values(freqMap));
+  const modes = Object.keys(freqMap)
+    .filter((key) => freqMap[key] === maxFreq)
+    .map(Number);
+
+  return { 
+    mean, median, q1, q3, min, max, 
+    variancePopulation, stddevPopulation,
+    varianceSample, stddevSample,
+    modes, freqMap 
+  };
+}
+    
 
     function calcMedian(arr) {
       const mid = Math.floor(arr.length / 2);
@@ -121,38 +136,72 @@
 function renderStats(stats) {
   document.getElementById("statsOutput").innerHTML = `
 Typetal: ${stats.modes.join(", ")}<br>
-Middelværdi: ${stats.mean.toFixed(2)}<br>
+Middelværdi (<span style="text-decoration: overline;">x</span>): ${stats.mean.toFixed(2)}<br>
 Minimum: ${stats.min}<br>
 Nedre kvartil (Q<sub>1</sub>): ${stats.q1}<br>
 Median (Q<sub>2</sub>): ${stats.median}<br>
 Øvre kvartil (Q<sub>3</sub>): ${stats.q3}<br>
 Maksimum: ${stats.max}<br>
-Varians: ${stats.variance.toFixed(2)}<br>
-Spredning (Std.dev): ${stats.stddev.toFixed(2)}
+Population-varians (&sigma;<sup>2</sup>): ${stats.variancePopulation.toFixed(2)}<br>
+Population-spredning (&sigma;): ${stats.stddevPopulation.toFixed(2)}<br><br>
+Stikprøve-varians (s<sup>2</sup>): ${stats.varianceSample.toFixed(2)}<br>
+Stikprøve-spredning (s): ${stats.stddevSample.toFixed(2)}
   `;
 }
 
 
-    function drawBarChart(freqMap) {
-      const x = Object.keys(freqMap);
-      const y = Object.values(freqMap);
+function drawBarChart(freqMap) {
+  const x = Object.keys(freqMap).map(Number).sort((a, b) => a - b);
+  const y = x.map((v) => freqMap[v]);
 
-      Plotly.newPlot(
-        "barChart",
-        [
-          {
-            x,
-            y,
-            type: "bar",
-            marker: { color: "steelblue" },
-          },
-        ],
-        {
-          title: "Søjlediagram (hyppighed)",
-          yaxis: { autorange: true },
-        }
-      );
+  const minX = x[0];
+  const maxX = x[x.length - 1];
+  const range = maxX - minX;
+
+  // Automatisk valg af dtick baseret på interval
+  let dtick;
+  if (range <= 10) {
+    dtick = 1;
+  } else if (range <= 50) {
+    dtick = 2;
+  } else if (range <= 100) {
+    dtick = 5;
+  } else if (range <= 500) {
+    dtick = 25;
+  } else if (range <= 1000) {
+    dtick = 50;
+  } else if (range <= 10000) {
+    dtick = 200;
+  } else if (range <= 100000) {
+    dtick = 2000;
+  } else {
+    dtick = Math.ceil(range / 100); // fallback
+  }
+
+  Plotly.newPlot(
+    "barChart",
+    [
+      {
+        x,
+        y,
+        type: "bar",
+        width: Array(x.length).fill(0.4), // justér hvis nødvendigt
+        marker: { color: "steelblue" },
+      },
+    ],
+    {
+      title: "Søjlediagram (hyppighed)",
+      yaxis: { autorange: true },
+      xaxis: {
+        tickmode: "linear",
+        dtick: dtick,
+        title: "Værdi",
+        showgrid: true,
+      },
     }
+  );
+}
+
 
 function drawStepChart(freqMap) {
   const values = Object.keys(freqMap)
@@ -218,9 +267,33 @@ function drawFreqBarChart(freqMap) {
   const freqPercent = freqs.map((f) => (f / total) * 100);
 
   const maxFreqPercent = Math.min(
-    Math.max(...freqPercent) * 1.05,  // 5% ekstra over højeste søjle
-    100                              // Maks 100%
+    Math.max(...freqPercent) * 1.05, // 5% ekstra højde
+    100
   );
+
+  // Beregn dynamisk dtick baseret på spændet i værdier
+  const minX = values[0];
+  const maxX = values[values.length - 1];
+  const range = maxX - minX;
+
+  let dtick;
+  if (range <= 10) {
+    dtick = 1;
+  } else if (range <= 50) {
+    dtick = 5;
+  } else if (range <= 100) {
+    dtick = 25;
+  } else if (range <= 500) {
+    dtick = 50;
+  } else if (range <= 1000) {
+    dtick = 200;
+  } else if (range <= 10000) {
+    dtick = 2000;
+  } else if (range <= 100000) {
+    dtick = 20000;
+  } else {
+    dtick = Math.ceil(range / 100);
+  }
 
   Plotly.newPlot(
     "barChartFreq",
@@ -230,6 +303,7 @@ function drawFreqBarChart(freqMap) {
         y: freqPercent,
         type: "bar",
         marker: { color: "steelblue" },
+        width: Array(values.length).fill(0.4),
       },
     ],
     {
@@ -241,9 +315,16 @@ function drawFreqBarChart(freqMap) {
         autorange: false,
         showgrid: true,
       },
+      xaxis: {
+        tickmode: "linear",
+        dtick: dtick,
+        title: "Værdi",
+        showgrid: true,
+      },
     }
   );
 }
+
 
 
 
