@@ -10,6 +10,7 @@ title: "Deskriptiv statistik"
 - [Applikation: Aflæs boksplot](./boksplot_aflaesning.html)
 - [Applikation: Ugrupperede observationer](./ugrupp_obs.html)
 - [Applikation: Grupperede observationer](./grupp_obs.html)
+- [Applikation: Tegn boksplot](tegn_boksplot.html)
 
 <div style="text-align: center;">
 [Tilbage til forsiden](https://jenskaalby.github.io/matkem/) 
