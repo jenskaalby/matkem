@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <title>Deskriptiv Statistik</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    textarea,
+    input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    canvas {
+      margin-top: 30px;
+    }
+    table#freqTable td, table#freqTable th {
+    text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Deskriptiv Statistik</h1>
+
+  <h3>Indtast data (én værdi pr. linje):</h3>
+  <textarea id="rawData" rows="10" placeholder="Eksempel:&#10;5&#10;3&#10;5&#10;7&#10;3"></textarea>
+  <button onclick="processRawData()">Beregn statistik</button>
+
+  <h3>Eller indtast tal og hyppigheder (format: tal,hyppighed):</h3>
+  <textarea id="freqData" rows="5" placeholder="Eksempel:&#10;5,2&#10;3,4&#10;7,1"></textarea>
+  <button onclick="processFrequencyData()">Beregn statistik</button>
+
+  <h2>Resultater</h2>
+<h2>Dataoversigt</h2>
+<table id="freqTable" border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 30px;">
+  <thead>
+    <tr>
+      <th>Observation</th>
+      <th>Hyppighed</th>
+      <th>Kumulativ hyppighed</th>
+      <th>Frekvens (%)</th>
+      <th>Kumulativ frekvens (%)</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+  <pre id="statsOutput"></pre>
+
+  <div id="barChart" style="height:400px;"></div>
+  <div id="stepChart" style="height:400px;"></div>
+
+  <div id="barChartFreq" style="height:400px;"></div>
+  <div id="stepChartFreq" style="height:400px;"></div>
+
+  <div id="boxPlot" style="height:400px;"></div>
+
+  <button id="toggleOutliersBtn" style="display:none" onclick="toggleOutliers()">Vis / skjul outliers i boksplot</button>
+
+  <script>
+    let currentStats = null;
+    let currentData = null;
+    let showOutliers = false;
+
+    function parseRawData(input) {
+      return input
+        .split("\n")
+        .map(Number)
+        .filter((n) => !isNaN(n));
+    }
+
+    function parseFreqData(input) {
+      const data = [];
+      input.split("\n").forEach((line) => {
+        const [val, freq] = line.split(",").map(Number);
+        if (!isNaN(val) && !isNaN(freq)) {
+          for (let i = 0; i < freq; i++) {
+            data.push(val);
+          }
+        }
+      });
+      return data;
+    }
+
+function calculateStats(data) {
+  data.sort((a, b) => a - b);
+  const n = data.length;
+  const sum = data.reduce((a, b) => a + b, 0);
+  const mean = sum / n;
+  const median = calcMedian(data);
+  const q1 = calcMedian(data.slice(0, Math.floor(n / 2)));
+  const q3 = calcMedian(data.slice(Math.ceil(n / 2)));
+  const min = data[0];
+  const max = data[n - 1];
+
+  const variancePopulation = n > 0
+    ? data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / n
+    : 0;
+
+  const varianceSample = n > 1
+    ? data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (n - 1)
+    : 0;
+
+  const stddevPopulation = Math.sqrt(variancePopulation);
+  const stddevSample = Math.sqrt(varianceSample);
+
+  const freqMap = {};
+  data.forEach((val) => (freqMap[val] = (freqMap[val] || 0) + 1));
+  const maxFreq = Math.max(...Object.values(freqMap));
+  const modes = Object.keys(freqMap)
+    .filter((key) => freqMap[key] === maxFreq)
+    .map(Number);
+
+  return { 
+    mean, median, q1, q3, min, max, 
+    variancePopulation, stddevPopulation,
+    varianceSample, stddevSample,
+    modes, freqMap 
+  };
+}
+    
+
+    function calcMedian(arr) {
+      const mid = Math.floor(arr.length / 2);
+      return arr.length % 2 === 0
+        ? (arr[mid - 1] + arr[mid]) / 2
+        : arr[mid];
+    }
+
+function renderStats(stats) {
+  document.getElementById("statsOutput").innerHTML = `
+Typetal: ${stats.modes.join(", ")}<br>
+Middelværdi (<span style="text-decoration: overline;">x</span>): ${stats.mean.toFixed(2)}<br>
+Minimum: ${stats.min}<br>
+Nedre kvartil (Q<sub>1</sub>): ${stats.q1}<br>
+Median (Q<sub>2</sub>): ${stats.median}<br>
+Øvre kvartil (Q<sub>3</sub>): ${stats.q3}<br>
+Maksimum: ${stats.max}<br>
+Population-varians (&sigma;<sup>2</sup>): ${stats.variancePopulation.toFixed(2)}<br>
+Population-spredning (&sigma;): ${stats.stddevPopulation.toFixed(2)}<br><br>
+Stikprøve-varians (s<sup>2</sup>): ${stats.varianceSample.toFixed(2)}<br>
+Stikprøve-spredning (s): ${stats.stddevSample.toFixed(2)}
+  `;
+}
+
+
+function drawBarChart(freqMap) {
+  const x = Object.keys(freqMap).map(Number).sort((a, b) => a - b);
+  const y = x.map((v) => freqMap[v]);
+
+  const minX = x[0];
+  const maxX = x[x.length - 1];
+  const range = maxX - minX;
+
+  // Automatisk valg af dtick baseret på interval
+  let dtick;
+  if (range <= 10) {
+    dtick = 1;
+  } else if (range <= 50) {
+    dtick = 2;
+  } else if (range <= 100) {
+    dtick = 5;
+  } else if (range <= 500) {
+    dtick = 25;
+  } else if (range <= 1000) {
+    dtick = 50;
+  } else if (range <= 10000) {
+    dtick = 200;
+  } else if (range <= 100000) {
+    dtick = 2000;
+  } else {
+    dtick = Math.ceil(range / 100); // fallback
+  }
+
+  Plotly.newPlot(
+    "barChart",
+    [
+      {
+        x,
+        y,
+        type: "bar",
+        width: Array(x.length).fill(0.4), // justér hvis nødvendigt
+        marker: { color: "steelblue" },
+      },
+    ],
+    {
+      title: "Søjlediagram (hyppighed)",
+      yaxis: { autorange: true },
+      xaxis: {
+        tickmode: "linear",
+        dtick: dtick,
+        title: "Værdi",
+        showgrid: true,
+      },
+    }
+  );
+}
+
+
+function drawStepChart(freqMap) {
+  const values = Object.keys(freqMap)
+    .map(Number)
+    .sort((a, b) => a - b);
+  const freqs = values.map((v) => freqMap[v]);
+
+  // Beregn kumulativ hyppighed, startende med 0
+  const cumFreq = [0];
+  freqs.forEach((f) => {
+    cumFreq.push(cumFreq[cumFreq.length - 1] + f);
+  });
+
+  const maxCumFreq = cumFreq[cumFreq.length - 1];
+
+  const stepX = [];
+  const stepY = [];
+
+  // Byg trappetrin: hvert punkt gentages for "vandret" og "lodret" trin
+  for (let i = 0; i < values.length; i++) {
+    stepX.push(values[i]);
+    stepY.push(cumFreq[i]);
+
+    stepX.push(values[i]);
+    stepY.push(cumFreq[i + 1]);
+  }
+
+  // Tilføj sidste vandrette linje ud over sidste observation
+  const lastX = values[values.length - 1];
+  const extension = lastX * 0.05 || 1;
+  stepX.push(lastX + extension);
+  stepY.push(maxCumFreq);
+
+  Plotly.newPlot(
+    "stepChart",
+    [
+      {
+        x: stepX,
+        y: stepY,
+        mode: "lines",
+        line: { shape: "hv", color: "steelblue" },
+      },
+    ],
+    {
+      title: "Trappediagram (kumulativ hyppighed)",
+      yaxis: {
+        range: [0, maxCumFreq * 1.05],
+        autorange: false,
+        title: "Antal",
+        showgrid: true,
+      },
+    }
+  );
+}
+
+
+function drawFreqBarChart(freqMap) {
+  const values = Object.keys(freqMap)
+    .map(Number)
+    .sort((a, b) => a - b);
+  const freqs = values.map((v) => freqMap[v]);
+  const total = freqs.reduce((a, b) => a + b, 0);
+  const freqPercent = freqs.map((f) => (f / total) * 100);
+
+  const maxFreqPercent = Math.min(
+    Math.max(...freqPercent) * 1.05, // 5% ekstra højde
+    100
+  );
+
+  // Beregn dynamisk dtick baseret på spændet i værdier
+  const minX = values[0];
+  const maxX = values[values.length - 1];
+  const range = maxX - minX;
+
+  let dtick;
+  if (range <= 10) {
+    dtick = 1;
+  } else if (range <= 50) {
+    dtick = 5;
+  } else if (range <= 100) {
+    dtick = 25;
+  } else if (range <= 500) {
+    dtick = 50;
+  } else if (range <= 1000) {
+    dtick = 200;
+  } else if (range <= 10000) {
+    dtick = 2000;
+  } else if (range <= 100000) {
+    dtick = 20000;
+  } else {
+    dtick = Math.ceil(range / 100);
+  }
+
+  Plotly.newPlot(
+    "barChartFreq",
+    [
+      {
+        x: values,
+        y: freqPercent,
+        type: "bar",
+        marker: { color: "steelblue" },
+        width: Array(values.length).fill(0.4),
+      },
+    ],
+    {
+      title: "Søjlediagram (frekvens)",
+      yaxis: {
+        range: [0, maxFreqPercent],
+        ticksuffix: "%",
+        title: "Procent",
+        autorange: false,
+        showgrid: true,
+      },
+      xaxis: {
+        tickmode: "linear",
+        dtick: dtick,
+        title: "Værdi",
+        showgrid: true,
+      },
+    }
+  );
+}
+
+
+
+
+   function drawFreqStepChart(freqMap) {
+  const values = Object.keys(freqMap)
+    .map(Number)
+    .sort((a, b) => a - b);
+  const freqs = values.map((v) => freqMap[v]);
+  const total = freqs.reduce((a, b) => a + b, 0);
+
+  const cumPercent = [0];
+  freqs.forEach((f) => {
+    let nextVal = cumPercent[cumPercent.length - 1] + (f / total) * 100;
+    if (nextVal > 100) nextVal = 100;
+    cumPercent.push(nextVal);
+  });
+
+  const stepX = [];
+  const stepY = [];
+
+  // Lav trappetrin: hvert punkt to gange - først lodret, så vandret trin
+  for (let i = 0; i < values.length; i++) {
+    stepX.push(values[i]);
+    stepY.push(cumPercent[i]);
+
+    stepX.push(values[i]);
+    stepY.push(cumPercent[i + 1]);
+  }
+
+  // Tilføj sidste vandrette linje, lidt ud over sidste værdi
+  const lastX = values[values.length - 1];
+  const extension = lastX * 0.05 || 1;
+  stepX.push(lastX + extension);
+  stepY.push(cumPercent[cumPercent.length - 1]); // Skal være 100 eller tæt på
+
+  Plotly.newPlot(
+    "stepChartFreq",
+    [
+      {
+        x: stepX,
+        y: stepY,
+        mode: "lines",
+        line: { shape: "hv", color: "steelblue" },
+      },
+    ],
+    {
+      title: "Trappediagram (kumulativ frekvens)",
+      yaxis: {
+        range: [0, 105],
+        ticksuffix: "%",
+        title: "Procent",
+        autorange: false,
+        showgrid: true,
+      },
+    }
+  );
+}
+
+
+    function drawBoxPlot(stats, data) {
+      Plotly.newPlot(
+        "boxPlot",
+        [
+          {
+            x: data,
+            type: "box",
+            orientation: "h",
+            boxpoints: showOutliers ? "outliers" : false,
+            marker: { color: "tomato" },
+            name: "Data",
+          },
+        ],
+        {
+          title: "Boksplot",
+        }
+      );
+
+      document.getElementById("toggleOutliersBtn").style.display = "inline-block";
+    }
+
+    function processRawData() {
+      const data = parseRawData(document.getElementById("rawData").value);
+      currentData = data;
+      currentStats = calculateStats(data);
+      renderStats(currentStats);
+      renderFreqTable(currentStats.freqMap);
+      drawBarChart(currentStats.freqMap);
+      drawStepChart(currentStats.freqMap);
+      drawFreqBarChart(currentStats.freqMap);
+      drawFreqStepChart(currentStats.freqMap);
+      drawBoxPlot(currentStats, data);
+    }
+
+    function processFrequencyData() {
+      const data = parseFreqData(document.getElementById("freqData").value);
+      currentData = data;
+      currentStats = calculateStats(data);
+      renderStats(currentStats);
+      renderFreqTable(currentStats.freqMap);
+      drawBarChart(currentStats.freqMap);
+      drawStepChart(currentStats.freqMap);
+      drawFreqBarChart(currentStats.freqMap);
+      drawFreqStepChart(currentStats.freqMap);
+      drawBoxPlot(currentStats, data);
+    }
+
+    function toggleOutliers() {
+      showOutliers = !showOutliers;
+      if (currentStats && currentData) {
+        drawBoxPlot(currentStats, currentData);
+      }
+    }
+
+function renderFreqTable(freqMap) {
+  const values = Object.keys(freqMap)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  const freqs = values.map(v => freqMap[v]);
+  const total = freqs.reduce((a, b) => a + b, 0);
+
+  let cumFreq = 0;
+  let cumFreqPercent = 0;
+  const tbody = document.querySelector('#freqTable tbody');
+  tbody.innerHTML = '';
+
+  for (let i = 0; i < values.length; i++) {
+    const val = values[i];
+    const freq = freqMap[val];
+    const freqPercent = (freq / total) * 100;
+    cumFreq += freq;
+    cumFreqPercent += freqPercent;
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${val}</td>
+      <td>${freq}</td>
+      <td>${cumFreq}</td>
+      <td>${freqPercent.toFixed(2)}</td>
+      <td>${cumFreqPercent.toFixed(2)}</td>
+    `;
+    tbody.appendChild(row);
+  }
+}
+
+  </script>
+</body>
+</html>
