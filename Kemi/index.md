@@ -20,7 +20,7 @@ $$
 $$
 </div>
 
-<h3>Estersyntese med Kekule.js</h3>
+<h3>-</h3>
 
 {% raw %}
 <div style="display: flex; align-items: center; gap: 15px;">
