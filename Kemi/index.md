@@ -22,6 +22,7 @@ $$
 
 <h3>Estersyntese med Kekule.js</h3>
 
+{% raw %}
 <div style="display: flex; align-items: center; gap: 15px;">
   
   <!-- Eddikesyre -->
@@ -56,22 +57,6 @@ $$
   
 </div>
 
-
-- [Redoxreaktioner](./redox/index.html)
-- Syre-basereaktioner
-<div style="text-align: center;">
-$$
-\ce{CH3COOH + H2O \rightleftharpoons CH3COO- + H3O+}
-$$
-</div>
-- [Kemiske reaktioners hastigheder](./hasti/index.html)
-- [Kemisk ligevægte](./ligevaeg/index.html)
-- [Fedtstoffer - triglycerider](./fedtst/index.html )
-
-<div style="text-align: center;">
-[Tilbage til forsiden](https://jenskaalby.github.io/matkem/) 
-</div>
-
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     // Indlæs molekyler med SMILES
@@ -97,3 +82,23 @@ $$
     viewer4.setChemObj(water);
   });
 </script>
+
+{% endraw %}
+
+
+
+- [Redoxreaktioner](./redox/index.html)
+- Syre-basereaktioner
+<div style="text-align: center;">
+$$
+\ce{CH3COOH + H2O \rightleftharpoons CH3COO- + H3O+}
+$$
+</div>
+- [Kemiske reaktioners hastigheder](./hasti/index.html)
+- [Kemisk ligevægte](./ligevaeg/index.html)
+- [Fedtstoffer - triglycerider](./fedtst/index.html )
+
+<div style="text-align: center;">
+[Tilbage til forsiden](https://jenskaalby.github.io/matkem/) 
+</div>
+
