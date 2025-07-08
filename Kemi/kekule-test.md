@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Test af Kekule.js"
+title: "Test af kekule - smiles"
 ---
 
 # Test af Kekule.js
