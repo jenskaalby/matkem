@@ -26,16 +26,12 @@ $$
 
 Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad der sker:
 
-<div style="display:flex; gap: 30px; margin-bottom: 20px;">
-  <div style="flex:1; background:#fdecea; padding:15px; border-radius:6px;">
-    <h3>🔴 Oxidation</h3>
-    <p> <span class="math">$ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $ </span> </p>
-  </div>
-  <div style="flex:1; background:#e9f7ef; padding:15px; border-radius:6px;">
-    <h3>🟢 Reduktion</h3>
+
+<h3>🔴 Oxidation</h3>
+  <p> $ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $  </p>
+<h3>🟢 Reduktion</h3>
     <p>$ \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} $</p>
-  </div>
-</div>
+
 
 **Her kan vi se at:**
 
