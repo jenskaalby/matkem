@@ -27,9 +27,9 @@ $$
 Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad der sker:
 
 
-<h3>🔴 Oxidation</h3>
+🔴 Oxidation
   <p> $ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $  </p>
-<h3>🟢 Reduktion</h3>
+🟢 Reduktion
   <p>$ \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} $ </p>
 
 
