@@ -24,9 +24,13 @@ Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad d
 
 
 🔴 Oxidation  
-  $$ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $$
+  $$
+  2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^-
+  $$  
 🟢 Reduktion  
-  $$ \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} $$
+  $$
+  \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-}
+  $$
 
 **Her kan vi se at:**
 
