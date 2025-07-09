@@ -19,7 +19,7 @@
         addMenu: []
       },
       processHtmlClass: "mathjax",   // Behandl kun elementer med denne klasse
-      ignoreHtmlClass: "no-mathjax"  // Ignorér fx <code> eller andet du vil udelukke
+      ignoreHtmlClass: "^(?:(?!mathjax).)*$"  // Ignorér fx <code> eller andet du vil udelukke
     }
   };
 </script>
