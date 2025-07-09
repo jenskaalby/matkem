@@ -30,7 +30,7 @@ Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad d
 <h3>🔴 Oxidation</h3>
   <p> $ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $  </p>
 <h3>🟢 Reduktion</h3>
-    <p>$ \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} $</p>
+  <p>$ \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} $ </p>
 
 
 **Her kan vi se at:**
