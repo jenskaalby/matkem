@@ -29,7 +29,7 @@ Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad d
 <div style="display:flex; gap: 30px; margin-bottom: 20px;">
   <div style="flex:1; background:#fdecea; padding:15px; border-radius:6px;">
     <h3>🔴 Oxidation</h3>
-    <p>$ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $</p>
+    <p> <span class="math">$ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $ </span> </p>
   </div>
   <div style="flex:1; background:#e9f7ef; padding:15px; border-radius:6px;">
     <h3>🟢 Reduktion</h3>
