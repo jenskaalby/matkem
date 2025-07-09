@@ -18,11 +18,11 @@ Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad d
 <div class="mathjax" style="display:flex; gap: 30px; margin-bottom: 20px;">
   <div style="flex:1; background:#fdecea; padding:15px; border-radius:6px;">
     <h3 style="color:#e74c3c;">🔴 Oxidation</h3>
-    <p>\( 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- \)</p>
+    <p>$ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $</p>
   </div>
   <div style="flex:1; background:#e9f7ef; padding:15px; border-radius:6px;">
     <h3 style="color:#27ae60;">🟢 Reduktion</h3>
-    <p>\( \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} \)</p>
+    <p>$ \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} $</p>
   </div>
 </div>
 
