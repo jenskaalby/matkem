@@ -15,7 +15,7 @@ $$
 
 Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad der sker:
 
-<div style="display:flex; gap: 30px; margin-bottom: 20px;">
+<div class="mathjax" style="display:flex; gap: 30px; margin-bottom: 20px;">
   <div style="flex:1; background:#fdecea; padding:15px; border-radius:6px;">
     <h3 style="color:#e74c3c;">🔴 Oxidation</h3>
     <p>\( 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- \)</p>
