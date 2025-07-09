@@ -51,7 +51,7 @@ Start med at løse opgaverne på papir. Skriv derefter løsningsforslaget ind me
 <!-- Opgave 1 -->
 <div class="task">
   <h3>Opgave 1: Magnesium og kobber(II)ion</h3>
-  <p>\( \mathrm{Mg} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Mg}^{2+} + \mathrm{Cu} \)</p>
+  <p>$ \mathrm{Mg} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Mg}^{2+} + \mathrm{Cu} $</p>
 
   <label for="ox1">Skriv oxidation (delreaktion):</label><br />
   <input type="text" id="ox1" placeholder="fx Mg -> Mg^2+ + 2e^-" />
