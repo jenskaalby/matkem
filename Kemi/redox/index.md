@@ -18,7 +18,7 @@ $$
 2 \, \mathrm{Mg}{(s)} + \mathrm{O}_2{(g)} \rightarrow 2 \, \mathrm{MgO}{(s)}
 $$
 
-<div class="mathjax">
+<div>
   <p> $ a^2 + b^2 = c^2 $</p>
   <p>Og en displayformel ...:</p>
   $$ E = mc^2 $$
