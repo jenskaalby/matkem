@@ -18,6 +18,12 @@ $$
 2 \, \mathrm{Mg}{(s)} + \mathrm{O}_2{(g)} \rightarrow 2 \, \mathrm{MgO}{(s)}
 $$
 
+<div class="mathjax">
+  <p> $ a^2 + b^2 = c^2 $</p>
+  <p>Og en displayformel ...:</p>
+  $$ E = mc^2 $$
+</div>
+
 Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad der sker:
 
 <div style="display:flex; gap: 30px; margin-bottom: 20px;">
