@@ -1,3 +1,8 @@
+---
+layout: default
+title: Introduktion til redoxreaktioner
+---
+
 # 🔬 Introduktion til oxidation og reduktion ---
 
 En **redoxreaktion** er en kemisk reaktion, hvor der både sker en **oxidation** og en **reduktion**.
@@ -15,7 +20,7 @@ $$
 
 Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad der sker:
 
-<div class="mathjax" style="display:flex; gap: 30px; margin-bottom: 20px;">
+<div style="display:flex; gap: 30px; margin-bottom: 20px;">
   <div style="flex:1; background:#fdecea; padding:15px; border-radius:6px;">
     <h3>🔴 Oxidation</h3>
     <p>$ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $</p>
