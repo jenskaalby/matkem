@@ -3,7 +3,7 @@ layout: default
 title: Introduktion til redoxreaktioner
 ---
 
-# 🔬 Introduktion til oxidation og reduktion ---
+# 🔬 Introduktion til oxidation og reduktion
 
 En **redoxreaktion** er en kemisk reaktion, hvor der både sker en **oxidation** og en **reduktion**.
 
