@@ -23,9 +23,9 @@ $$
 Vi kan skrive dette som to **delreaktioner**, som gør det mere tydeligt, hvad der sker:
 
 
-🔴 Oxidation
+🔴 Oxidation  
   $$ 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- $$
-🟢 Reduktion
+🟢 Reduktion  
   $$ \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} $$
 
 **Her kan vi se at:**
@@ -58,7 +58,7 @@ Start med at løse opgaverne på papir. Skriv derefter løsningsforslaget ind me
 <!-- Opgave 2 -->
 <div class="task">
   <h3>Opgave 2: Zink og kobber(II)ion</h3>
-  <p>\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</p>
+  <p>$ \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} $</p>
 
   <label for="sam2">Skriv samlet reaktion:</label><br />
   <input type="text" id="sam2" placeholder="fx Zn + Cu^2+ -> Zn^2+ + Cu" />
