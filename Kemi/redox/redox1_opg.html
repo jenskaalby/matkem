@@ -1,0 +1,224 @@
+---
+layout: default
+title: Introduktion til redoxreaktioner - inklusiv opgaver
+---
+
+<div id="sidebar">
+  <h1>📌 Notation JT NOTE - IKKE OPDATERET!!! </h1>
+  <h2>Eksempel 1:</h2>
+  <code>Zn + Cu^{2+} -> Zn^{2+} + Cu</code>
+  <div class="latex">\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</div>
+
+  <hr>
+
+  <h2>Elektroner:</h2>
+  <code>Cu^{2+} + 2e^- -> Cu</code>
+  <div class="latex">\( \mathrm{Cu}^{2+} + 2 e^- \rightarrow \mathrm{Cu} \)</div>
+
+  <hr>
+
+  <p>Oxidationstal indtastes som hele tal (fx 0, +2, -1).</p>
+
+  <hr>
+
+  <footer>
+    <p>🛠️ Udviklet af Jens Kaalby Thomsen</p>
+    <p>📄 Licens: <a href="https://opensource.org/licenses/MIT" target="_blank" style="color:#ecf0f1;">MIT</a></p>
+  </footer>
+</div>
+
+<div id="content">
+  <h1>🔬 Introduktion til oxidation og reduktion</h1>
+
+  <p>En <b>redoxreaktion</b> er en kemisk reaktion, hvor der både sker en <b>oxidation</b> og en <b>reduktion</b>.</p>
+  <ul>
+    <li><b>Oxidation</b>: Et stof <b>afgiver elektroner.</b></li>
+    <li><b>Reduktion</b>: Et stof <b>optager elektroner.</b></li>
+  </ul>
+  <p>Ved en redoxreaktion sker der en overførsel af elektroner. Således er der ved en redoxreaktion et stof der oxideres og et stof der reduceres.</p>
+
+  <h2>Eksempel: Reaktion mellem magnesium og dioxygen</h2>
+  <p>
+    \( 2 \, \mathrm{Mg}{(s)} + \mathrm{O}_2{(g)} \rightarrow 2 \, \mathrm{MgO}{(s)} \)
+  </p>
+  <p>Vi kan skrive dette som to <b>delreaktioner</b>, som gør det mere tydeligt, hvad der sker:</p>
+
+  <div style="display:flex; gap: 30px; margin-bottom: 20px;">
+    <div style="flex:1; background:#fdecea; padding:15px; border-radius:6px;">
+      <h3 style="color:#e74c3c;">🔴 Oxidation</h3>
+      <p>\( 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- \)</p>
+    </div>
+    <div style="flex:1; background:#e9f7ef; padding:15px; border-radius:6px;">
+      <h3 style="color:#27ae60;">🟢 Reduktion</h3>
+      <p>\( \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} \)</p>
+    </div>
+  </div>
+
+  <p><b>Her kan vi se at:</b></p>
+  <ul>
+    <li>Magnesium oxideres, fordi magnesium ved reaktionen <b>afgiver elektroner</b>.</li>
+    <li>Oxygen reduceres, fordi oxygen ved reaktionen <b>optager elektroner</b>.</li>
+  </ul>
+
+  <hr>
+
+  <h2>Opgaver: Skriv og forklar delreaktionerne ved redoxreaktioner</h2>
+  <p>Start med at løse opgaverne på papir. Skriv derefter løsningsforslaget ind med den specielle notation, som man kan se i sidebaren til venstre. Tjek om svaret er rigtigt.</p>
+
+  <!-- Opgave 1 -->
+  <div class="task">
+    <h3>Opgave 1: Magnesium og kobber(II)ion</h3>
+    <p>\( \mathrm{Mg} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Mg}^{2+} + \mathrm{Cu} \)</p>
+
+    <label for="ox1">Skriv oxidation (delreaktion):</label><br />
+    <input type="text" id="ox1" placeholder="fx Mg -> Mg^2+ + 2e^-" />
+
+    <label for="red1">Skriv reduktion (delreaktion):</label><br />
+    <input type="text" id="red1" placeholder="fx Cu^2+ + 2e^- -> Cu" />
+
+    <button onclick="checkOpgave1()">Tjek svar – opgave 1</button>
+
+    <div id="feedback1" class="feedback"></div>
+  </div>
+
+  <!-- Opgave 2 -->
+  <div class="task">
+    <h3>Opgave 2: Zink og kobber(II)ion</h3>
+    <p>\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</p>
+
+    <label for="sam2">Skriv samlet reaktion:</label><br />
+    <input type="text" id="sam2" placeholder="fx Zn + Cu^2+ -> Zn^2+ + Cu" />
+
+    <label for="ox2">Skriv oxidationsdelreaktionen:</label><br />
+    <input type="text" id="ox2" placeholder="fx Zn -> Zn^2+ + 2e^-" />
+
+    <label for="red2">Skriv reduktionsdelreaktionen:</label><br />
+    <input type="text" id="red2" placeholder="fx Cu^2+ + 2e^- -> Cu" />
+
+    <button onclick="checkOpgave2()">Tjek svar – opgave 2</button>
+
+    <div id="feedback2" class="feedback"></div>
+  </div>
+
+  <hr>
+
+  <!-- Opgave 4 -->
+  <div class="task">
+    <h3>Opgave 4: Oxidationstal i Mg + S → MgS</h3>
+    <p>Indtast oxidationstallene som hele tal (fx -2, 0, 2).</p>
+
+    <label for="mgf">Mg (før):</label><br />
+    <input type="text" id="mgf" placeholder="fx 0" />
+
+    <label for="sf">S (før):</label><br />
+    <input type="text" id="sf" placeholder="fx 0" />
+
+    <label for="mga">Mg i MgS:</label><br />
+    <input type="text" id="mga" placeholder="fx 2" />
+
+    <label for="sa">S i MgS:</label><br />
+    <input type="text" id="sa" placeholder="fx -2" />
+
+    <button onclick="checkOpgave4()">Tjek oxidationstal – opgave 4</button>
+
+    <div id="feedback4" class="feedback"></div>
+  </div>
+
+  <hr>
+
+  <!-- Opgave 5 -->
+  <div class="task">
+    <h3>Opgave 5: Oxidationstal i Zn + Cu²⁺ → Zn²⁺ + Cu</h3>
+    <p>Indtast oxidationstallene som hele tal (fx -2, 0, 2). Felterne starter tomme.</p>
+
+    <label for="znf">Zn (før):</label><br />
+    <input type="text" id="znf" placeholder="fx 0" />
+
+    <label for="cuf">Cu (før):</label><br />
+    <input type="text" id="cuf" placeholder="fx 2" />
+
+    <label for="zna">Zn i Zn²⁺:</label><br />
+    <input type="text" id="zna" placeholder="fx 2" />
+
+    <label for="cua">Cu i Cu:</label><br />
+    <input type="text" id="cua" placeholder="fx 0" />
+
+    <button onclick="checkOpgave5()">Tjek oxidationstal – opgave 5</button>
+
+    <div id="feedback5" class="feedback"></div>
+  </div>
+
+
+<script>
+  function normalize(str) {
+    return str.replace(/\s+/g, '').replace(/→|->/g, '->').replace(/[\^]/g, '^').replace(/[+]/g, '+').toLowerCase();
+  }
+
+  function checkOpgave1() {
+    const ox = normalize(document.getElementById('ox1').value);
+    const red = normalize(document.getElementById('red1').value);
+    const feedback = document.getElementById('feedback1');
+
+    const correctOx = normalize('Mg -> Mg^2+ + 2e^-');
+    const correctRed = normalize('Cu^2+ + 2e^- -> Cu');
+
+    if (ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Rigtigt svar! 🎉';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Der er fejl i oxidation eller reduktion. Prøv igen.';
+      feedback.className = 'feedback error';
+    }
+  }
+
+  function checkOpgave2() {
+    const sam = normalize(document.getElementById('sam2').value);
+    const ox = normalize(document.getElementById('ox2').value);
+    const red = normalize(document.getElementById('red2').value);
+    const feedback = document.getElementById('feedback2');
+
+    const correctSam = normalize('Zn + Cu^2+ -> Zn^2+ + Cu');
+    const correctOx = normalize('Zn -> Zn^2+ + 2e^-');
+    const correctRed = normalize('Cu^2+ + 2e^- -> Cu');
+
+    if (sam === correctSam && ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Alle svar er korrekte! 👍';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Tjek den samlede reaktion, oxidation eller reduktion igen.';
+      feedback.className = 'feedback error';
+    }
+  }
+
+  function checkOpgave4() {
+    const mgf = document.getElementById('mgf').value.trim();
+    const sf = document.getElementById('sf').value.trim();
+    const mga = document.getElementById('mga').value.trim();
+    const sa = document.getElementById('sa').value.trim();
+    const feedback = document.getElementById('feedback4');
+
+    if (mgf === '0' && sf === '0' && mga === '2' && sa === '-2') {
+      feedback.textContent = 'Oxidationstallene er korrekte! ✔️';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Prøv igen, tjek oxidationstallene før og efter reaktionen.';
+      feedback.className = 'feedback error';
+    }
+  }
+
+  function checkOpgave5() {
+    const znf = document.getElementById('znf').value.trim();
+    const cuf = document.getElementById('cuf').value.trim();
+    const zna = document.getElementById('zna').value.trim();
+    const cua = document.getElementById('cua').value.trim();
+    const feedback = document.getElementById('feedback5');
+
+    if (znf === '0' && cuf === '2' && zna === '2' && cua === '0') {
+      feedback.textContent = 'Oxidationstallene er korrekte! ✔️';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Prøv igen, tjek oxidationstallene før og efter reaktionen.';
+      feedback.className = 'feedback error';
+    }
+  }
+</script>
