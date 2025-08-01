@@ -32,13 +32,32 @@ $$\ce{H_2 -> 2H+ + 2e-}$$
 
 $$\ce{Cu -> Cu^{2+} +2e-}$$
 
-##### Normalpotentialer for udvalgte metaller/metalioner og dihydrogen
+#### Normalpotentialer for udvalgte metaller/metalioner og dihydrogen
 
-|meta/ion| volt|
-|---|---|
-|$\ce{Li/Li+}$|-3,040|
-|$\ce{K/K+}$|-2,931|
-|||
-|||
-|||
-|||
+<table border="1" cellspacing="0" cellpadding="6">
+  <tr>
+    <th>Metal/ion</th>
+    <th>Spænding (V)</th>
+  </tr>
+  <tr><td>$$\ce{Li/Li^+}$$</td><td>-3.040</td></tr>
+  <tr><td>$$\ce{K/K^+}$$</td><td>-2.931</td></tr>
+  <tr><td>$$\ce{Ca/Ca^2+}$$</td><td>-2.868</td></tr>
+  <tr><td>$$\ce{Na/Na^+}$$</td><td>-2.714</td></tr>
+  <tr><td>$$\ce{Mg/Mg^2+}$$</td><td>-2.372</td></tr>
+  <tr><td>$$\ce{Al/Al^3+}$$</td><td>-1.662</td></tr>
+  <tr><td>$$\ce{Mn/Mn^2+}$$</td><td>-1.185</td></tr>
+  <tr><td>$$\ce{Zn/Zn^2+}$$</td><td>-0.763</td></tr>
+  <tr><td>$$\ce{Cr/Cr^3+}$$</td><td>-0.744</td></tr>
+  <tr><td>$$\ce{Fe/Fe^2+}$$</td><td>-0.440</td></tr>
+  <tr><td>$$\ce{Cd/Cd^2+}$$</td><td>-0.403</td></tr>
+  <tr><td>$$\ce{Co/Co^2+}$$</td><td>-0.277</td></tr>
+  <tr><td>$$\ce{Ni/Ni^2+}$$</td><td>-0.250</td></tr>
+  <tr><td>$$\ce{Sn/Sn^2+}$$</td><td>-0.136</td></tr>
+  <tr><td>$$\ce{Pb/Pb^2+}$$</td><td>-0.126</td></tr>
+  <tr><td>$$\ce{H_2/H^+}$$</td><td>0.000</td></tr>
+  <tr><td>$$\ce{Bi/Bi^3+}$$</td><td>+0.317</td></tr>
+  <tr><td>$$\ce{Cu/Cu^2+}$$</td><td>+0.337</td></tr>
+  <tr><td>$$\ce{Ag/Ag^+}$$</td><td>+0.799</td></tr>
+  <tr><td>$$\ce{Hg/Hg^2+}$$</td><td>+0.854</td></tr>
+  <tr><td>$$\ce{Au/Au^3+}$$</td><td>+1.498</td></tr>
+</table>
