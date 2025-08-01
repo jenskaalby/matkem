@@ -4,7 +4,7 @@ title: Grundstoffer der typisk afgiver eller optager elektroner
 ---
 
 ## Grundstoffer der optager og afgiver elektroner  
-Vi har tidligere betragtetet periodesystemet. Se igen på det her. En simpel version af periodesystemet er synlig her på siden. 
+Vi har tidligere betragtet periodesystemet. Se igen på det her. En simpel version af periodesystemet er synlig her på siden. 
 
 <img src="./periodesystem.png" alt="Periodesystem" style="width:75%;">
 
