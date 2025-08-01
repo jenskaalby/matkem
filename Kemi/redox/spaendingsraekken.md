@@ -22,3 +22,10 @@ Til det formål ser vi først på en grafisk fremstilling af det, som er kendt s
 
 Med metallerne vist her er lithium det metal, der er mest villigt til at afgive elektroner, mens guld er det metal, der er mindst villigt til at afgive elektroner. Vi kender også guld som et ædelt metal.
 Læg mærke til, at dihydrogen er inkluderet i spændingsrækken, og at der ved dihydrogen er markeret 0 V, som er 0 volt. Lad os se lidt nærmere på, hvorfor dette er vigtigt i forståelsen af spændingsrækken.
+
+### Grundstofferne i spændingsrækken og redoxreaktioner
+Vi kan for alle grundstofferne i spændingsrækken opskrive et reaktionsskema, hvor stoffet oxideres. Her er tre eksempler.
+$$\ce{K -> K+ + e-}$$
+$$\ce{H_2 -> 2H+ + 2e-}$$
+$$\ce{Cu -> Cu2+ +2e-}$$
+
