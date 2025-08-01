@@ -2,7 +2,7 @@
 layout: default
 title: Redoxreaktion med to metaller - spændingsrækken
 ---
-
+# Redoxreaktion med to metaller - spændingsrækken
 Der er også muligt for to metaller at indgår i en redoxreaktion. Det er umiddelbart måske lidt underligt, for vi har talt om at metaller typisk afgiver elektroner. En redoxreaktion kan naturligvis ikke gennemføres, hvis der ikke er et stof, som kan optage elektroner. 
 Det er imidlertid således, at nogle metaller er mere villige til at afgive elektroner end andre. Derfor får et metal rollen som elektronafgiver og det andet metal rollen som elektronoptager.
 Nu er spørgsmålet så blot: 
@@ -26,6 +26,8 @@ Læg mærke til, at dihydrogen er inkluderet i spændingsrækken, og at der ved 
 ### Grundstofferne i spændingsrækken og redoxreaktioner
 Vi kan for alle grundstofferne i spændingsrækken opskrive et reaktionsskema, hvor stoffet oxideres. Her er tre eksempler.
 $$\ce{K -> K+ + e-}$$
+
 $$\ce{H_2 -> 2H+ + 2e-}$$
+
 $$\ce{Cu -> Cu2+ +2e-}$$
 
