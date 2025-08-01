@@ -8,7 +8,7 @@ Vi har tidligere betragtetet periodesystemet. Se igen på det her. En simpel ver
 
 <img src="./periodesystem.png" alt="Periodesystem" style="width:75%;">
 
-###Besvar følgende spørgsmål:
+### Besvar følgende spørgsmål:
 
 - Vi taler om to forskellige typer af grundstoffer i periodesystemet, som her er markeret med to forskellige farver. Hvilke to typer er det?
 - Hvilken type af grundstoffer er det, der optager elektroner?
