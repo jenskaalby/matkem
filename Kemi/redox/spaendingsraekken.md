@@ -25,9 +25,20 @@ Læg mærke til, at dihydrogen er inkluderet i spændingsrækken, og at der ved 
 
 ### Grundstofferne i spændingsrækken og redoxreaktioner
 Vi kan for alle grundstofferne i spændingsrækken opskrive et reaktionsskema, hvor stoffet oxideres. Her er tre eksempler.
+
 $$\ce{K -> K+ + e-}$$
 
 $$\ce{H_2 -> 2H+ + 2e-}$$
 
-$$\ce{Cu -> Cu2+ +2e-}$$
+$$\ce{Cu -> Cu^{2+} +2e-}$$
 
+##### Normalpotentialer for udvalgte metaller/metalioner og dihydrogen
+
+|meta/ion| volt|
+|---|---|
+|$\ce{Li/Li+}$|-3,040|
+|$\ce{K/K+}$|-2,931|
+|||
+|||
+|||
+|||
