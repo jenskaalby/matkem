@@ -37,34 +37,43 @@ $$\ce{Cu^{2+} (aq) +2e- <=> Cu (s)}$$
 Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale</i>. I tabellen nedenfor er det vist eksempler på det. 
 
 <div style="display: flex; justify-content: center; gap: 40px; font-size: 0.85em;">
+
   <table border="1" cellspacing="0" style="border-collapse: collapse;">
-    <tr><th>Redoxpar</th><th>Reduktionspotentiale</th></tr>
-    <tr><td>$$\ce{Li/Li^+}$$</td><td style="text-align: center;">-3.040</td></tr>
-    <tr><td>$$\ce{K/K^+}$$</td><td style="text-align: center;">-2.931</td></tr>
-    <tr><td>$$\ce{Ca/Ca^2+}$$</td><td style="text-align: center;">-2.868</td></tr>
-    <tr><td>$$\ce{Na/Na^+}$$</td><td style="text-align: center;">-2.714</td></tr>
-    <tr><td>$$\ce{Mg/Mg^2+}$$</td><td style="text-align: center;">-2.372</td></tr>
-    <tr><td>$$\ce{Al/Al^3+}$$</td><td style="text-align: center;">-1.662</td></tr>
-    <tr><td>$$\ce{Mn/Mn^2+}$$</td><td style="text-align: center;">-1.185</td></tr>
-    <tr><td>$$\ce{Zn/Zn^2+}$$</td><td style="text-align: center;">-0.763</td></tr>
-    <tr><td>$$\ce{Cr/Cr^3+}$$</td><td style="text-align: center;">-0.744</td></tr>
-    <tr><td>$$\ce{Fe/Fe^2+}$$</td><td style="text-align: center;">-0.440</td></tr>
+    <tr>
+      <th style="background-color:#f0f0f0; font-weight: bold; font-size: 1.1em; padding: 6px 10px;">Redoxpar</th>
+      <th style="background-color:#f0f0f0; font-weight: bold; font-size: 1.1em; padding: 6px 10px;">Reduktionspotentiale</th>
+    </tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Li/Li^+}$$</td><td style="text-align: center; padding: 4px 8px;">-3.040</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{K/K^+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.931</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Ca/Ca^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.868</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Na/Na^+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.714</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Mg/Mg^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.372</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Al/Al^3+}$$</td><td style="text-align: center; padding: 4px 8px;">-1.662</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Mn/Mn^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-1.185</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Zn/Zn^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.763</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Cr/Cr^3+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.744</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Fe/Fe^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.440</td></tr>
   </table>
 
   <table border="1" cellspacing="0" style="border-collapse: collapse;">
-    <tr><th>Redoxpar</th><th>Reduktionspotentiale</th></tr>
-    <tr><td>$$\ce{Cd/Cd^2+}$$</td><td style="text-align: center;">-0.403</td></tr>
-    <tr><td>$$\ce{Co/Co^2+}$$</td><td style="text-align: center;">-0.277</td></tr>
-    <tr><td>$$\ce{Ni/Ni^2+}$$</td><td style="text-align: center;">-0.250</td></tr>
-    <tr><td>$$\ce{Sn/Sn^2+}$$</td><td style="text-align: center;">-0.136</td></tr>
-    <tr><td>$$\ce{Pb/Pb^2+}$$</td><td style="text-align: center;">-0.126</td></tr>
-    <tr><td>$$\ce{H2/H^+}$$</td><td style="text-align: center;">0.000</td></tr>
-    <tr><td>$$\ce{Bi/Bi^3+}$$</td><td style="text-align: center;">+0.317</td></tr>
-    <tr><td>$$\ce{Cu/Cu^2+}$$</td><td style="text-align: center;">+0.337</td></tr>
-    <tr><td>$$\ce{Ag/Ag^+}$$</td><td style="text-align: center;">+0.799</td></tr>
-    <tr><td>$$\ce{Au/Au^3+}$$</td><td style="text-align: center;">+1.498</td></tr>
+    <tr>
+      <th style="background-color:#f0f0f0; font-weight: bold; font-size: 1.1em; padding: 6px 10px;">Redoxpar</th>
+      <th style="background-color:#f0f0f0; font-weight: bold; font-size: 1.1em; padding: 6px 10px;">Reduktionspotentiale</th>
+    </tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Cd/Cd^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.403</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Co/Co^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.277</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Ni/Ni^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.250</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Sn/Sn^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.136</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Pb/Pb^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.126</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{H2/H^+}$$</td><td style="text-align: center; padding: 4px 8px;">0.000</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Bi/Bi^3+}$$</td><td style="text-align: center; padding: 4px 8px;">+0.317</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Cu/Cu^2+}$$</td><td style="text-align: center; padding: 4px 8px;">+0.337</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Ag/Ag^+}$$</td><td style="text-align: center; padding: 4px 8px;">+0.799</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Au/Au^3+}$$</td><td style="text-align: center; padding: 4px 8px;">+1.498</td></tr>
   </table>
+
 </div>
+
 
 
 
