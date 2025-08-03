@@ -79,11 +79,14 @@ Tallene i den højre kolonne fortæller os følgende:
 
 ### Brug af spændingsrækken til at forudsige, om en reaktion finder sted.
 
+Lad os vise spændingsrækken igen på den simple form.
+<img src="./spaendingsraekken.png" alt="Spændingsrækken" style="width:57%;">
+
 Når to metaller reagerer med hinanden er det ene metal på ionform og det er opløst i vand. Det andet metal er på fast form. Reaktionen kan fx se således ud:
 
 $$\ce{Mg(s) + Cu^{2+}(aq) ->Mg^{2+}(aq) +Cu(s)}$$
 
-Ovenstående reaktion <strong>finder sted</strong> spontant, da Mg står ==længere til venstre== i spændingsrækken end Cu. Mg er villig til at afgive elektroner til $\ce{Cu^{2+}}$, og kobberionen optager elektronerne og danner fast kobber.
+Ovenstående reaktion <strong>finder sted</strong> spontant, da Mg står <mark>længere til venstre</mark> i spændingsrækken end Cu. Mg er villig til at afgive elektroner til $\ce{Cu^{2+}}$, og kobberionen optager elektronerne og danner fast kobber.
 
 Nedenstående reaktion
 
