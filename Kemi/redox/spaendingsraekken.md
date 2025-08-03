@@ -28,7 +28,7 @@ Vi kan for alle grundstofferne i spændingsrækken opskrive  reaktionsskemaer so
 
 $$\ce{K+ (aq) + e- <=> K (s)}$$
 
-$$\ce{2H+(aq) + 2e-  <=> H2(g)}$$
+$$\ce{H+(aq) + e-  <=> 1/2H2(g)}$$
 
 $$\ce{Cu^{2+} (aq) +2e- <=> Cu (s)}$$
 
@@ -101,14 +101,14 @@ finder ikke sted spontant. Cu står <mark>længere til højre</mark> i spænding
 Det kan forekomme specielt, at $\ce{H2}$ optræder i spændingsrækken. Læg også mærke til at redoxparret er $\ce{H2/H+}$.
 
 - $\ce{H+}$ viser os, at der er tale om en syre.
-- Vi nøjes her med at skrive $\ce{H+}$ i stedet for $\ce{H3O+}.
+- Vi nøjes her med at skrive $\ce{H+}$ i stedet for $\ce{H3O+}$.
 - Læg mærke til at $\ce{H2}$ er en gas ved standardbetingelserne.
 
 Vi kommer til at betragte reaktioner med syrer, men spændingsrækken viser standard <strong>reduktionsreaktioner</strong>. Det var det, som vi så på tidligere, og som gentages her.
 
 $$\ce{K+ (aq) + e- <=> K (s)}$$
 
-$$\ce{2H+(aq) + 2e-  <=> H2(g)}$$
+$$\ce{H+(aq) + e-  <=> 1/2H2(g)}$$
 
 $$\ce{Cu^{2+} (aq) +2e- <=> Cu (s)}$$
 
