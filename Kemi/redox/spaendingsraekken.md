@@ -36,39 +36,36 @@ $$\ce{Cu^{2+} (aq) +2e- <=> Cu (s)}$$
 
 Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale</i>. I tabellen nedenfor er det vist eksempler på det. 
 
-<table border="1" cellspacing="0" 
-       style="border-collapse: collapse; margin-left: auto; margin-right: auto; font-size: 0.85em;">
-  <style>
-    td, th {
-      padding: 2px 6px;
-    }
-  </style>
-  <tr>
-    <th>Metal/ion</th>
-    <th>Spænding (V)</th>
-  </tr>
-  <tr><td>$$\ce{Li/Li^+}$$</td><td style="text-align: center;">-3.040</td></tr>
-  <tr><td>$$\ce{K/K^+}$$</td><td style="text-align: center;">-2.931</td></tr>
-  <tr><td>$$\ce{Ca/Ca^2+}$$</td><td style="text-align: center;">-2.868</td></tr>
-  <tr><td>$$\ce{Na/Na^+}$$</td><td style="text-align: center;">-2.714</td></tr>
-  <tr><td>$$\ce{Mg/Mg^2+}$$</td><td style="text-align: center;">-2.372</td></tr>
-  <tr><td>$$\ce{Al/Al^3+}$$</td><td style="text-align: center;">-1.662</td></tr>
-  <tr><td>$$\ce{Mn/Mn^2+}$$</td><td style="text-align: center;">-1.185</td></tr>
-  <tr><td>$$\ce{Zn/Zn^2+}$$</td><td style="text-align: center;">-0.763</td></tr>
-  <tr><td>$$\ce{Cr/Cr^3+}$$</td><td style="text-align: center;">-0.744</td></tr>
-  <tr><td>$$\ce{Fe/Fe^2+}$$</td><td style="text-align: center;">-0.440</td></tr>
-  <tr><td>$$\ce{Cd/Cd^2+}$$</td><td style="text-align: center;">-0.403</td></tr>
-  <tr><td>$$\ce{Co/Co^2+}$$</td><td style="text-align: center;">-0.277</td></tr>
-  <tr><td>$$\ce{Ni/Ni^2+}$$</td><td style="text-align: center;">-0.250</td></tr>
-  <tr><td>$$\ce{Sn/Sn^2+}$$</td><td style="text-align: center;">-0.136</td></tr>
-  <tr><td>$$\ce{Pb/Pb^2+}$$</td><td style="text-align: center;">-0.126</td></tr>
-  <tr><td>$$\ce{H2/H^+}$$</td><td style="text-align: center;">0.000</td></tr>
-  <tr><td>$$\ce{Bi/Bi^3+}$$</td><td style="text-align: center;">+0.317</td></tr>
-  <tr><td>$$\ce{Cu/Cu^2+}$$</td><td style="text-align: center;">+0.337</td></tr>
-  <tr><td>$$\ce{Ag/Ag^+}$$</td><td style="text-align: center;">+0.799</td></tr>
-  <tr><td>$$\ce{Hg/Hg^2+}$$</td><td style="text-align: center;">+0.854</td></tr>
-  <tr><td>$$\ce{Au/Au^3+}$$</td><td style="text-align: center;">+1.498</td></tr>
-</table>
+<div style="display: flex; justify-content: center; gap: 40px; font-size: 0.85em;">
+  <table border="1" cellspacing="0" style="border-collapse: collapse;">
+    <tr><th>Redoxpar</th><th>Reduktionspotentiale</th></tr>
+    <tr><td>$$\ce{Li/Li^+}$$</td><td style="text-align: center;">-3.040</td></tr>
+    <tr><td>$$\ce{K/K^+}$$</td><td style="text-align: center;">-2.931</td></tr>
+    <tr><td>$$\ce{Ca/Ca^2+}$$</td><td style="text-align: center;">-2.868</td></tr>
+    <tr><td>$$\ce{Na/Na^+}$$</td><td style="text-align: center;">-2.714</td></tr>
+    <tr><td>$$\ce{Mg/Mg^2+}$$</td><td style="text-align: center;">-2.372</td></tr>
+    <tr><td>$$\ce{Al/Al^3+}$$</td><td style="text-align: center;">-1.662</td></tr>
+    <tr><td>$$\ce{Mn/Mn^2+}$$</td><td style="text-align: center;">-1.185</td></tr>
+    <tr><td>$$\ce{Zn/Zn^2+}$$</td><td style="text-align: center;">-0.763</td></tr>
+    <tr><td>$$\ce{Cr/Cr^3+}$$</td><td style="text-align: center;">-0.744</td></tr>
+    <tr><td>$$\ce{Fe/Fe^2+}$$</td><td style="text-align: center;">-0.440</td></tr>
+  </table>
+
+  <table border="1" cellspacing="0" style="border-collapse: collapse;">
+    <tr><th>Redoxpar</th><th>Reduktionspotentiale</th></tr>
+    <tr><td>$$\ce{Cd/Cd^2+}$$</td><td style="text-align: center;">-0.403</td></tr>
+    <tr><td>$$\ce{Co/Co^2+}$$</td><td style="text-align: center;">-0.277</td></tr>
+    <tr><td>$$\ce{Ni/Ni^2+}$$</td><td style="text-align: center;">-0.250</td></tr>
+    <tr><td>$$\ce{Sn/Sn^2+}$$</td><td style="text-align: center;">-0.136</td></tr>
+    <tr><td>$$\ce{Pb/Pb^2+}$$</td><td style="text-align: center;">-0.126</td></tr>
+    <tr><td>$$\ce{H2/H^+}$$</td><td style="text-align: center;">0.000</td></tr>
+    <tr><td>$$\ce{Bi/Bi^3+}$$</td><td style="text-align: center;">+0.317</td></tr>
+    <tr><td>$$\ce{Cu/Cu^2+}$$</td><td style="text-align: center;">+0.337</td></tr>
+    <tr><td>$$\ce{Ag/Ag^+}$$</td><td style="text-align: center;">+0.799</td></tr>
+    <tr><td>$$\ce{Au/Au^3+}$$</td><td style="text-align: center;">+1.498</td></tr>
+  </table>
+</div>
+
 
 
 Tallene i den højre kolonne fortæller os følgende:
@@ -82,7 +79,9 @@ Tallene i den højre kolonne fortæller os følgende:
 
 Lad os vise spændingsrækken igen på den simple form.
 
-<img src="./spaendingsraekken.png" alt="Spændingsrækken" style="width:57%;">
+<div style="text-align: center;">
+  <img src="./spaendingsraekken.png" alt="Spændingsrækken" style="width:57%;">
+</div>
 
 Når to metaller reagerer med hinanden er det ene metal på ionform og det er opløst i vand. Det andet metal er på fast form. Reaktionen kan fx se således ud:
 
@@ -120,7 +119,7 @@ Vil denne reaktion finde sted?
 
 $$\ce{Zn(s) + 2H+(aq) ->}$$
 
-Vi ser på spændingsrækken. Zn står til venstre for \ce{H2}, så derfor afgiver Zn villigt elektroner til $\ce{H+}$. Reaktionen bliver:
+Vi ser på spændingsrækken. Zn står til venstre for $\ce{H2}$, så derfor afgiver Zn villigt elektroner til $\ce{H+}$. Reaktionen bliver:
 
 $$\ce{Zn(s) + 2H+(aq) -> Zn^{2+}(aq)+ H2(g)}$$
 
