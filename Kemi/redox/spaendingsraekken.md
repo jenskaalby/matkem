@@ -40,38 +40,7 @@ Når redoxparrene betragtes kan man bestemme et reduktionspotentiale. I tabellen
 - Des højere tallet er, des nemmere reduceres stoffet. Det betyder med andre ord, at stoffet er villigt til at optage elektroner.  
 - Notoer at potentialet for $\ce{H2}$ er 0 V. Dihydrogen benyttes som reference, så de andre stoffer måles i forhold til dihydrogen.
 
-<table border="1" cellspacing="0" style="border-collapse: collapse; margin-left: auto; margin-right: auto;">
-  <style>
-    td, th {
-      padding: 4px 8px; /* mindre højde og bredde */
-    }
-  </style>
-  <tr>
-    <th>Redoxpar</th>
-    <th>Reduktionspotentiale (V)</th>
-  </tr>
-  <tr><td>$$\ce{Li/Li^+}$$</td><td style="text-align: center;">-3.040</td></tr>
-  <tr><td>$$\ce{K/K^+}$$</td><td style="text-align: center;">-2.924</td></tr>
-  <tr><td>$$\ce{Ca/Ca^2+}$$</td><td style="text-align: center;">-2.868</td></tr>
-  <tr><td>$$\ce{Na/Na^+}$$</td><td style="text-align: center;">-2.713</td></tr>
-  <tr><td>$$\ce{Mg/Mg^2+}$$</td><td style="text-align: center;">-2.372</td></tr>
-  <tr><td>$$\ce{Al/Al^3+}$$</td><td style="text-align: center;">-1.662</td></tr>
-  <tr><td>$$\ce{Mn/Mn^2+}$$</td><td style="text-align: center;">-1.185</td></tr>
-  <tr><td>$$\ce{Zn/Zn^2+}$$</td><td style="text-align: center;">-0.762</td></tr>
-  <tr><td>$$\ce{Cr/Cr^2+}$$</td><td style="text-align: center;">-0.913</td></tr>
-  <tr><td>$$\ce{Fe/Fe^2+}$$</td><td style="text-align: center;">-0.447/td></tr>
-  <tr><td>$$\ce{Cd/Cd^2+}$$</td><td style="text-align: center;">-0.403</td></tr>
-  <tr><td>$$\ce{Co/Co^2+}$$</td><td style="text-align: center;">-0.277</td></tr>
-  <tr><td>$$\ce{Ni/Ni^2+}$$</td><td style="text-align: center;">-0.257</td></tr>
-  <tr><td>$$\ce{Sn/Sn^2+}$$</td><td style="text-align: center;">-0.137</td></tr>
-  <tr><td>$$\ce{Pb/Pb^2+}$$</td><td style="text-align: center;">-0.126</td></tr>
-  <tr><td>$$\ce{H2/H^+}$$</td><td style="text-align: center;">0.000</td></tr>
-  <tr><td>$$\ce{Bi/Bi^3+}$$</td><td style="text-align: center;">+0.317</td></tr>
-  <tr><td>$$\ce{Cu/Cu^2+}$$</td><td style="text-align: center;">+0.340</td></tr>
-  <tr><td>$$\ce{Ag/Ag^+}$$</td><td style="text-align: center;">+0.800</td></tr>
-  <tr><td>$$\ce{Hg/Hg^2+}$$</td><td style="text-align: center;">+0.854</td></tr>
-  <tr><td>$$\ce{Au/Au+}$$</td><td style="text-align: center;">+1.692</td></tr>
-</table>
+
 
 ### Brug af spændingsrækken til at forudsige, om en reaktion finder sted.
 
@@ -85,7 +54,7 @@ Nedenstående reaktion
 
 $$\ce{Mg^{2+}(aq) + Cu(s) ->Mg(s) +Cu^{2+}(aq)}$$
 
-finder ikke sted spontant. Cu står ==længere til højre== i spøndingsrækken end Mg, og derfor afgiver kobber ikke spontant elektroner til magnesiumionen.
+finder ikke sted spontant. Cu står ==længere til højre== i spændingsrækken end Mg, og derfor afgiver kobber ikke spontant elektroner til magnesiumionen.
 
 ### Hydrogen og syre i spændingsrækken.
 
