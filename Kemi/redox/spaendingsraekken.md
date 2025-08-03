@@ -36,15 +36,16 @@ $$\ce{Cu^{2+} (aq) +2e- <=> Cu (s)}$$
 
 Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale</i>. I tabellen nedenfor er det vist eksempler på det. 
 
-<table border="1" cellspacing="0" style="border-collapse: collapse; margin-left: auto; margin-right: auto;">
+<table border="1" cellspacing="0" 
+       style="border-collapse: collapse; margin-left: auto; margin-right: auto; font-size: 0.85em;">
   <style>
     td, th {
-      padding: 4px 8px; /* mindre højde og bredde */
+      padding: 2px 6px;
     }
   </style>
   <tr>
-    <th>Redoxpar</th>
-    <th>Reduktionspotentiale (V)</th>
+    <th>Metal/ion</th>
+    <th>Spænding (V)</th>
   </tr>
   <tr><td>$$\ce{Li/Li^+}$$</td><td style="text-align: center;">-3.040</td></tr>
   <tr><td>$$\ce{K/K^+}$$</td><td style="text-align: center;">-2.931</td></tr>
