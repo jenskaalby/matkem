@@ -81,6 +81,7 @@ Tallene i den højre kolonne fortæller os følgende:
 ### Brug af spændingsrækken til at forudsige, om en reaktion finder sted.
 
 Lad os vise spændingsrækken igen på den simple form.
+
 <img src="./spaendingsraekken.png" alt="Spændingsrækken" style="width:57%;">
 
 Når to metaller reagerer med hinanden er det ene metal på ionform og det er opløst i vand. Det andet metal er på fast form. Reaktionen kan fx se således ud:
