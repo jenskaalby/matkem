@@ -76,6 +76,47 @@ Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale
 
 </div>
 
+<div style="display: flex; justify-content: center; gap: 20px; font-size: 0.8em;">
+
+  <table border="1" cellspacing="0" style="border-collapse: collapse; line-height: 1.0;">
+    <tr>
+      <th colspan="2" style="background-color:#f0f0f0; font-weight: bold; font-size: 1em; padding: 4px;">Redoxpar</th>
+    </tr>
+    <tr><td style="padding: 2px;">$$\ce{Li/Li^+}$$</td><td style="text-align: center; padding: 2px;">-3.040</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{K/K^+}$$</td><td style="text-align: center; padding: 2px;">-2.924</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Ca/Ca^2+}$$</td><td style="text-align: center; padding: 2px;">-2.868</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Na/Na^+}$$</td><td style="text-align: center; padding: 2px;">-2.713</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Mg/Mg^2+}$$</td><td style="text-align: center; padding: 2px;">-2.372</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Al/Al^3+}$$</td><td style="text-align: center; padding: 2px;">-1.662</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Mn/Mn^2+}$$</td><td style="text-align: center; padding: 2px;">-1.185</td></tr>
+  </table>
+
+  <table border="1" cellspacing="0" style="border-collapse: collapse; line-height: 1.0;">
+    <tr>
+      <th colspan="2" style="background-color:#f0f0f0; font-weight: bold; font-size: 1em; padding: 4px;">Redoxpar</th>
+    </tr>
+    <tr><td style="padding: 2px;">$$\ce{Zn/Zn^2+}$$</td><td style="text-align: center; padding: 2px;">-0.762</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Cr/Cr^3+}$$</td><td style="text-align: center; padding: 2px;">-0.744</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Fe/Fe^2+}$$</td><td style="text-align: center; padding: 2px;">-0.447</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Cd/Cd^2+}$$</td><td style="text-align: center; padding: 2px;">-0.403</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Co/Co^2+}$$</td><td style="text-align: center; padding: 2px;">-0.277</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Ni/Ni^2+}$$</td><td style="text-align: center; padding: 2px;">-0.257</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Sn/Sn^2+}$$</td><td style="text-align: center; padding: 2px;">-0.137</td></tr>
+  </table>
+
+  <table border="1" cellspacing="0" style="border-collapse: collapse; line-height: 1.0;">
+    <tr>
+      <th colspan="2" style="background-color:#f0f0f0; font-weight: bold; font-size: 1em; padding: 4px;">Redoxpar</th>
+    </tr>
+    <tr><td style="padding: 2px;">$$\ce{Pb/Pb^2+}$$</td><td style="text-align: center; padding: 2px;">-0.126</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{H2/H^+}$$</td><td style="text-align: center; padding: 2px;">0.000</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Bi/Bi^3+}$$</td><td style="text-align: center; padding: 2px;">+0.317</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Cu/Cu^2+}$$</td><td style="text-align: center; padding: 2px;">+0.340</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Ag/Ag^+}$$</td><td style="text-align: center; padding: 2px;">+0.800</td></tr>
+    <tr><td style="padding: 2px;">$$\ce{Au/Au^+}$$</td><td style="text-align: center; padding: 2px;">+1.692</td></tr>
+  </table>
+
+</div>
 
 
 
