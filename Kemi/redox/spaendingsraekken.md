@@ -36,7 +36,7 @@ $$\ce{Cu^{2+} (aq) +2e- <=> Cu (s)}$$
 
 #### Redoxpotentialer for udvalgte metaller/metalioner og dihydrogen
 
-Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale</i>. I tabellen nedenfor er det vist eksempler på det. 
+Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale</i>. I tabellerne nedenfor vises redoxparrene fra spændingsrækken fra tidlige og de tilhørende reduktionspotentialer, som angive med enheden volt. 
 
 
 <div style="display: flex; justify-content: center; gap: 20px; font-size: 0.8em;">
