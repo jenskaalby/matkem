@@ -3,8 +3,9 @@ layout: default
 title: Redoxreaktion med to metaller - spændingsrækken
 ---
 # Redoxreaktion med to metaller - den elektrokemiske spændingsrække
-Der er også muligt for to metaller at indgår i en redoxreaktion. Det er umiddelbart måske lidt underligt, for vi har talt om at metaller typisk afgiver elektroner. En redoxreaktion kan naturligvis ikke gennemføres, hvis der ikke er et stof, som kan optage elektroner. 
-Det er imidlertid således, at nogle metaller er mere villige til at afgive elektroner end andre. Derfor får et metal rollen som elektronafgiver og det andet metal rollen som elektronoptager.
+Der er også muligt for to metaller at indgår i en redoxreaktion. Her er det ene metal på fast form. Det kan fx være en zincstang, $\ce{Zn(s)}$. Det andet metal er en metalion og er opløst i vand. Det kan fx være $\ce{Cu^{2+}(aq)}$. 
+Det er umiddelbart måske lidt underligt, at en reaktion mellem to metaller kan finde sted, for vi har talt om at metaller typisk afgiver elektroner. En redoxreaktion kan naturligvis ikke gennemføres, hvis der ikke er et stof, som kan optage elektroner. Det er dog også tilfældet, når det ene metal er på ionform. 
+Det gælder, at nogle metaller er mere villige til at afgive elektroner end andre. Derfor får et metali disse reaktioner rollen som elektronafgiver og det andet metal rollen som elektronoptager.
 Nu er spørgsmålet så blot: 
 - Hvilke metaller er mest villige til at afgive elektroner, og hvilke metaller er mindst villige til at afgive elektroner?
 
@@ -13,7 +14,8 @@ Til det formål ser vi først på en grafisk fremstilling af det, som er kendt s
 - Spændingsrækken viser metaller opstillet således, at man til venstre har de metaller, der er mest villige til at afgive elektroner. 
 - Til venstre ser man derfor de metaller, der er mest villige til at blive oxideret.
 - Metallerne til venstre kaldes for **uædle** metaller.
-- Metallerne til højre holder sig mest på metalform, og de kalder for de **ædle** metaller.
+- Metallerne til højre er mindre villige til at afgive  elektroner - og mere villige til at optage elektroner
+- Metallerne til højre kaldes for de **ædle** metaller.
 - Spændingsrækken er meget vigtig, når man skal fremstille batterier - og dermed giver ordet spænding også mening.
 
  Her er et eksempel på en repræsenation af spændingsrækken. Man kan også se en figur i bogen.
@@ -44,15 +46,15 @@ Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale
       <th style="background-color:#f0f0f0; font-weight: bold; font-size: 1.1em; padding: 6px 10px;">Reduktionspotentiale</th>
     </tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Li/Li^+}$$</td><td style="text-align: center; padding: 4px 8px;">-3.040</td></tr>
-    <tr><td style="padding: 4px 8px;">$$\ce{K/K^+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.931</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{K/K^+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.924</td></tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Ca/Ca^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.868</td></tr>
-    <tr><td style="padding: 4px 8px;">$$\ce{Na/Na^+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.714</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Na/Na^+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.713</td></tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Mg/Mg^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-2.372</td></tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Al/Al^3+}$$</td><td style="text-align: center; padding: 4px 8px;">-1.662</td></tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Mn/Mn^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-1.185</td></tr>
-    <tr><td style="padding: 4px 8px;">$$\ce{Zn/Zn^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.763</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Zn/Zn^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.762</td></tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Cr/Cr^3+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.744</td></tr>
-    <tr><td style="padding: 4px 8px;">$$\ce{Fe/Fe^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.440</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Fe/Fe^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.447</td></tr>
   </table>
 
   <table border="1" cellspacing="0" style="border-collapse: collapse;">
@@ -62,14 +64,14 @@ Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale
     </tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Cd/Cd^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.403</td></tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Co/Co^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.277</td></tr>
-    <tr><td style="padding: 4px 8px;">$$\ce{Ni/Ni^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.250</td></tr>
-    <tr><td style="padding: 4px 8px;">$$\ce{Sn/Sn^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.136</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Ni/Ni^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.257</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Sn/Sn^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.137</td></tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Pb/Pb^2+}$$</td><td style="text-align: center; padding: 4px 8px;">-0.126</td></tr>
     <tr><td style="padding: 4px 8px;">$$\ce{H2/H^+}$$</td><td style="text-align: center; padding: 4px 8px;">0.000</td></tr>
     <tr><td style="padding: 4px 8px;">$$\ce{Bi/Bi^3+}$$</td><td style="text-align: center; padding: 4px 8px;">+0.317</td></tr>
-    <tr><td style="padding: 4px 8px;">$$\ce{Cu/Cu^2+}$$</td><td style="text-align: center; padding: 4px 8px;">+0.337</td></tr>
-    <tr><td style="padding: 4px 8px;">$$\ce{Ag/Ag^+}$$</td><td style="text-align: center; padding: 4px 8px;">+0.799</td></tr>
-    <tr><td style="padding: 4px 8px;">$$\ce{Au/Au^3+}$$</td><td style="text-align: center; padding: 4px 8px;">+1.498</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Cu/Cu^2+}$$</td><td style="text-align: center; padding: 4px 8px;">+0.340</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Ag/Ag^+}$$</td><td style="text-align: center; padding: 4px 8px;">+0.800</td></tr>
+    <tr><td style="padding: 4px 8px;">$$\ce{Au/Au+}$$</td><td style="text-align: center; padding: 4px 8px;">+1.692</td></tr>
   </table>
 
 </div>
