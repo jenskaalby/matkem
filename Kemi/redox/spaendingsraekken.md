@@ -80,7 +80,8 @@ Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale
 
   <table border="1" cellspacing="0" style="border-collapse: collapse; line-height: 1.0;">
     <tr>
-      <th colspan="2" style="background-color:#f0f0f0; font-weight: bold; font-size: 1em; padding: 4px;">Redoxpar</th>
+      <th style="background-color:#f0f0f0; font-weight: bold; padding: 4px;">Redoxpar</th>
+      <th style="background-color:#f0f0f0; font-weight: bold; padding: 4px;">Reduktionspotentiale (V)</th>
     </tr>
     <tr><td style="padding: 2px;">$$\ce{Li/Li^+}$$</td><td style="text-align: center; padding: 2px;">-3.040</td></tr>
     <tr><td style="padding: 2px;">$$\ce{K/K^+}$$</td><td style="text-align: center; padding: 2px;">-2.924</td></tr>
@@ -93,7 +94,8 @@ Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale
 
   <table border="1" cellspacing="0" style="border-collapse: collapse; line-height: 1.0;">
     <tr>
-      <th colspan="2" style="background-color:#f0f0f0; font-weight: bold; font-size: 1em; padding: 4px;">Redoxpar</th>
+      <th style="background-color:#f0f0f0; font-weight: bold; padding: 4px;">Redoxpar</th>
+      <th style="background-color:#f0f0f0; font-weight: bold; padding: 4px;">Reduktionspotentiale (V)</th>
     </tr>
     <tr><td style="padding: 2px;">$$\ce{Zn/Zn^2+}$$</td><td style="text-align: center; padding: 2px;">-0.762</td></tr>
     <tr><td style="padding: 2px;">$$\ce{Cr/Cr^3+}$$</td><td style="text-align: center; padding: 2px;">-0.744</td></tr>
@@ -106,7 +108,8 @@ Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale
 
   <table border="1" cellspacing="0" style="border-collapse: collapse; line-height: 1.0;">
     <tr>
-      <th colspan="2" style="background-color:#f0f0f0; font-weight: bold; font-size: 1em; padding: 4px;">Redoxpar</th>
+      <th style="background-color:#f0f0f0; font-weight: bold; padding: 4px;">Redoxpar</th>
+      <th style="background-color:#f0f0f0; font-weight: bold; padding: 4px;">Reduktionspotentiale (V)</th>
     </tr>
     <tr><td style="padding: 2px;">$$\ce{Pb/Pb^2+}$$</td><td style="text-align: center; padding: 2px;">-0.126</td></tr>
     <tr><td style="padding: 2px;">$$\ce{H2/H^+}$$</td><td style="text-align: center; padding: 2px;">0.000</td></tr>
@@ -117,6 +120,7 @@ Når redoxparrene betragtes kan man bestemme et såkaldt <i>reduktionspotentiale
   </table>
 
 </div>
+
 
 
 
