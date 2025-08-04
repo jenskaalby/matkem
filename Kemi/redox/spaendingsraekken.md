@@ -18,7 +18,7 @@ Til det formål ser vi først på en grafisk fremstilling af det, som er kendt s
 - Metallerne til højre kaldes for de **ædle** metaller.
 - Spændingsrækken er meget vigtig, når man skal fremstille batterier - og dermed giver ordet spænding også mening.
 
- Her er et eksempel på en repræsenation af spændingsrækken. Man kan også se en figur i bogen.
+ Her er et eksempel på en repræsentation af spændingsrækken. Man kan også se en figur i bogen.
 
  <img src="./spaendingsraekken.png" alt="Spændingsrækken" style="width:100%;">
 
