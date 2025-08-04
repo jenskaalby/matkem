@@ -4,12 +4,10 @@ title: Redoxreaktioner - introduktion og opgaver
 ---
 
 <div id="sidebar">
-  <h2>📌 Notation ved besvarelser af opgaverne </h2>
+  <h1>📌 Notation JT NOTE - IKKE OPDATERET!!! </h1>
   <h2>Eksempel 1:</h2>
-  Ved besvarelse af opgaverne her på siden udelades tilstandsformer. Hvis man på papir har skrevet dette reaktionsskema
-  <div class="latex">\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</div>
-  så skal man skrive følgende ved besvarelsen
   <code>Zn + Cu^{2+} -> Zn^{2+} + Cu</code>
+  <div class="latex">\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</div>
 
   <hr>
 
@@ -224,4 +222,6 @@ title: Redoxreaktioner - introduktion og opgaver
     }
   }
 </script>
+
+
 
