@@ -49,13 +49,13 @@
     margin-bottom: 0.6rem;
   }
   h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
   p, li {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     line-height: 1.5;
   }
   .task {
@@ -133,22 +133,18 @@
 <div id="sidebar">
   <h2>📌 Notation ved besvarelse af opgaverne</h2>
   <h2>📌 Der skrives ikke tilstandsformer ved besvarelsen her på siden</h2>
-  <h2>Eksempel 1:</h2>
-  Hvis man vil omskrive nedenstående
-  <div class="latex">\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</div>
-  til besvarelse her på siden, skal man indtaste:
-  <code>Zn + Cu^2+ -> Zn^2+ + Cu</code>
-  <hr>
-
-  <h2>Eksempel 2 med elektroner:</h2>
+  <h2>Eksempel 1 med elektroner:</h2>
   Hvis man på papir har skrevet
   <div class="latex">\( \mathrm{Cu}^{2+} + 2 e^- \rightarrow \mathrm{Cu} \)</div>
   skal man ved besvarelse her på siden indtaste:
   <code>Cu^{2+} + 2e^- -> Cu</code>
   <hr>
 
-  <p>Oxidationstal indtastes som hele tal (fx 0, +2, -1).</p>
-
+  <h2>Eksempel 2:</h2>
+  Hvis man vil omskrive nedenstående
+  <div class="latex">\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</div>
+  til besvarelse her på siden, skal man indtaste:
+  <code>Zn + Cu^2+ -> Zn^2+ + Cu</code>
   <hr>
 
   <footer>
@@ -162,40 +158,47 @@
 
   <p>En <b>redoxreaktion</b> er en kemisk reaktion, hvor der både sker en <b>oxidation</b> og en <b>reduktion</b>.</p>
   <ul>
-    <li><b>Oxidation</b>: Et stof <b>afgiver elektroner.</b></li>
-    <li><b>Reduktion</b>: Et stof <b>optager elektroner.</b></li>
+    <li><b>Oxidation</b> er en  <b>afgivelse af elektroner.</b></li>
+    <li><b>Reduktion</b> er en <b>optagelse af elektroner.</b></li>
   </ul>
-  <p>Ved en redoxreaktion sker der en overførsel af elektroner. Således er der ved en redoxreaktion et stof der oxideres og et stof der reduceres.</p>
+  <p>Ved en redoxreaktion sker der en <b>overførsel af elektroner</b>.</p>
 
-  <h2>Eksempel: Reaktion mellem magnesium og dioxygen</h2>
-  <p>
-    \( 2 \, \mathrm{Mg}{(s)} + \mathrm{O}_2{(g)} \rightarrow 2 \, \mathrm{MgO}{(s)} \)
+<h3 style="color:brown"> Eksempel: Reaktion mellem magnesium og dioxygen</h3>
+
+<p>
+    \( 2 \, \mathrm{Mg}{\mathrm{(s)}} + \mathrm{O}_2{\mathrm{(g)}} \rightarrow 2 \, \mathrm{MgO}{\mathrm{(s)}} \)
   </p>
   <p>Vi kan skrive dette som to <b>delreaktioner</b>, som gør det mere tydeligt, hvad der sker:</p>
 
-  <div style="display:flex; gap: 30px; margin-bottom: 20px;">
-    <div style="flex:1; background:#fdecea; padding:15px; border-radius:6px;">
-      <h3 style="color:#e74c3c;">🔴 Oxidation</h3>
-      <p>\( 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- \)</p>
-    </div>
-    <div style="flex:1; background:#e9f7ef; padding:15px; border-radius:6px;">
-      <h3 style="color:#27ae60;">🟢 Reduktion</h3>
-      <p>\( \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} \)</p>
-    </div>
+<div style="display:flex; gap: 15px; margin-bottom: 10px; align-items: stretch;">
+  <div style="flex:1; background:#fdecea; padding:9px; border-radius:3px; display:flex; flex-direction:column; justify-content:center;">
+    <h4 style="color:#e74c3c; margin:0; font-size:1em; line-height:1.2;">Oxidation - der afgives elektroner</h4>
+    <p style="margin:2px 0 0; font-size:0.9em; line-height:1.2;">\( 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- \)</p>
   </div>
+  <div style="flex:1; background:#e9f7ef; padding:9px; border-radius:3px; display:flex; flex-direction:column; justify-content:center;">
+    <h4 style="color:#27ae60; margin:0; font-size:1em; line-height:1.2;">Reduktion - der optages elektroner</h4>
+    <p style="margin:2px 0 0; font-size:0.9em; line-height:1.2;">\( \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} \)</p>
+  </div>
+</div>
+
 
   <p><b>Her kan vi se at:</b></p>
   <ul>
     <li>Magnesium oxideres, fordi magnesium ved reaktionen <b>afgiver elektroner</b>.</li>
     <li>Oxygen reduceres, fordi oxygen ved reaktionen <b>optager elektroner</b>.</li>
+    <li>Der afgives samlet 4 elektroner - og derfor optages der også 4 elektroner. Der skal altid være balance i elektronregnskabet.</li>
+    <li>Der dannes ved delreaktionerne 2 magnesiumioner og 2 oxid.</li>
+    <li>Ionerne samles i et <b>iongitter</b> med formelenhenden \( \textrm{MgO} \). </li>
   </ul>
+<!--
+    <hr>
 
-  <hr>
+
 
   <h2>Opgaver: Skriv og forklar delreaktionerne ved redoxreaktioner</h2>
   <p>Start med at løse opgaverne på papir. Skriv derefter løsningsforslaget ind med den specielle notation, som man kan se i sidebaren til venstre. Tjek om svaret er rigtigt.</p>
 
-  <!-- Opgave 1 -->
+ 
   <div class="task">
     <h3>Opgave 1: Magnesium og kobber(II)ion</h3>
     <p>\( \mathrm{Mg} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Mg}^{2+} + \mathrm{Cu} \)</p>
@@ -211,7 +214,7 @@
     <div id="feedback1" class="feedback"></div>
   </div>
 
-  <!-- Opgave 2 -->
+
   <div class="task">
     <h3>Opgave 2: Zink og kobber(II)ion</h3>
     <p>\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</p>
@@ -232,52 +235,7 @@
 
   <hr>
 
-  <!-- Opgave 4 -->
-  <div class="task">
-    <h3>Opgave 4: Oxidationstal i Mg + S → MgS</h3>
-    <p>Indtast oxidationstallene som hele tal (fx -2, 0, 2).</p>
-
-    <label for="mgf">Mg (før):</label><br />
-    <input type="text" id="mgf" placeholder="fx 0" />
-
-    <label for="sf">S (før):</label><br />
-    <input type="text" id="sf" placeholder="fx 0" />
-
-    <label for="mga">Mg i MgS:</label><br />
-    <input type="text" id="mga" placeholder="fx 2" />
-
-    <label for="sa">S i MgS:</label><br />
-    <input type="text" id="sa" placeholder="fx -2" />
-
-    <button onclick="checkOpgave4()">Tjek oxidationstal – opgave 4</button>
-
-    <div id="feedback4" class="feedback"></div>
-  </div>
-
-  <hr>
-
-  <!-- Opgave 5 -->
-  <div class="task">
-    <h3>Opgave 5: Oxidationstal i Zn + Cu²⁺ → Zn²⁺ + Cu</h3>
-    <p>Indtast oxidationstallene som hele tal (fx -2, 0, 2). Felterne starter tomme.</p>
-
-    <label for="znf">Zn (før):</label><br />
-    <input type="text" id="znf" placeholder="fx 0" />
-
-    <label for="cuf">Cu (før):</label><br />
-    <input type="text" id="cuf" placeholder="fx 2" />
-
-    <label for="zna">Zn i Zn²⁺:</label><br />
-    <input type="text" id="zna" placeholder="fx 2" />
-
-    <label for="cua">Cu i Cu:</label><br />
-    <input type="text" id="cua" placeholder="fx 0" />
-
-    <button onclick="checkOpgave5()">Tjek oxidationstal – opgave 5</button>
-
-    <div id="feedback5" class="feedback"></div>
-  </div>
-
+-->
 
 <script>
   function normalize(str) {
@@ -320,37 +278,7 @@
     }
   }
 
-  function checkOpgave4() {
-    const mgf = document.getElementById('mgf').value.trim();
-    const sf = document.getElementById('sf').value.trim();
-    const mga = document.getElementById('mga').value.trim();
-    const sa = document.getElementById('sa').value.trim();
-    const feedback = document.getElementById('feedback4');
 
-    if (mgf === '0' && sf === '0' && mga === '2' && sa === '-2') {
-      feedback.textContent = 'Oxidationstallene er korrekte! ✔️';
-      feedback.className = 'feedback success';
-    } else {
-      feedback.textContent = 'Prøv igen, tjek oxidationstallene før og efter reaktionen.';
-      feedback.className = 'feedback error';
-    }
-  }
-
-  function checkOpgave5() {
-    const znf = document.getElementById('znf').value.trim();
-    const cuf = document.getElementById('cuf').value.trim();
-    const zna = document.getElementById('zna').value.trim();
-    const cua = document.getElementById('cua').value.trim();
-    const feedback = document.getElementById('feedback5');
-
-    if (znf === '0' && cuf === '2' && zna === '2' && cua === '0') {
-      feedback.textContent = 'Oxidationstallene er korrekte! ✔️';
-      feedback.className = 'feedback success';
-    } else {
-      feedback.textContent = 'Prøv igen, tjek oxidationstallene før og efter reaktionen.';
-      feedback.className = 'feedback error';
-    }
-  }
 </script>
 
 </body>
