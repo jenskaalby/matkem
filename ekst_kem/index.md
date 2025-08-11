@@ -19,6 +19,10 @@ title: "Eksterne links for kemi"
 
 - Videnskak.dk. Direkte link til naturvidenskab. [Videnskab.dk](https://videnskab.dk/naturvidenskab/)
 
+- Alt er kemi. Dansk hjemmeside med temaer til undervisning i kemi. [Alt er kemi](https://alterkemi.dk)
+
+- Mønsterbrydende Science. [Mønsterbrydende Science](https://mbscience.dk/)
+
 - Chemistry LibreTexts. Søgbare sider på engelsk om kemi. [Chemistry Library](https://chem.libretexts.org/)
 
 <div style="text-align: center;">
