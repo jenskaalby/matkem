@@ -144,7 +144,7 @@ $$\ce{Zn(s) + 2H+(aq) -> Zn^{2+}(aq)+ H2(g)}$$
 
 Vil denne reaktion finde sted?
 
-$$\ce{Ag(s) + 2H+(aq) ->}$$
+$$\ce{2Ag(s) + 2H+(aq) ->}$$
 
 <mark>Nej.</mark> Ag står til højre for $\ce{H2}$, så reaktionen finder ikke sted spontant.
 
