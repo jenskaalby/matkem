@@ -140,7 +140,7 @@ $$\ce{Zn(s) + 2H+(aq) ->}$$
 
 Vi ser på spændingsrækken. Zn står til venstre for $\ce{H2}$, så derfor afgiver Zn villigt elektroner til $\ce{H+}$. Reaktionen bliver:
 
-$$\ce{Zn(s) + 2H+(aq) -> Zn^{2+}(aq)+ H2(g)}$$
+$$\ce{Zn(s) + 2H+(aq) -> Zn^{2+}(aq) + H2(g)}$$
 
 Vil denne reaktion finde sted?
 
