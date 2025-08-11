@@ -133,18 +133,18 @@
 <div id="sidebar">
   <h2>📌 Notation ved besvarelse af opgaverne</h2>
   <h2>📌 Der skrives ikke tilstandsformer ved besvarelsen her på siden</h2>
-  <h2>Eksempel 1 med elektroner:</h2>
+  <h2>Eksempel 1 med ladning på metalion og elektroner. Brug af tegnet: ^ </h2>
   Hvis man på papir har skrevet
-  <div class="latex">\( \mathrm{Cu}^{2+} + 2 e^- \rightarrow \mathrm{Cu} \)</div>
+  <div class="latex">\( \mathrm{2Mg}  \rightarrow \mathrm{2Mg^{2+}} +  \mathrm{4 e^-}\)</div>
   skal man ved besvarelse her på siden indtaste:
-  <code>Cu^2+ + 2e^- -> Cu</code>
+  <code> 2Mg  -> 2Mg^2+ + 4e^-</code>
   <hr>
 
   <h2>Eksempel 2:</h2>
-  Hvis man vil omskrive nedenstående
-  <div class="latex">\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</div>
+  Hvis man vil omskrive nedenstående, hvor dioxygen indgår, skal man bruge dette tegn: _ 
+  <div class="latex">\( \mathrm{O_{2}} + 4 \mathrm{e^-} \rightarrow \mathrm{2O^{2-}} \)</div>
   til besvarelse her på siden, skal man indtaste:
-  <code>Zn + Cu^2+ -> Zn^2+ + Cu</code>
+  <code>O_2 + 4e^- -> 2O^2-</code>
   <hr>
 
   <footer>
@@ -173,11 +173,11 @@
 <div style="display:flex; gap: 15px; margin-bottom: 10px; align-items: stretch;">
   <div style="flex:1; background:#fdecea; padding:9px; border-radius:3px; display:flex; flex-direction:column; justify-content:center;">
     <h4 style="color:#e74c3c; margin:0; font-size:1em; line-height:1.2;">Oxidation - der afgives elektroner</h4>
-    <p style="margin:2px 0 0; font-size:0.9em; line-height:1.2;">\( 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 e^- \)</p>
+    <p style="margin:2px 0 0; font-size:0.9em; line-height:1.2;">\( 2 \, \mathrm{Mg} \rightarrow 2 \, \mathrm{Mg}^{2+} + 4 \mathrm{e^-} \)</p>
   </div>
   <div style="flex:1; background:#e9f7ef; padding:9px; border-radius:3px; display:flex; flex-direction:column; justify-content:center;">
     <h4 style="color:#27ae60; margin:0; font-size:1em; line-height:1.2;">Reduktion - der optages elektroner</h4>
-    <p style="margin:2px 0 0; font-size:0.9em; line-height:1.2;">\( \mathrm{O}_2 + 4 e^- \rightarrow 2 \, \mathrm{O}^{2-} \)</p>
+    <p style="margin:2px 0 0; font-size:0.9em; line-height:1.2;">\( \mathrm{O}_2 + 4 \mathrm{e^-} \rightarrow 2 \, \mathrm{O}^{2-} \)</p>
   </div>
 </div>
 
@@ -203,9 +203,9 @@
 
  
   <div class="task">
-    <h3>Opgave 1: Magnesium og kobber(II)ion</h3>
+    <h3>Opgave 1: Del reaktionsskemaet op i en oxidation og en reduktion.</h3>
     Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
-    <p>\( \mathrm{Mg} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Mg}^{2+} + \mathrm{Cu} \)</p>
+    <p>\( \mathrm{Mg} + \mathrm{F}_{2} \rightarrow \mathrm{MgF_{2}} \)</p>
 
     <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
     <label for="ox1">Skriv oxidation (delreaktion):</label><br />
@@ -221,13 +221,13 @@
 
 
   <div class="task">
-    <h3>Opgave 2: Zink og kobber(II)ion</h3>
+    <h3>Opgave 2: Del reaktionsskemaet op i en oxidation og en reduktion.</h3>
     Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
-    <p>\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</p>
+    <p>\( \mathrm{2K} + \mathrm{Cl}_{2} \rightarrow  + \mathrm{2KCl} \)</p>
     <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
 
     <label for="ox2">Skriv oxidation (delreaktion):</label><br />
-    <input type="text" id="ox2"  /> <br
+    <input type="text" id="ox2"  /> <br>
 
     <label for="red2">Skriv reduktion (delreaktion):</label><br />
     <input type="text" id="red2"  /> <br>
@@ -236,6 +236,129 @@
 
     <div id="feedback2" class="feedback"></div>
   </div>
+
+  <div class="task">
+    <h3>Opgave 3 (udfordrende): Del reaktionsskemaet op i en oxidation og en reduktion.</h3>
+    Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
+    <p>\( \mathrm{2Al} + \mathrm{3Br_2} \rightarrow  \mathrm{2AlBr_{3}} \)</p>
+    <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
+
+    <label for="ox3">Skriv oxidation (delreaktion):</label><br />
+    <input type="text" id="ox3"  /> <br>
+
+    <label for="red3">Skriv reduktion (delreaktion):</label><br />
+    <input type="text" id="red3"  /> <br>
+
+    <button onclick="checkOpgave3()">Tjek svar – opgave 3</button>
+
+    <div id="feedback3" class="feedback"></div>
+ </div>
+
+  <div class="task">
+    <h3>Opgave 4: Del reaktionsskemaet op i en oxidation og en reduktion.</h3>
+    Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
+    <p>\( \mathrm{2Na} + \mathrm{S} \rightarrow   \mathrm{Na_{2}S} \)</p>
+    <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
+
+    <label for="ox4">Skriv oxidation (delreaktion):</label><br />
+    <input type="text" id="ox4"  /> <br>
+
+    <label for="red4">Skriv reduktion (delreaktion):</label><br />
+    <input type="text" id="red4"  /> <br>
+
+    <button onclick="checkOpgave4()">Tjek svar – opgave 4</button>
+
+    <div id="feedback4" class="feedback"></div>
+
+ </div>
+
+  <div class="task">
+    <h3>Opgave 5: Del reaktionsskemaet op i en oxidation og en reduktion.</h3>
+    Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
+    <p>\( \mathrm{2Ca} + \mathrm{O}_{2} \rightarrow   \mathrm{2CaO} \)</p>
+    <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
+
+    <label for="ox5">Skriv oxidation (delreaktion):</label><br />
+    <input type="text" id="ox5"  /> <br>
+
+    <label for="red5">Skriv reduktion (delreaktion):</label><br />
+    <input type="text" id="red5"  /> <br>
+
+    <button onclick="checkOpgave5()">Tjek svar – opgave 5</button>
+
+    <div id="feedback5" class="feedback"></div>
+
+ </div>
+
+  <div class="task">
+    <h3>Opgave 6 (udfordrende): Del reaktionsskemaet op i en oxidation og en reduktion.</h3>
+    Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
+    <p>\( \mathrm{6Li} + \mathrm{N}_{2} \rightarrow   \mathrm{2Li_{3}N} \)</p>
+    <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
+
+    <label for="ox6">Skriv oxidation (delreaktion):</label><br />
+    <input type="text" id="ox6"  /> <br>
+
+    <label for="red6">Skriv reduktion (delreaktion):</label><br />
+    <input type="text" id="red6"  /> <br>
+
+    <button onclick="checkOpgave6()">Tjek svar – opgave 6</button>
+
+    <div id="feedback6" class="feedback"></div>
+
+ </div>
+
+  <div class="task">
+    <h3>Opgave 7: Del reaktionsskemaet op i en oxidation og en reduktion.</h3>
+    Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
+    <p>\( \mathrm{Ba} + \mathrm{Cl}_{2} \rightarrow   \mathrm{BaCl_{2}} \)</p>
+    <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
+
+    <label for="ox7">Skriv oxidation (delreaktion):</label><br />
+    <input type="text" id="ox7"  /> <br>
+
+    <label for="red7">Skriv reduktion (delreaktion):</label><br />
+    <input type="text" id="red7"  /> <br>
+
+    <button onclick="checkOpgave7()">Tjek svar – opgave 7</button>
+
+    <div id="feedback7" class="feedback"></div>
+
+ </div>
+
+  <div class="task">
+    <h3>Opgave 8: Del reaktionsskemaet op i en oxidation og en reduktion.</h3>
+    Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
+    <p>\( \mathrm{Fe} + \mathrm{S} \rightarrow   \mathrm{FeS} \)</p>
+    <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
+
+    <label for="ox8">Skriv oxidation (delreaktion):</label><br />
+    <input type="text" id="ox8"  /> <br>
+
+    <label for="red8">Skriv reduktion (delreaktion):</label><br />
+    <input type="text" id="red8"  /> <br>
+
+    <button onclick="checkOpgave8()">Tjek svar – opgave 8</button>
+
+    <div id="feedback8" class="feedback"></div>
+
+ </div>
+
+  <div class="task">
+    <h3>Opgave 9 (udfordrende): Del reaktionsskemaet op i en oxidation og en reduktion.</h3>
+    Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
+    <p>\( \mathrm{4Al} + \mathrm{3O_{2}} \rightarrow   \mathrm{2Al_{2}O_{3}} \)</p>
+    <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
+
+    <label for="ox9">Skriv oxidation (delreaktion):</label><br />
+    <input type="text" id="ox9"  /> <br>
+
+    <label for="red9">Skriv reduktion (delreaktion):</label><br />
+    <input type="text" id="red9"  /> <br>
+
+    <button onclick="checkOpgave9()">Tjek svar – opgave 9</button>
+
+    <div id="feedback9" class="feedback"></div>
 
   <hr>
 
@@ -252,7 +375,7 @@
     const feedback = document.getElementById('feedback1');
 
     const correctOx = normalize('Mg -> Mg^2+ + 2e^-');
-    const correctRed = normalize('Cu^2+ + 2e^- -> Cu');
+    const correctRed = normalize('F_2 + 2e^- -> 2F^-');
 
     if (ox === correctOx && red === correctRed) {
       feedback.textContent = 'Det er helt korrekt! 👍';
@@ -268,8 +391,8 @@
     const red = normalize(document.getElementById('red2').value);
     const feedback = document.getElementById('feedback2');
   
-    const correctOx = normalize('Zn -> Zn^2+ + 2e^-');
-    const correctRed = normalize('Cu^2+ + 2e^- -> Cu');
+    const correctOx = normalize('2K -> 2K^+ + 2e^-');
+    const correctRed = normalize('Cl_2  + 2e^- -> 2Cl^-');
 
     if (ox === correctOx && red === correctRed) {
       feedback.textContent = 'Begge svar er korrekte! 👍';
@@ -280,6 +403,128 @@
     }
   }
 
+
+function checkOpgave3() {
+    const ox = normalize(document.getElementById('ox3').value);
+    const red = normalize(document.getElementById('red3').value);
+    const feedback = document.getElementById('feedback3');
+  
+    const correctOx = normalize('2Al -> 2Al^3+ + 6e^-');
+    const correctRed = normalize('3Br_2  + 6e^- -> 6Br^-');
+
+    if (ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Begge svar er korrekte! 👍';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Det er desværre ikke helt korrekt, forsøg igen.';
+      feedback.className = 'feedback error';
+    }
+  }
+
+function checkOpgave4() {
+    const ox = normalize(document.getElementById('ox4').value);
+    const red = normalize(document.getElementById('red4').value);
+    const feedback = document.getElementById('feedback4');
+  
+    const correctOx = normalize('2Na -> 2Na^+ + 2e^-');
+    const correctRed = normalize('S  + 2e^- -> S^2-');
+
+    if (ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Begge svar er korrekte! 👍';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Det er desværre ikke helt korrekt, forsøg igen.';
+      feedback.className = 'feedback error';
+    }
+  }
+
+
+
+function checkOpgave5() {
+    const ox = normalize(document.getElementById('ox5').value);
+    const red = normalize(document.getElementById('red5').value);
+    const feedback = document.getElementById('feedback5');
+  
+    const correctOx = normalize('2Ca -> 2Ca^2+ + 4e^-');
+    const correctRed = normalize('O_2  + 4e^- -> 2O^2-');
+
+    if (ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Begge svar er korrekte! 👍';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Det er desværre ikke helt korrekt, forsøg igen.';
+      feedback.className = 'feedback error';
+    }
+  }
+
+function checkOpgave6() {
+    const ox = normalize(document.getElementById('ox6').value);
+    const red = normalize(document.getElementById('red6').value);
+    const feedback = document.getElementById('feedback6');
+  
+    const correctOx = normalize('6Li -> 6Li^+ + 6e^-');
+    const correctRed = normalize('N_2  + 6e^- -> 2N^3-');
+
+    if (ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Begge svar er korrekte! 👍';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Det er desværre ikke helt korrekt, forsøg igen.';
+      feedback.className = 'feedback error';
+    }
+  }
+
+function checkOpgave7() {
+    const ox = normalize(document.getElementById('ox7').value);
+    const red = normalize(document.getElementById('red7').value);
+    const feedback = document.getElementById('feedback7');
+  
+    const correctOx = normalize('Ba -> Ba^2+ + 2e^-');
+    const correctRed = normalize('Cl_2  + 2e^- -> 2Cl^-');
+
+    if (ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Begge svar er korrekte! 👍';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Det er desværre ikke helt korrekt, forsøg igen.';
+      feedback.className = 'feedback error';
+    }
+  }
+
+function checkOpgave8() {
+    const ox = normalize(document.getElementById('ox8').value);
+    const red = normalize(document.getElementById('red8').value);
+    const feedback = document.getElementById('feedback8');
+  
+    const correctOx = normalize('Fe -> Fe^2+ + 2e^-');
+    const correctRed = normalize('S  + 2e^- -> S^2-');
+
+    if (ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Begge svar er korrekte! 👍';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Det er desværre ikke helt korrekt, forsøg igen.';
+      feedback.className = 'feedback error';
+    }
+  }
+
+
+function checkOpgave9() {
+    const ox = normalize(document.getElementById('ox9').value);
+    const red = normalize(document.getElementById('red9').value);
+    const feedback = document.getElementById('feedback9');
+  
+    const correctOx = normalize('4Al -> 4Al^3+ + 12e^-');
+    const correctRed = normalize('3O_2  + 12e^- -> 6O^2-');
+
+    if (ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Begge svar er korrekte! 👍';
+      feedback.className = 'feedback success';
+    } else {
+      feedback.textContent = 'Det er desværre ikke helt korrekt, forsøg igen.';
+      feedback.className = 'feedback error';
+    }
+  }
 
 </script>
 
