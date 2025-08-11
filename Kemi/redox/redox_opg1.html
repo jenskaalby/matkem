@@ -137,7 +137,7 @@
   Hvis man på papir har skrevet
   <div class="latex">\( \mathrm{Cu}^{2+} + 2 e^- \rightarrow \mathrm{Cu} \)</div>
   skal man ved besvarelse her på siden indtaste:
-  <code>Cu^{2+} + 2e^- -> Cu</code>
+  <code>Cu^2+ + 2e^- -> Cu</code>
   <hr>
 
   <h2>Eksempel 2:</h2>
@@ -190,24 +190,29 @@
     <li>Der dannes ved delreaktionerne 2 magnesiumioner og 2 oxid.</li>
     <li>Ionerne samles i et <b>iongitter</b> med formelenhenden \( \textrm{MgO} \). </li>
   </ul>
-<!--
+
     <hr>
 
 
 
   <h2>Opgaver: Skriv og forklar delreaktionerne ved redoxreaktioner</h2>
-  <p>Start med at løse opgaverne på papir. Skriv derefter løsningsforslaget ind med den specielle notation, som man kan se i sidebaren til venstre. Tjek om svaret er rigtigt.</p>
+  <p> <h4 style="color:#cc7700">Start med at løse nedenstående opgaver på papir.</h4>
+  Skriv derefter løsningsforslaget ind med den specielle notation, som man kan se i sidebaren til venstre.<br>
+  Vær meget opmærksom på brugen af ^-tegnet, når der skal skrives ladninger ved ioner eller elektroner. <br>
+  Tjek om svaret er rigtigt ved at trykke på knappen.</p>
 
  
   <div class="task">
     <h3>Opgave 1: Magnesium og kobber(II)ion</h3>
+    Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
     <p>\( \mathrm{Mg} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Mg}^{2+} + \mathrm{Cu} \)</p>
 
+    <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
     <label for="ox1">Skriv oxidation (delreaktion):</label><br />
-    <input type="text" id="ox1" placeholder="fx Mg -> Mg^2+ + 2e^-" />
+    <input type="text" id="ox1"  placeholder="se sidebaren for notation" /> <br>
 
     <label for="red1">Skriv reduktion (delreaktion):</label><br />
-    <input type="text" id="red1" placeholder="fx Cu^2+ + 2e^- -> Cu" />
+    <input type="text" id="red1" placeholder="se sidebaren for notation" /> <br>
 
     <button onclick="checkOpgave1()">Tjek svar – opgave 1</button>
 
@@ -217,16 +222,15 @@
 
   <div class="task">
     <h3>Opgave 2: Zink og kobber(II)ion</h3>
+    Betragt først redoxreaktionen og skriv de to delreaktioner, som udgør oxidation og reduktion, ned på et stykke papir.<br>
     <p>\( \mathrm{Zn} + \mathrm{Cu}^{2+} \rightarrow \mathrm{Zn}^{2+} + \mathrm{Cu} \)</p>
+    <p>Tjek nu om svaret er korrekt, ved at benytte den specielle notation, som er vist i sidebaren til venstre.</p>
 
-    <label for="sam2">Skriv samlet reaktion:</label><br />
-    <input type="text" id="sam2" placeholder="fx Zn + Cu^2+ -> Zn^2+ + Cu" />
+    <label for="ox2">Skriv oxidation (delreaktion):</label><br />
+    <input type="text" id="ox2"  /> <br
 
-    <label for="ox2">Skriv oxidationsdelreaktionen:</label><br />
-    <input type="text" id="ox2" placeholder="fx Zn -> Zn^2+ + 2e^-" />
-
-    <label for="red2">Skriv reduktionsdelreaktionen:</label><br />
-    <input type="text" id="red2" placeholder="fx Cu^2+ + 2e^- -> Cu" />
+    <label for="red2">Skriv reduktion (delreaktion):</label><br />
+    <input type="text" id="red2"  /> <br>
 
     <button onclick="checkOpgave2()">Tjek svar – opgave 2</button>
 
@@ -235,7 +239,7 @@
 
   <hr>
 
--->
+
 
 <script>
   function normalize(str) {
@@ -251,7 +255,7 @@
     const correctRed = normalize('Cu^2+ + 2e^- -> Cu');
 
     if (ox === correctOx && red === correctRed) {
-      feedback.textContent = 'Rigtigt svar! 🎉';
+      feedback.textContent = 'Det er helt korrekt! 👍';
       feedback.className = 'feedback success';
     } else {
       feedback.textContent = 'Der er fejl i oxidation eller reduktion. Prøv igen.';
@@ -260,20 +264,18 @@
   }
 
   function checkOpgave2() {
-    const sam = normalize(document.getElementById('sam2').value);
     const ox = normalize(document.getElementById('ox2').value);
     const red = normalize(document.getElementById('red2').value);
     const feedback = document.getElementById('feedback2');
-
-    const correctSam = normalize('Zn + Cu^2+ -> Zn^2+ + Cu');
+  
     const correctOx = normalize('Zn -> Zn^2+ + 2e^-');
     const correctRed = normalize('Cu^2+ + 2e^- -> Cu');
 
-    if (sam === correctSam && ox === correctOx && red === correctRed) {
-      feedback.textContent = 'Alle svar er korrekte! 👍';
+    if (ox === correctOx && red === correctRed) {
+      feedback.textContent = 'Begge svar er korrekte! 👍';
       feedback.className = 'feedback success';
     } else {
-      feedback.textContent = 'Tjek den samlede reaktion, oxidation eller reduktion igen.';
+      feedback.textContent = 'Det er desværre ikke helt korrekt, forsøg igen.';
       feedback.className = 'feedback error';
     }
   }
