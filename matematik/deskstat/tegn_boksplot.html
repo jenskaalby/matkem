@@ -69,6 +69,9 @@
       const formData = new FormData(e.target);
       const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd'];
 
+      let minAll = Infinity;
+      let maxAll = -Infinity;
+
       for (let i = 0; i < setCount; i++) {
         const name = formData.get(`name${i}`);
         const min = parseFloat(formData.get(`min${i}`));
@@ -76,6 +79,10 @@
         const median = parseFloat(formData.get(`median${i}`));
         const q3 = parseFloat(formData.get(`q3${i}`));
         const max = parseFloat(formData.get(`max${i}`));
+
+        // Opdater samlet min/max for gridlinjer
+        minAll = Math.min(minAll, min);
+        maxAll = Math.max(maxAll, max);
 
         traces.push({
           type: 'box',
@@ -93,6 +100,25 @@
         });
       }
 
+      // Lav lodrette stiplede linjer ved hvert heltal
+      const shapes = [];
+      const start = Math.floor(minAll);
+      const end = Math.ceil(maxAll);
+      for (let v = start; v <= end; v++) {
+        shapes.push({
+          type: 'line',
+          x0: v,
+          x1: v,
+          y0: -0.5, // lidt udenfor
+          y1: setCount - 0.5,
+          line: {
+            color: 'rgba(0,0,0,0.3)',
+            width: 1,
+            dash: 'dot'
+          }
+        });
+      }
+
       Plotly.newPlot('plot', traces, {
         title: 'Boksplot',
         margin: { l: 100 },
@@ -101,7 +127,8 @@
         },
         xaxis: {
           title: "Værdi"
-        }
+        },
+        shapes: shapes
       });
     });
 
