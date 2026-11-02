@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Newtons metode med bogens stopkriterium: to efterfølgende værdier er ens efter afrunding. Fem decimaler som standard. Virker offline.">
+<title>Newtons metode · bogens stopkriterium</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--card:#111e30;--plot:#0d1929;--border:#283a52;--muted:#9baec5;--text:#e9eff8;--blue:#6cd3f0;--gold:#f3ce7b;--green:#9fe0bc;--red:#f3a399;--grid:#1c2f45;--radius:14px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button,select{cursor:pointer}button,input,select{border:1px solid var(--border);border-radius:8px;color:var(--text);background:#18283e}button{padding:9px 14px;transition:background .16s,border-color .16s}button:hover:not(:disabled){background:#223954;border-color:#496481}button:disabled{cursor:default;opacity:.45}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}input,select{padding:8px 10px}select{max-width:100%}input[type=range]{padding:0;accent-color:var(--blue);cursor:pointer}input[type=text]{font-variant-numeric:tabular-nums}math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math",math;font-size:1.12em}math[display=block]{margin:0}mn,mo{font-style:normal}.wrap{width:min(1456px,100%);margin:0 auto;padding:24px 28px 20px}.top{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:20px}.titleline{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}h1{font-size:clamp(25px,2.6vw,35px);letter-spacing:-.8px;line-height:1.15;margin:0;font-weight:650}.eyebrow{font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--blue);margin-bottom:7px}.subtitle{color:var(--muted);margin:4px 0 0;font-size:14px}.goal{display:flex;align-items:center;gap:12px}.goal math{font-size:25px}.goal>span{color:var(--muted);font-size:14px}.topright{display:flex;gap:8px;align-items:center}.quiet{background:transparent}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;margin-bottom:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}.choose{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.choose label,.preset-label{color:var(--muted);font-size:13px}.presets{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.presets button{font-size:13px;padding:7px 12px}.presets[hidden]{display:none}.layout{display:grid;grid-template-columns:minmax(0,1fr) 378px;gap:16px}.graphcard,.side{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);min-width:0;overflow:hidden}.graphcard{background:var(--plot);display:flex;flex-direction:column}.functionbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px 10px;flex-wrap:wrap}.functionbar .function{color:var(--blue);font-size:23px}.functionbar .derivative{color:var(--muted);font-size:16px}.plot{width:100%;height:clamp(285px,30vw,455px);position:relative;touch-action:pan-y;outline-offset:-4px}#graph{display:block;width:100%;height:100%;overflow:hidden}.graphhint{padding:3px 18px 9px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}.zoom{display:flex;gap:5px;align-items:center}.zoom button{padding:4px 9px;font-size:13px;background:transparent}.zoom button.square{width:30px}.legend{display:flex;gap:15px;flex-wrap:wrap;padding:2px 18px 8px;color:var(--muted);font-size:12px}.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:8px;height:8px;border-radius:50%;display:inline-block}.starter{margin-top:auto;padding:12px 18px 13px;border-top:1px solid var(--border);background:#101d2e}.startrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.startrow label{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}.startrow input{width:132px;background:var(--bg)}.startrow button{padding:8px 13px;font-size:13px}.range-row{display:flex;gap:10px;align-items:center;margin-top:11px;color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}.range-row input{width:100%;min-width:80px}.inputerror{font-size:13px;color:var(--red);margin:8px 0 0}.inputerror:empty{display:none}.side{padding:16px;display:flex;flex-direction:column}.runhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:11px}.counter{color:var(--muted);font-size:13px}.badge{font-size:11px;padding:4px 8px;border-radius:20px;background:#2e2a21;color:var(--gold)}.badge.computed{background:#183b32;color:var(--green)}.values{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:10px;row-gap:4px;align-items:center;font-size:17px}.values .number{text-align:right;font-variant-numeric:tabular-nums}.formula{color:var(--green);text-align:center;font-size:22px;padding:17px 0 14px}.nextvalue{display:flex;align-items:center;justify-content:space-between;color:var(--green);padding:0 0 13px;gap:10px;font-size:18px}.tabs{display:flex;border-bottom:1px solid var(--border);gap:3px;margin:0 -2px 12px}.tabs button{border:0;border-radius:6px 6px 0 0;padding:8px 12px;background:transparent;color:var(--muted);font-size:13px}.tabs button[aria-selected=true]{background:#24384e;color:var(--text);box-shadow:inset 0 -2px var(--blue)}.tabpanel{flex:1;min-height:180px}.tabpanel[hidden]{display:none}.subheading{font-size:12px;color:var(--muted);margin:0 0 9px}.substitution{font-size:19px;padding:13px 4px;color:var(--text);overflow-x:auto}.placeholder{font-size:14px;color:var(--muted);padding:12px 0;line-height:1.65}.mini-steps{margin:13px 0 0;padding:0;list-style:none;display:flex;gap:5px}.mini-steps li{flex:1;line-height:1.35;font-size:11px;text-align:center;color:var(--muted);padding:9px 2px;border:1px solid var(--border);border-radius:6px}.mini-steps li.active{border-color:var(--gold);color:var(--gold);background:#2e2a21}.mini-steps b{display:block;font-size:13px;margin-bottom:2px;font-weight:500}.code-tools{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px}.code-tools label{color:var(--muted);font-size:12px}.code-tools select{padding:4px 8px;font-size:12px}pre{font:11px/1.65 ui-monospace,"Cascadia Code",Consolas,"DejaVu Sans Mono",monospace;tab-size:2;background:#0b1727;border-radius:7px;margin:0;overflow:auto;max-height:242px;padding:10px 0;border:1px solid #22334a}pre .line{display:block;white-space:pre;padding:0 10px;border-left:2px solid transparent}pre .line.active{background:#294356;color:var(--gold);border-color:var(--gold)}.code-caption{font-size:11px;line-height:1.5;color:var(--muted);margin:9px 0 0}.tablebox{max-height:244px;overflow:auto;border:1px solid var(--border);border-radius:7px}table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}th,td{text-align:right;padding:8px 10px;white-space:nowrap;border-bottom:1px solid #22334a}th{position:sticky;top:0;background:#172940;font-weight:400}tbody tr.current{background:#234252}td math{font-size:1.02em}.tabletools{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:10px;color:var(--muted);font-size:11px}.tabletools button{padding:5px 10px;font-size:12px}.explanation{border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:10px;padding:13px 17px;margin-top:16px;background:var(--card)}.explanation h2{font-size:17px;font-weight:550;color:var(--gold);margin:0 0 5px}.explanation p{font-size:14px;line-height:1.6;margin:0;color:#d3deeb}.explanation.success{border-left-color:var(--green)}.explanation.success h2{color:var(--green)}.explanation.danger{border-left-color:var(--red)}.explanation.danger h2{color:var(--red)}.actions{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-top:13px}.playback{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.primary{background:var(--blue);border-color:var(--blue);color:#0a1a26;font-weight:650;min-width:225px;padding:11px 16px}.primary:hover:not(:disabled){background:#99e3f7;border-color:#99e3f7}.primary:disabled{background:#243c4a;border-color:#3c5665;color:#b3c7d3;opacity:1}.playback>button:not(.primary){padding:10px 12px}.speed{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px}.speed select{padding:6px 8px;font-size:12px}.stoprule{display:flex;gap:9px;align-items:center;font-size:12px;color:var(--muted)}.stoprule math{font-size:17px;color:var(--green)}.stoprule select{font-size:12px;padding:6px}.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;color:#849bb4;font-size:11px}.footer button{padding:0;background:none;border:0;color:var(--muted);font-size:11px;text-decoration:underline;text-underline-offset:3px}dialog{border:1px solid #405979;border-radius:14px;background:var(--card);color:var(--text);max-width:650px;width:calc(100% - 36px);max-height:85vh;padding:24px}dialog::backdrop{background:#020811cf}dialog h2{font-size:23px;margin:0 0 14px}dialog h3{font-size:15px;margin:20px 0 7px}dialog p,dialog li{font-size:14px;color:#c5d4e6;line-height:1.65}dialog a{color:var(--blue)}dialog ul,dialog ol{padding-left:23px}dialog .close{float:right;padding:5px 12px}.dialogfoot{font-size:12px!important;color:var(--muted)!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}svg text{font-family:system-ui,sans-serif;font-size:11px;fill:var(--muted);font-variant-numeric:tabular-nums}.graphmath{margin:0;line-height:1;text-align:center;color:var(--muted)}.graphmath math{font-size:17px}.graphmath.current{color:var(--gold)}.graphmath.next{color:var(--green)}.fade{animation:appear .23s ease-out}@keyframes appear{from{opacity:.45}to{opacity:1}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}@media(min-width:1600px){.wrap{padding-top:32px}}@media(max-width:1100px){.wrap{padding:18px}.layout{grid-template-columns:minmax(0,1fr) 345px;gap:12px}.functionbar{padding:13px}.functionbar .function{font-size:20px}.functionbar .derivative{font-size:15px}.side{padding:13px}.top .goal>span{display:none}.primary{min-width:210px}.speed>span{display:none}}@media(max-width:820px){.wrap{padding:15px 12px}.top{align-items:flex-start;gap:10px}.topright button{font-size:12px;padding:7px 10px}.goal{display:none}.toolbar{align-items:flex-start;flex-direction:column;gap:10px;padding:10px 12px}.layout{grid-template-columns:1fr}.plot{height:340px}.side{padding:15px}.values{grid-template-columns:auto 1fr}.formula{font-size:23px}.tabpanel{min-height:130px}.substitution{padding:7px 0}.mini-steps{margin-top:8px}.mini-steps li{padding:7px}.actions{gap:12px}.playback{gap:6px}.primary{min-width:210px}.playback>button:not(.primary){padding:10px}.stoprule{width:100%;justify-content:flex-start}.footer{margin-top:14px}.code-caption{font-size:12px}.explanation{padding:12px 14px}pre{font-size:12px;max-height:270px}.tablebox{max-height:260px}.speed{margin-left:4px}.side .placeholder{padding:5px 0}.top h1{font-size:26px}.subtitle{font-size:12px}}@media print{body{background:white;color:black}.topright,.toolbar,.starter,.zoom,.actions,.footer{display:none}.wrap{padding:0}.layout{grid-template-columns:1fr 340px}.graphcard,.side,.explanation{break-inside:avoid}.plot{height:350px}}
+</style>
+<style>
+/* Hold grafen og knapperne tæt sammen på almindelige skolebærbare. */
+@media(min-width:821px) and (max-height:900px){
+ .wrap{padding-top:16px;padding-bottom:12px}.top{margin-bottom:12px}.eyebrow{display:none}h1{font-size:29px}.subtitle{font-size:12px;line-height:1.4;margin-top:3px}.toolbar{padding:7px 12px;margin-bottom:12px}.functionbar{padding:10px 15px 7px}.functionbar .function{font-size:20px}.functionbar .derivative{font-size:15px}.plot{height:clamp(180px,calc(100dvh - 580px),280px)}.graphhint{padding:2px 15px 5px}.zoom button{padding:2px 8px}.legend{padding:0 15px 6px;font-size:11px}.starter{padding:9px 15px}.startrow input,.startrow button{padding:6px 10px}.range-row{margin-top:7px}.side{padding:12px 14px}.runhead{margin-bottom:6px}.badge{padding:3px 8px}.values{font-size:15px;row-gap:1px}.formula{font-size:20px;padding:9px 0}.nextvalue{font-size:16px;padding-bottom:7px}.tabs{margin-bottom:8px}.tabs button{padding:6px 11px}.tabpanel{min-height:125px}.mini-steps{display:none}.placeholder{font-size:13px;line-height:1.55;padding:6px 0}.substitution{font-size:18px;padding:6px 0}.substitution:empty{display:none}.subheading{margin-bottom:7px}.explanation{margin-top:12px;padding:10px 15px}.explanation h2{font-size:16px}.explanation p{font-size:13px}.actions{margin-top:10px}.footer{margin-top:10px}.tablebox{max-height:180px}pre{max-height:180px}
+}
+</style>
+<style>.zoom .follow{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap;cursor:pointer}.zoom .follow input{accent-color:var(--blue);margin:0}.zoom{flex-wrap:wrap}</style>
+<style>
+.nextvalue.result{display:block;padding:11px 12px;margin:0 0 8px;border:1px solid #3a6f58;border-radius:8px;background:#142f28}.nextvalue.result #nextSymbol{display:block;font-size:12px;color:#c3e4d3;margin-bottom:5px}.nextvalue.result #nextValue{display:block;font-size:23px}.resultnote{font-size:12px;color:#c3e4d3;line-height:1.6;margin:0 0 11px}.resultnote[hidden]{display:none}.nextvalue.unapproved{display:block;color:var(--red);font-size:14px}.nextvalue.unapproved #nextSymbol{display:block;font-size:12px;color:var(--muted);margin-bottom:3px}.stopcomparison{font-size:12px;color:var(--muted);margin-top:10px;border-top:1px solid var(--border);padding-top:9px}.stopcomparison[hidden]{display:none}.stopcomparison summary{cursor:pointer;color:#c4d6e9}.stopcomparison p{margin:7px 0;line-height:1.7}.stopcomparison math{font-size:1.1em}.graphmath.accepted{color:var(--green)}
+</style>
+<style>#knownRootLegend[hidden]{display:none}</style>
+<style>.stoprule{flex-wrap:wrap}.stoprule math{font-size:15px}.substitution>div+div{margin-top:5px}.argument-formula{overflow-x:auto;padding:5px 0}.argument-formula math{font-size:1.2em}.stopcomparison h4{font-size:13px;margin:15px 0 5px}</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div><div class="eyebrow">Graf · tangent · beregning</div><div class="titleline"><h1>Newtons metode</h1></div><p class="subtitle">Bogens stopkrav: to efterfølgende værdier er ens efter afrunding.</p></div>
+    <div class="goal"><span>Vi vil løse</span><span id="goal"></span></div>
+    <div class="topright"><button class="quiet" id="helpButton">Sådan bruges modellen</button></div>
+  </header>
+  <section class="toolbar" aria-label="Vælg funktion og eksempel">
+    <div class="choose"><label for="example">Funktion</label><select id="example"><option value="book">Bogens eksempel</option><option value="exponential">Forskudt eksponentialfunktion</option><option value="divergence">Væk fra nulpunktet</option><option value="cubic">En tredjegradsfunktion</option></select></div>
+    <div class="presets" id="presets" hidden><span class="preset-label">Sammenlign:</span><button data-start="0">Start ved 0</button><button data-start="-2">Start ved −2</button><button id="horizontal">Vandret tangent</button></div>
+    <div class="presets" id="distancePresets" hidden><span class="preset-label">Sammenlign:</span><button data-start="1.1">Start ved 1,1</button><button data-start="0.5">Start ved 0,5</button></div>
+  </section>
+  <div class="layout">
+    <section class="graphcard" aria-label="Grafisk illustration">
+      <div class="functionbar"><div class="function" id="function"></div><div class="derivative" id="derivative"></div></div>
+      <div id="functionNote" hidden style="padding:0 18px 8px;color:var(--muted);font-size:12px"></div>
+      <div class="plot" id="plot" tabindex="0" role="group" aria-label="Funktionsgraf. Klik for at vælge startværdi. Brug knapperne til zoom."><svg id="graph" role="img" aria-labelledby="graphTitle graphDescription"><title id="graphTitle">Newtons metode</title><desc id="graphDescription">Grafen, punktet ved den aktuelle værdi og tangentens skæring med den vandrette akse.</desc></svg></div>
+      <div class="graphhint"><span>Klik i grafen for at vælge startværdi.</span><div class="zoom" aria-label="Zoom"><label class="follow"><input type="checkbox" id="follow" checked>Følg trinnet</label><button id="focusStep">Vis trinnet</button><button id="resetView">Hele grafen</button><button id="zoomIn" class="square" aria-label="Zoom ind">+</button><button id="zoomOut" class="square" aria-label="Zoom ud">−</button></div></div>
+      <div class="legend" aria-label="Farveforklaring"><span><i style="background:var(--blue)"></i>Graf og grafpunkt</span><span><i style="background:var(--gold)"></i>Tangent</span><span><i style="background:var(--green)"></i><span id="greenLegend">Næste værdi</span></span><span id="knownRootLegend" hidden><i style="background:transparent;border:1px solid var(--text)"></i>Kendt nulpunkt</span></div>
+      <form id="startForm" class="starter" novalidate><div class="startrow"><label for="start">Startværdi <span id="startSymbol"></span></label><input id="start" type="text" inputmode="decimal" autocomplete="off" value="2" aria-describedby="inputError"><button type="submit">Brug startværdien</button></div><div class="range-row"><span id="rangeMin">−0,5</span><input id="startRange" type="range" min="-0.5" max="3" step="0.001" value="2" aria-label="Vælg startværdi med skyderen"><span id="rangeMax">3</span></div><p class="inputerror" id="inputError" role="alert"></p></form>
+    </section>
+    <aside class="side" aria-label="Aktuelle værdier, kode og tabel">
+      <div class="runhead"><span id="counter" class="counter">0 beregninger</span><span id="badge" class="badge">Valgt startværdi</span></div>
+      <div class="values"><span id="xLabel"></span><span id="xValue" class="number"></span><span id="yLabel"></span><span id="yValue" class="number"></span><span id="slopeLabel"></span><span id="slopeValue" class="number"></span></div>
+      <div class="formula" id="formula"></div>
+      <div class="nextvalue" id="nextRow"><span id="nextSymbol"></span><span id="nextValue"></span></div>
+      <p class="resultnote" id="resultNote" hidden></p>
+      <div class="tabs" role="tablist" aria-label="Vis forklaring, kode eller tabel"><button id="tab-step" role="tab" aria-selected="true" aria-controls="panel-step" data-tab="step">Trinnet</button><button id="tab-code" role="tab" aria-selected="false" aria-controls="panel-code" data-tab="code" tabindex="-1">Kode</button><button id="tab-table" role="tab" aria-selected="false" aria-controls="panel-table" data-tab="table" tabindex="-1">Tabel</button></div>
+      <section class="tabpanel" id="panel-step" role="tabpanel" aria-labelledby="tab-step"><p id="calcCaption" class="subheading">Hvad giver formlen?</p><div id="substitution" class="substitution"></div><div id="calcNote" class="placeholder"></div><details id="stopComparison" class="stopcomparison" hidden><summary>Sammenligning af de to stopkrav</summary><div id="comparisonText"></div></details><ol class="mini-steps" aria-label="De tre geometriske trin"><li id="mini0"><b>01</b>Grafpunkt</li><li id="mini1"><b>02</b>Tangent</li><li id="mini2"><b>03</b>Skæring</li></ol></section>
+      <section class="tabpanel" id="panel-code" role="tabpanel" aria-labelledby="tab-code" hidden><div class="code-tools"><label for="language">Vis koden i</label><select id="language"><option value="javascript">JavaScript · udføres her</option><option value="python">Python · samme algoritme</option></select></div><pre id="code" tabindex="0" aria-label="Kildekode"></pre><p id="codeCaption" class="code-caption"></p></section>
+      <section class="tabpanel" id="panel-table" role="tabpanel" aria-labelledby="tab-table" hidden><div class="tablebox" id="tableBox"><table><thead><tr><th scope="col" id="tableN"></th><th scope="col" id="tableX"></th><th scope="col" id="tableY"></th></tr></thead><tbody id="rows"></tbody></table></div><div class="tabletools"><span>Beregningerne bruger uafrundede værdier.</span><button id="export">Gem CSV</button></div></section>
+    </aside>
+  </div>
+  <section class="explanation" id="explanation" aria-live="polite" aria-atomic="true"><h2 id="explanationTitle"></h2><p id="explanationText"></p></section>
+  <div class="actions"><div class="playback"><button class="primary" id="next">Vis tangenten</button><button id="back">Tilbage</button><button id="reset">Forfra</button><button id="play" aria-pressed="false">Afspil</button><label class="speed"><span>Tempo</span><select id="speed" aria-label="Afspilningstempo"><option value="1800">Roligt</option><option value="1100" selected>Normalt</option><option value="600">Hurtigt</option></select></label></div><div class="stoprule"><span id="criterion"></span><label for="decimals">Decimaler</label><select id="decimals" aria-label="Antal decimaler ved sammenligning"><option value="3">3 decimaler</option><option value="5" selected>5 decimaler</option><option value="8">8 decimaler</option><option value="10">10 decimaler</option></select></div></div>
+  <footer class="footer"><span>Mellemrum: næste trin · Esc: pause · Musehjul over grafen: zoom</span><button id="aboutButton">Om modellen og kilden</button></footer>
+</main>
+
+<dialog id="help"><button class="close" data-close="help" aria-label="Luk vejledning">Luk</button><h2>Newtons metode med bogens stopkrav</h2><p>Vi søger det sted på den vandrette akse, hvor grafen har højden nul. Kun startværdien vælges; alle senere værdier beregnes.</p><ol><li>Vælg en startværdi ved at skrive et tal, flytte skyderen eller klikke i grafen.</li><li>Klik på <strong>Vis tangenten</strong>.</li><li>Klik på <strong>Find skæringen</strong>. Nu er den næste værdi beregnet.</li><li>Klik på <strong>Sammenlign og fortsæt</strong>. Er de to værdier ens efter afrunding, standser modellen og viser den nyeste værdi som tilnærmelse. Ellers fortsætter den med denne værdi.</li></ol><h3>Antal decimaler</h3><p>Som standard sammenlignes de to værdier med fem decimaler, som i bogens eksempel. Du kan vælge tre, fem, otte eller ti decimaler. Afrundingen bruges kun ved sammenligning og visning. Alle tangentberegninger bruger de uafrundede værdier.</p><h3>Hvorfor standser vi?</h3><div id="stopArgument"></div><h3>Betjening</h3><p><strong>Afspil</strong> viser trinnene automatisk. <strong>Tilbage</strong> går ét trin tilbage. <strong>Forfra</strong> begynder ved den valgte startværdi. Udsnittet følger normalt beregningen. Brug <strong>Hele grafen</strong> til overblik eller <strong>Vis trinnet</strong> for at zoome ind på den aktuelle beregning.</p><h3>For langt fra nulpunktet</h3><p>Vælg »Væk fra nulpunktet«. Nulpunktet er kendt og markeret med en lys ring. Sammenlign startværdierne 1,1 og 0,5. Følg især afstanden til nulpunktet: en startværdi for langt væk kan give større og større afstande.</p><h3>En løkke uden fremskridt</h3><p>Vælg tredjegradsfunktionen. Begynd ved 0, og følg mindst to beregninger. Prøv derefter −2. Hvad ændrer sig?</p><h3>Standsning uden et godkendt resultat</h3><p>Efter 20 beregninger afbrydes programmet, hvis de afrundede værdier stadig ikke er ens. Det giver ikke et godkendt resultat. En vandret eller næsten vandret tangent giver også standsning; her bruges en numerisk grænse på 10⁻¹² for hældningens absolutte værdi.</p></dialog>
+<dialog id="about"><button class="close" data-close="about" aria-label="Luk om modellen">Luk</button><h2>Om modellen</h2><p>Denne fil indeholder hele modellen og kan bruges offline. Den kræver hverken Python, installation, login eller forbindelse til nettet. Ingen elevdata indsamles.</p><p>Beregningen udføres i JavaScript. På fanen <strong>Kode</strong> ses den centrale funktion, som modellen kalder. Python-versionen viser samme algoritme til sammenligning. Markeringen i koden forbinder det geometriske trin med den tilsvarende beregning.</p><p>Denne version følger bogens stopkriterium: to efterfølgende værdier sammenlignes efter afrunding. Afrundingen bruges kun til stopkontrollen og visningen; næste tangentberegning bruger den uafrundede værdi. Tabellen kan gemmes som CSV med dansk decimalkomma.</p><h3>Nummerering</h3><p id="indexingNote">Startværdien betegnes <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>x</mi><mn>1</mn></msub></math>. Den første beregnede værdi er <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>x</mi><mn>2</mn></msub></math>. Bogen begynder med <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>x</mi><mn>0</mn></msub></math>. Det er samme metode; kun nummereringen er forskellig.</p><h3>Kilde</h3><p>Bogens eksempel er fra Mike Vandal Auerbach, <em>Differentialregning</em>, version 3.0, §3.2, eksempel 3.11, trykte sider 37–38, <a href="https://www.mathematicus.dk/matematik/kernestof/Differentialregning.pdf" target="_blank" rel="noopener noreferrer">mathematicus.dk</a>. Værdierne er genberegnet; bogens enkelte cifrefejl er ikke videreført. De øvrige funktioner er supplerende eksempler. Eksponentialfunktionen er valgt til denne model som et eksempel i samme stil som en enkel D1-opgave; den er ikke gengivet fra en bestemt eksamensopgave.</p><p class="dialogfoot">Bearbejdet undervisningsmodel: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>. Nytegnet grafik. Ingen tilknytning til 3Blue1Brown. Kildelinkene kræver netadgang; selve modellen gør ikke.</p><h3>Ret teksterne selv</h3><p>Åbn HTML-filen i en teksteditor. De vigtigste forklaringer står samlet i objektet <code>TEKSTER</code> nær begyndelsen af scriptet. Gem filen, og genindlæs den i browseren.</p></dialog>
+<noscript><p style="padding:24px">Modellen kræver, at JavaScript er tilladt i browseren. Ingen installation er nødvendig.</p></noscript>
+<script>
+'use strict';
+/* =====================================================================
+   LÆRERENS TEKSTER · Ret frit teksterne her. Gem filen og genindlæs.
+   Matematik i brugerfladen fremstilles med browserens indbyggede MathML.
+   Ingen eksterne skrifttyper, biblioteker eller netværkskald er nødvendige.
+   ===================================================================== */
+const TEKSTER = {
+  point: ['1 · Fra aksen til grafen', 'Den aktuelle værdi bestemmer et punkt på grafen. Vi søger den værdi på aksen, hvor grafen har højden nul.'],
+  tangent: ['2 · Tangenten erstatter grafen lokalt', 'Tangenten har samme hældning som grafen i punktet. Vi finder nu det sted, hvor tangenten har højden nul.'],
+  intersection: ['3 · Sammenlign de to værdier', 'Den næste værdi er nu beregnet. Sammenlign den med den foregående efter afrunding til det valgte antal decimaler. Er de ens, bruger vi den nyeste som tilnærmelse. Ellers fortsætter vi.'],
+  success: ['De afrundede værdier er ens', 'De to efterfølgende værdier er ens med det valgte antal decimaler. Vi standser og bruger den nyeste beregnede værdi som tilnærmelse til nulpunktet.'],
+  cycle: ['De samme værdier gentages', 'De beregnede værdier skifter mellem 0 og 1. Ingen af dem giver funktionsværdien nul. Prøv derefter at begynde ved −2.'],
+  diverging: ['Værdierne bevæger sig væk fra nulpunktet', 'Afstanden til det kendte nulpunkt vokser for hver beregning. Her hjælper gentagelsen os altså ikke nærmere nulpunktet. Sammenlign med startværdien 0,5.'],
+  divergenceCycle: ['Afstanden til nulpunktet bliver ikke mindre', 'De samme værdier gentages i en løkke. Prøv startværdien 0,5 for at se et forløb ind mod nulpunktet, eller 1,1 for at se et forløb væk fra det.'],
+  divergenceStop: ['Stoppet uden godkendt resultat', 'Værdierne har bevæget sig længere og længere væk fra det kendte nulpunkt. Dette forløb giver ingen godkendt tilnærmelse.'],
+  horizontal: ['Vandret tangent', 'En vandret tangent over eller under aksen skærer den ikke. Programmet standser også, hvis hældningen er numerisk meget tæt på nul.'],
+  limit: ['Stoppet uden godkendt resultat', 'Programmet har udført 20 beregninger uden at opfylde kravet. Grænsen forhindrer en endeløs løkke; den gør ikke resultatet korrekt. Vælg en ny startværdi.'],
+  large: ['Beregningen er standset', 'Den næste værdi bliver for stor til denne illustration. Undersøg grafen, og vælg en anden startværdi.'],
+  stagnation: ['Beregningen er standset', 'Vælg en anden startværdi, og undersøg grafen.']
+};
+
+const EKSEMPLER = {
+  book: {name:'Bogens eksempel',symbol:'f',f:x=>-0.2*x**5+x**2+1,df:x=>-(x**4)+2*x,start:2,view:[1.65,2.15,-3,2],overview:[-0.5,3,-6,6],code:['const f = x => -0.2*x**5 + x**2 + 1;','const df = x => -(x**4) + 2*x;']},
+  exponential:{name:'Forskudt eksponentialfunktion',symbol:'h',f:x=>Math.exp(2*x)-10,df:x=>2*Math.exp(2*x),start:1.5,view:[0.85,1.7,-10,25],overview:[0,2,-12,50],code:['const f = x => Math.exp(2*x) - 10;','const df = x => 2*Math.exp(2*x);']},
+  divergence:{name:'Væk fra nulpunktet',symbol:'p',f:x=>x/Math.sqrt(1+x*x),df:x=>1/(1+x*x)**1.5,start:1.1,view:[-2.3,2.3,-1.5,1.5],overview:[-3,3,-1.5,1.5],code:['const f = x => x/Math.sqrt(1+x*x);','const df = x => 1/(1+x*x)**1.5;']},
+  cubic:{name:'En tredjegradsfunktion',symbol:'g',f:x=>x**3-2*x+2,df:x=>3*x**2-2,start:0,view:[-2.8,2.2,-5,7],code:['const f = x => x**3 - 2*x + 2;','const df = x => 3*x**2 - 2;']}
+};
+
+/* DENNE FUNKTION KALDES AF MODELLEN OG VISES PÅ FANEN KODE. */
+
+// Afrunding til nærmeste tal med det valgte antal decimaler.
+// Sammenligningen bruger afrundede tal; iterationen bruger de uafrundede.
+function afrund(x, decimaler) {
+  const faktor = 10 ** decimaler;
+  return Math.sign(x) * Math.floor(Math.abs(x) * faktor + 0.5) / faktor;
+}
+function sammeAfrunding(x, y, decimaler) {
+  return afrund(x, decimaler) === afrund(y, decimaler);
+}
+function naesteVaerdi(f, df, x, decimaler) {
+  const y = f(x);
+  const haeldning = df(x);
+  if (Math.abs(haeldning) < 1e-12) {
+    throw new Error('horizontal');
+  }
+  const nyX = x - y / haeldning;
+  const ens = sammeAfrunding(x, nyX, decimaler);
+  return {x: nyX, faerdig: ens};
+}
+const PYTHON_KODE = `import math
+
+def afrund(x, decimaler):
+    faktor = 10 ** decimaler
+    fortegn = -1 if x < 0 else 1
+    return fortegn * math.floor(abs(x) * faktor + 0.5) / faktor
+
+def samme_afrunding(x, y, decimaler):
+    return afrund(x, decimaler) == afrund(y, decimaler)
+
+def naeste_vaerdi(f, df, x, decimaler):
+    y = f(x)
+    haeldning = df(x)
+    if abs(haeldning) < 1e-12:
+        raise ValueError("Vandret tangent")
+    ny_x = x - y / haeldning
+    ens = samme_afrunding(x, ny_x, decimaler)
+    return ny_x, ens`;
+const $ = id => document.getElementById(id);
+const state = {example:'book',values:[2],phase:0,decimals:5,view:[1.65,2.15,-3,2],follow:true,timer:null,tab:'step'};
+const currentExample = ()=>EKSEMPLER[state.example];
+const currentX = ()=>state.values[state.values.length-1];
+const iteration = ()=>state.values.length-1;
+const decimals = ()=>state.decimals;
+const isAccepted = ()=>iteration()>0 && sammeAfrunding(state.values.at(-2),currentX(),decimals());
+const isCycle = ()=>iteration()>=2 && currentX()===state.values[state.values.length-3];
+const movingAway = ()=>state.example==='divergence'&&iteration()>0&&Math.abs(currentX())>Math.abs(state.values.at(-2))&&Math.abs(currentX())>Math.abs(state.values[0]);
+function exampleStatus(status){
+  if(state.example!=='divergence')return status;
+  if(status==='cycle')return 'divergenceCycle';
+  if(movingAway()&&['horizontal','large','limit'].includes(status))return 'divergenceStop';
+  if(movingAway()&&status==='point')return 'diverging';
+  return status;
+}
+function explainExampleStop(status,reason){
+  if(status!=='divergenceStop')return;
+  const detail=reason==='horizontal'?'Tangenthældningen er nu numerisk så lille, at programmet afbryder.':reason==='limit'?'Grænsen på 20 beregninger er nået, så programmet afbryder.':'Det næste spring bliver for stort til visningen, så programmet afbryder.';
+  $('explanationText').textContent=TEKSTER.divergenceStop[1]+' '+detail;
+}
+function renderDistanceComparison(status){
+  if(!['diverging','divergenceStop'].includes(status))return;
+  const n=iteration();$('calcCaption').textContent='Afstanden til det kendte nulpunkt';
+  $('substitution').innerHTML='<div>'+math(mo('|'),indexedX(n-1),mo('|'),mo('≈'),numberMath(Math.abs(state.values[n-1])))+'</div><div>'+math(mo('|'),indexedX(n),mo('|'),mo('≈'),numberMath(Math.abs(currentX())))+'</div>';
+  $('calcNote').textContent=status==='divergenceStop'?'Afstanden er vokset undervejs. Dette forløb giver ingen godkendt tilnærmelse.':'Den nyeste værdi er længere væk fra nulpunktet. Sammenlign med startværdien 0,5.';
+}
+
+/* Små MathML-byggesten: rigtige variabler, indeks, primtegn og brøker. */
+const tag=(name,...children)=>`<${name}>${children.join('')}</${name}>`;
+const mi=s=>tag('mi',s), mn=s=>tag('mn',String(s)), mo=s=>tag('mo',s);
+const row=(...s)=>tag('mrow',...s), sub=(s,n)=>tag('msub',s,n), sup=(s,n)=>tag('msup',s,n);
+const frac=(a,b)=>tag('mfrac',a,b);
+const xn=()=>sub(mi('x'),mi('n'));
+const nextX=()=>sub(mi('x'),row(mi('n'),mo('+'),mn(1)));
+// Arrayet begynder ved 0; følgens matematiske nummerering begynder ved 1.
+const sequenceIndex=arrayIndex=>arrayIndex+1;
+const indexedX=arrayIndex=>sub(mi('x'),mn(sequenceIndex(arrayIndex)));
+const rootSymbol=()=>sup(mi('x'),mo('∗'));
+// Primtegnet har sin egen høje tegning. Det sættes som postfix uden et ekstra eksponentløft.
+const derivativeSymbol=()=>row(mi(currentExample().symbol),'<mo form="postfix" lspace="0em" rspace="0em" stretchy="false">′</mo>');
+const fn=(x,derivative=false)=>row(derivative?derivativeSymbol():mi(currentExample().symbol),mo('('),x,mo(')'));
+const math=(...nodes)=>`<math xmlns="http://www.w3.org/1998/Math/MathML">${row(...nodes)}</math>`;
+const eqSymbol=()=>mo('=');
+function fixedText(value,digits){
+  const text=value.toFixed(digits);
+  return text.includes('.')?text.replace(/0+$/,'').replace(/\.$/,''):text;
+}
+const numberText=(value,digits=9)=>{
+  if(Object.is(value,-0)||value===0)return '0';
+  const v=Math.abs(value);
+  if(v<1e-5||v>=1e7)return value.toExponential(3).replace('.',',').replace('-','−');
+  return fixedText(value,digits).replace('.',',').replace('-','−');
+};
+function numberMath(value,digits=9){
+  if(Object.is(value,-0)||value===0)return mn(0);
+  const sign=value<0?mo('−'):'';
+  const a=Math.abs(value);
+  if(a<1e-5||a>=1e7){
+    const [coefficient,exponent]=a.toExponential(3).split('e');
+    return row(sign,mn(coefficient.replace('.',',')),mo('×'),sup(mn(10),row(Number(exponent)<0?mo('−'):'',mn(Math.abs(Number(exponent))))));
+  }
+  return row(sign,mn(fixedText(a,digits).replace('.',',')));
+}
+const parenthesizedNumber=value=>value<0?row(mo('('),numberMath(value,6),mo(')')):numberMath(value,6);
+const showMath=(id,...nodes)=>{$(id).innerHTML=math(...nodes);};
+
+function roundedMath(value) {
+  const rounded = afrund(value, decimals());
+  return row(rounded < 0 ? mo('−') : '', mn(Math.abs(rounded).toFixed(decimals()).replace('.', ',')));
+}
+const roundSymbol=x=>row(sub(mi('afrund'),mn(decimals())),mo('('),x,mo(')'));
+function stopArgumentHtml(){
+  return '<p>Af Newtons formel følger</p><div class="argument-formula">'+math(nextX(),mo('−'),xn(),eqSymbol(),mo('−'),frac(fn(xn()),fn(xn(),true)))+'</div>'+
+    '<p>Hvis '+math(nextX(),eqSymbol(),xn())+' præcist, er venstresiden nul. Når '+math(fn(xn(),true),mo('≠'),mn(0))+', må '+math(fn(xn()),eqSymbol(),mn(0))+'. Så er '+math(xn())+' et nulpunkt.</p>'+
+    '<p>Bogens kriterium bruger lighed efter afrunding. Er de to afrundede værdier ens, har den netop udførte beregning ikke ændret det viste resultat med den valgte præcision. Derfor standser vi og bruger den nyeste værdi som tilnærmelse.</p>'+
+    '<p>Ens afrundede værdier er et praktisk stopkrav. Det beviser ikke, at de viste decimaler er korrekte, eller at der findes et nulpunkt. Grafen og funktionsværdien kan også undersøges.</p>';
+}
+function stopComparisonHtml(){
+  return '<p>Denne fil følger bogens kriterium: '+math(roundSymbol(xn()),eqSymbol(),roundSymbol(nextX()))+'. Først beregnes den nye værdi, og derefter sammenlignes de to værdier.</p>'+
+    '<p>Den nyeste '+math(nextX())+' bruges som tilnærmelse, når de afrundede værdier er ens. Antallet af decimaler vælges under grafen.</p>'+
+    '<p>Den anden fil tester i stedet, om funktionsværdien er tilstrækkeligt tæt på nul. Stopkravene undersøger forskellige størrelser og kan give forskellige antal trin.</p><h4>Hvorfor standser vi?</h4>'+stopArgumentHtml();
+}
+function preview(){
+  const e=currentExample(),x=currentX();
+  // En beregning afsluttes først, når eleven har sammenlignet det viste par.
+  if(isAccepted())return {x,faerdig:true};
+  if(iteration()>=20)throw new Error('limit');
+  if(!Number.isFinite(e.f(x))||!Number.isFinite(e.df(x)))throw new Error('large');
+  const next=naesteVaerdi(e.f,e.df,x,decimals());
+  if(!Number.isFinite(next.x)||Math.abs(next.x)>1e8||!Number.isFinite(e.f(next.x))||!Number.isFinite(e.df(next.x)))throw new Error('large');
+  return {x:next.x,faerdig:false,matcher:next.faerdig};
+}
+function pause(){
+  if(state.timer!==null)clearTimeout(state.timer);
+  state.timer=null;
+  $('play').textContent='Afspil';
+  $('play').setAttribute('aria-pressed','false');
+}
+function ensureVisible(next=null){
+  const x=currentX(), y=currentExample().f(x);
+  const xs=next===null?[x]:[x,next], ys=[0,y];
+  for(const [a,b,values] of [[0,1,xs],[2,3,ys]]){
+    const span=state.view[b]-state.view[a];
+    if(Math.min(...values)<state.view[a]+span*.04||Math.max(...values)>state.view[b]-span*.04){
+      const lower=Math.min(state.view[a],...values),upper=Math.max(state.view[b],...values);
+      const margin=Math.max((upper-lower)*.12,.15);
+      state.view[a]=lower-margin;state.view[b]=upper+margin;
+    }
+  }
+}
+function setFollow(enabled){
+  state.follow=enabled;$('follow').checked=enabled;
+}
+function fitStep(holdSuccess=false){
+  const e=currentExample(),x=currentX(),y=e.f(x);
+  const overview=e.overview||e.view;
+  let next;
+  try{next=preview();}
+  catch{state.view=[...overview];ensureVisible();return;}
+  // Bevar overblikket i 0/1-løkken, så det faktiske nulpunkt også ses.
+  if(state.example==='cubic'&&(x===0||x===1)){
+    state.view=[...overview];return;
+  }
+  // Ved godkendelse beholdes billedet af den sidste udførte beregning.
+  if(next.faerdig&&holdSuccess&&x>state.view[0]&&x<state.view[1]&&y>state.view[2]&&y<state.view[3])return;
+  const other=next.faerdig?(iteration()>0?state.values[state.values.length-2]:x):next.x;
+  const minSpan=Math.max(1e-12,Math.max(Math.abs(x),Math.abs(other))*1e-12);
+  const span=next.faerdig&&iteration()===0?(e.view[1]-e.view[0])*.4:Math.max(Math.abs(other-x)*2.6,minSpan);
+  const center=(x+other)/2,xmin=center-span/2,xmax=center+span/2;
+  const samples=[0,y],slope=e.df(x);
+  for(let i=0;i<=32;i++)samples.push(e.f(xmin+(xmax-xmin)*i/32));
+  samples.push(y+slope*(xmin-x),y+slope*(xmax-x));
+  const finite=samples.filter(Number.isFinite),low=Math.min(...finite),high=Math.max(...finite);
+  const height=Math.max(high-low,Number.EPSILON*Math.max(1,Math.abs(low),Math.abs(high))*32);
+  state.view=[xmin,xmax,low-height*.16,high+height*.16];
+}
+function reset(value=state.values[0],resetView=false){
+  pause();
+  state.values=[value];state.phase=0;
+  if(resetView){state.view=[...currentExample().view];setFollow(true);}
+  const original=currentExample().overview||currentExample().view;
+  $('startRange').min=Math.min(original[0],value);
+  $('startRange').max=Math.max(original[1],value);
+  $('startRange').value=value;
+  $('rangeMin').textContent=numberText(Number($('startRange').min),3);
+  $('rangeMax').textContent=numberText(Number($('startRange').max),3);
+  $('start').value=String(value).replace('.',',');
+  $('inputError').textContent='';
+  $('start').removeAttribute('aria-invalid');
+  if(state.follow)fitStep();else ensureVisible();
+  render();
+}
+function nextPhase(fromAuto=false){
+  if(!fromAuto)pause();
+  try{
+    const next=preview();
+    if(next.faerdig){pause();render();return;}
+    if(state.phase<2){state.phase++;if(state.phase===2)ensureVisible(next.x);}
+    else{state.values.push(next.x);state.phase=0;if(state.follow)fitStep(true);else ensureVisible();}
+  }catch{pause();}
+  render();
+}
+function back(){
+  pause();
+  if(state.phase>0)state.phase--;
+  else if(iteration()>0){state.values.pop();state.phase=2;}
+  if(state.follow)fitStep();
+  render();
+}
+function tick(){
+  state.timer=null;nextPhase(true);
+  try{if(preview().faerdig){pause();return;}}catch{pause();return;}
+  $('play').textContent='Pause';$('play').setAttribute('aria-pressed','true');
+  state.timer=setTimeout(tick,Number($('speed').value));
+}
+function togglePlay(){
+  if(state.timer!==null){pause();return;}
+  try{if(preview().faerdig)return;}catch{return;}
+  $('play').textContent='Pause';$('play').setAttribute('aria-pressed','true');
+  state.timer=setTimeout(tick,350);
+}
+function applyStart(event){
+  event?.preventDefault();
+  const raw=$('start').value.trim().replaceAll('−','-').replace(',','.');
+  const value=raw===''?NaN:Number(raw);
+  if(!Number.isFinite(value)||Math.abs(value)>100){
+    pause();$('inputError').textContent='Skriv et tal mellem −100 og 100. Både komma og punktum kan bruges.';
+    $('start').setAttribute('aria-invalid','true');return;
+  }
+  reset(value);
+}
+function setTab(tab,focus=false){
+  state.tab=tab;
+  for(const b of document.querySelectorAll('[data-tab]')){
+    const selected=b.dataset.tab===tab;
+    b.setAttribute('aria-selected',String(selected));b.tabIndex=selected?0:-1;
+    $('panel-'+b.dataset.tab).hidden=!selected;
+    if(selected&&focus)b.focus();
+  }
+  if(tab==='table')$('tableBox').scrollTop=$('tableBox').scrollHeight;
+}
+function renderFunctionInfo(){
+  if(state.example==='book'){
+    showMath('function',fn(mi('x')),eqSymbol(),mo('−'),mn('0,2'),sup(mi('x'),mn(5)),mo('+'),sup(mi('x'),mn(2)),mo('+'),mn(1));
+    showMath('derivative',fn(mi('x'),true),eqSymbol(),mo('−'),sup(mi('x'),mn(4)),mo('+'),mn(2),mi('x'));
+  }else if(state.example==='exponential'){
+    const exponential=sup('<mi mathvariant="normal">e</mi>',row(mn(2),mi('x')));
+    showMath('function',fn(mi('x')),eqSymbol(),exponential,mo('−'),mn(10));
+    showMath('derivative',fn(mi('x'),true),eqSymbol(),mn(2),exponential);
+  }else if(state.example==='divergence'){
+    const square=row(mn(1),mo('+'),sup(mi('x'),mn(2)));
+    showMath('function',fn(mi('x')),eqSymbol(),frac(mi('x'),tag('msqrt',square)));
+    showMath('derivative',fn(mi('x'),true),eqSymbol(),frac(mn(1),sup(row(mo('('),square,mo(')')),frac(mn(3),mn(2)))));
+  }else{
+    showMath('function',fn(mi('x')),eqSymbol(),sup(mi('x'),mn(3)),mo('−'),mn(2),mi('x'),mo('+'),mn(2));
+    showMath('derivative',fn(mi('x'),true),eqSymbol(),mn(3),sup(mi('x'),mn(2)),mo('−'),mn(2));
+  }
+  $('functionNote').hidden=!['exponential','divergence'].includes(state.example);
+  $('distancePresets').hidden=state.example!=='divergence';
+  $('knownRootLegend').hidden=state.example!=='divergence';
+  if(state.example==='exponential')$('functionNote').innerHTML='Hældning ved nulpunktet: '+math(fn(rootSymbol(),true),eqSymbol(),mn(20))+'.';
+  else if(state.example==='divergence')$('functionNote').innerHTML='Kendt nulpunkt: '+math(rootSymbol(),eqSymbol(),mn(0))+'. Newtons formel giver '+math(nextX(),eqSymbol(),mo('−'),sup(xn(),mn(3)))+'.<br>Afstand til nulpunktet efter '+iteration()+' beregninger: '+math(mo('|'),indexedX(iteration()),mo('|'),mo('≈'),numberMath(Math.abs(currentX())))+'.';
+  else $('functionNote').replaceChildren();
+}
+
+function renderCode(status){
+  const python=$('language').value==='python';
+  const source=python?PYTHON_KODE:[afrund,sammeAfrunding,naesteVaerdi].map(fn=>fn.toString()).join('\n\n');
+  let needle=state.phase===0?(python?'y = f(x)':'const y = f(x)'):state.phase===1?'haeldning = df(x)':(python?'ny_x = x':'const nyX = x');
+  if(status==='success')needle=python?'return ny_x, ens':'return {x: nyX, faerdig: ens}';
+  if(status==='horizontal')needle=python?'raise ValueError':'throw new Error';
+  const pre=$('code'),oldTop=pre.scrollTop,oldLeft=pre.scrollLeft;
+  pre.replaceChildren();
+  for(const text of source.split('\n')){
+    const line=document.createElement('span');line.className='line'+(text.includes(needle)?' active':'');line.textContent=text;pre.append(line);
+  }
+  pre.scrollTop=oldTop;pre.scrollLeft=oldLeft;
+  $('codeCaption').textContent=python?'Python-versionen viser samme algoritme. Her i browseren udføres JavaScript-versionen. Afrunding bruges kun til sammenligningen.':'Dette er funktionerne, som modellen kalder. Den nye værdi beregnes, og derefter sammenlignes de afrundede værdier.';
+  if(status==='success')$('codeCaption').innerHTML='Funktionen returnerer den nye værdi '+math(nextX(),eqSymbol(),indexedX(iteration()))+'. Den er lig med den foregående efter afrunding til '+decimals()+' decimaler.';
+}
+
+function render(){
+  const e=currentExample(),n=iteration(),accepted=isAccepted();
+  const x=currentX(),y=e.f(x),slope=e.df(x);
+  let result=null,status=['point','tangent','intersection'][state.phase];
+  try{result=preview();if(result.faerdig)status='success';else if(isCycle()&&state.phase===0)status='cycle';}
+  catch(error){status=TEKSTER[error.message]?error.message:'large';}
+  const failureKind=status;status=exampleStatus(status);
+  const stopped=['success','horizontal','limit','large','stagnation','divergenceStop'].includes(status);
+  if(stopped)pause();
+  showMath('goal',fn(mi('x')),eqSymbol(),mn(0));
+  renderFunctionInfo();
+  $('presets').hidden=state.example!=='cubic';
+  showMath('startSymbol',indexedX(0));
+  showMath('xLabel',accepted?nextX():xn(),eqSymbol(),indexedX(n));
+  const valueLabel=accepted?indexedX(n):xn(),valueSymbol=accepted?mo('≈'):eqSymbol();
+  showMath('yLabel',fn(valueLabel));showMath('slopeLabel',fn(valueLabel,true));
+  showMath('xValue',valueSymbol,numberMath(x,accepted?12:9));showMath('yValue',valueSymbol,numberMath(y));
+  showMath('slopeValue',valueSymbol,numberMath(slope));
+  if(accepted)showMath('formula',rootSymbol(),mo('≈'),nextX(),eqSymbol(),indexedX(n));
+  else showMath('formula',nextX(),eqSymbol(),xn(),mo('−'),frac(fn(xn()),fn(xn(),true)));
+  $('nextRow').className='nextvalue'+(accepted?' result':stopped?' unapproved':'');
+  $('resultNote').hidden=!accepted;$('stopComparison').hidden=!accepted;
+  $('comparisonText').innerHTML=stopComparisonHtml();
+  $('stopArgument').innerHTML=stopArgumentHtml();
+  if(accepted){
+    $('nextSymbol').textContent='Resultat · nyeste beregnede værdi';
+    showMath('nextValue',rootSymbol(),mo('≈'),numberMath(currentX(),12));
+    $('resultNote').innerHTML='Vi bruger den nyeste beregnede værdi '+math(nextX(),eqSymbol(),indexedX(n))+'. Grafen viser den sidste tangent fra '+math(indexedX(n-1))+' til '+math(indexedX(n))+'. '+math(indexedX(n+1))+' beregnes ikke.';
+  }else if(stopped){
+    $('nextSymbol').textContent='Resultat';$('nextValue').textContent='Ingen godkendt tilnærmelse';$('resultNote').replaceChildren();
+  }else{
+    showMath('nextSymbol',nextX());showMath('nextValue',eqSymbol(),state.phase===2&&result?numberMath(result.x):mo('?'));
+    $('resultNote').replaceChildren();
+  }
+  showMath('criterion',roundSymbol(xn()),eqSymbol(),roundSymbol(nextX()));
+  $('counter').textContent=n+' beregning'+(n===1?'':'er');
+  $('badge').textContent=accepted?'Accepteret tilnærmelse':n===0?'Valgt startværdi':'Beregnet værdi';
+  $('badge').className='badge'+(n?' computed':'');
+  $('greenLegend').textContent=accepted?'Accepteret tilnærmelse':'Næste værdi';
+  $('next').textContent=stopped?(accepted?'Kravet er opfyldt':'Beregningen er standset'):['Vis tangenten','Find skæringen','Sammenlign og fortsæt'][state.phase];
+  $('next').disabled=stopped;$('play').disabled=stopped;$('back').disabled=n===0&&state.phase===0;
+  const [title,text]=TEKSTER[status];$('explanationTitle').textContent=title;$('explanationText').textContent=text;
+  if(accepted)$('explanationText').innerHTML=text+' Her sammenlignes '+math(indexedX(n-1))+' og '+math(indexedX(n))+' efter afrunding til '+decimals()+' decimaler. Vi bruger den nyeste værdi: '+math(rootSymbol(),mo('≈'),indexedX(n),mo('≈'),numberMath(currentX(),12))+'.';
+  $('explanation').className='explanation'+(accepted?' success':['cycle','horizontal','limit','large','stagnation','diverging','divergenceCycle','divergenceStop'].includes(status)?' danger':'');
+  explainExampleStop(status,failureKind);
+  for(let i=0;i<3;i++)$('mini'+i).className=state.phase===i&&!stopped?'active':'';
+  $('calcCaption').textContent=accepted?'De to værdier afrundet til '+decimals()+' decimaler':state.phase===2?'Indsæt tallene i formlen':'Hvad giver formlen?';
+  if(accepted){
+    $('substitution').innerHTML='<div>'+math(indexedX(n-1),mo('≈'),roundedMath(state.values[n-1]))+'</div><div>'+math(indexedX(n),mo('≈'),roundedMath(currentX()))+'</div>';
+    $('calcNote').innerHTML='I den sidste beregning er '+math(mi('n'),eqSymbol(),mn(sequenceIndex(n-1)))+'. Vi sammenligner '+math(xn(),eqSymbol(),indexedX(n-1))+' og '+math(nextX(),eqSymbol(),indexedX(n))+'. De afrundede værdier er ens, så den nyeste '+math(indexedX(n))+' bruges som tilnærmelse.';
+  }else if(status==='horizontal'){
+    showMath('substitution',fn(xn(),true),Math.abs(slope)===0?eqSymbol():mo('≈'),mn(0));
+    $('calcNote').textContent='En ny skæring med aksen kan ikke bestemmes med denne tangent.';
+  }else if(state.phase===2&&result){
+    showMath('substitution',numberMath(x,6),mo('−'),frac(parenthesizedNumber(y),parenthesizedNumber(slope)),mo('≈'),numberMath(result.x,6));
+    $('calcNote').innerHTML='Efter afrunding til '+decimals()+' decimaler: '+math(indexedX(n),mo('≈'),roundedMath(x))+' og '+math(indexedX(n+1),mo('≈'),roundedMath(result.x))+'. Klik på »Sammenlign og fortsæt«.';
+  }else{
+    $('substitution').replaceChildren();
+    $('calcNote').textContent=status==='cycle'?'Følg endnu en tangent: de samme to værdier kommer igen.':status==='limit'?TEKSTER.limit[1]:state.phase===0?'Følg punktet op til grafen. Tangenten i dette punkt bestemmer den næste værdi.':'Find tangentens skæring med den vandrette akse. Derefter sammenligner vi de to afrundede værdier.';
+  }
+  renderDistanceComparison(status);
+  showMath('tableN',mi('n'));showMath('tableX',xn());showMath('tableY',fn(xn()));
+  $('rows').innerHTML=state.values.map((v,i)=>`<tr class="${i===n?'current':''}"><td>${sequenceIndex(i)}</td><td>${math(numberMath(v,12))}</td><td>${math(numberMath(e.f(v),6))}</td></tr>`).join('');
+  if(state.tab==='table')$('tableBox').scrollTop=$('tableBox').scrollHeight;
+  renderCode(status==='divergenceStop'?failureKind:status);draw();
+}
+/* GRAFIK · SVG-koordinater og klipning holder graf og beregning synkrone. */
+const SVG_NS='http://www.w3.org/2000/svg';
+function svgElement(name,attrs={},text=null){
+  const el=document.createElementNS(SVG_NS,name);
+  for(const [k,v]of Object.entries(attrs))el.setAttribute(k,v);
+  if(text!==null)el.textContent=text;return el;
+}
+function geometry(){
+  const bounds=$('plot').getBoundingClientRect();
+  return {width:bounds.width,height:bounds.height,left:74,right:Math.max(130,bounds.width-22),top:16,bottom:Math.max(70,bounds.height-39)};
+}
+function toPixel(x,y){
+  const g=geometry(),[xmin,xmax,ymin,ymax]=state.view;
+  return [g.left+(x-xmin)/(xmax-xmin)*(g.right-g.left),g.bottom-(y-ymin)/(ymax-ymin)*(g.bottom-g.top)];
+}
+function fromPixel(px,py){
+  const g=geometry(),[xmin,xmax,ymin,ymax]=state.view;
+  return [xmin+(px-g.left)/(g.right-g.left)*(xmax-xmin),ymax-(py-g.top)/(g.bottom-g.top)*(ymax-ymin)];
+}
+function clipLine(x0,y0,x1,y1){
+  const [xmin,xmax,ymin,ymax]=state.view,dx=x1-x0,dy=y1-y0;let lo=0,hi=1;
+  for(const [p,q]of [[-dx,x0-xmin],[dx,xmax-x0],[-dy,y0-ymin],[dy,ymax-y0]]){
+    if(p===0){if(q<0)return null;}
+    else{const t=q/p;if(p<0)lo=Math.max(lo,t);else hi=Math.min(hi,t);if(lo>hi)return null;}
+  }
+  return [x0+lo*dx,y0+lo*dy,x0+hi*dx,y0+hi*dy];
+}
+function niceStep(span,count=7){const raw=Math.max(span/count,1e-16),power=10**Math.floor(Math.log10(raw));return [1,2,5,10].map(k=>k*power).find(v=>v>=raw);}
+function graphMath(parent,x,y,node,color='axis',width=64){
+  const fo=svgElement('foreignObject',{x:x-width/2,y:y-13,width,height:32,'pointer-events':'none'});
+  const div=document.createElementNS('http://www.w3.org/1999/xhtml','div');
+  div.setAttribute('class','graphmath '+color);div.innerHTML=math(node);fo.append(div);parent.append(fo);
+}
+function draw(){
+  const svg=$('graph'),g=geometry();if(g.width<100)return;
+  svg.setAttribute('viewBox',`0 0 ${g.width} ${g.height}`);
+  svg.replaceChildren(svgElement('title',{id:'graphTitle'},'Newtons metode · '+currentExample().name),svgElement('desc',{id:'graphDescription'},'Den blå kurve er funktionen. Den gule linje er tangenten. Den grønne prik er den næste beregnede værdi.'));
+  const defs=svgElement('defs'),clip=svgElement('clipPath',{id:'plotClip'});
+  clip.append(svgElement('rect',{x:g.left,y:g.top,width:g.right-g.left,height:g.bottom-g.top}));defs.append(clip);svg.append(defs);
+  const grid=svgElement('g'),curves=svgElement('g',{'clip-path':'url(#plotClip)'}),labels=svgElement('g');svg.append(grid,curves,labels);
+  const [xmin,xmax,ymin,ymax]=state.view;
+  const line=(parent,x0,y0,x1,y1,color,width=1,dash=null)=>{
+    const clipped=clipLine(x0,y0,x1,y1);if(!clipped)return;
+    const [a,b]=toPixel(clipped[0],clipped[1]),[c,d]=toPixel(clipped[2],clipped[3]);
+    const attrs={x1:a,y1:b,x2:c,y2:d,stroke:color,'stroke-width':width,'stroke-linecap':'round'};
+    if(dash)attrs['stroke-dasharray']=dash;parent.append(svgElement('line',attrs));
+  };
+  const dot=(x,y,color,r=5)=>{
+    if(x<xmin||x>xmax||y<ymin||y>ymax)return;
+    const [cx,cy]=toPixel(x,y);curves.append(svgElement('circle',{cx,cy,r,fill:color,stroke:'#0d1929','stroke-width':1.5}));
+  };
+  const zeroPixel=toPixel(0,0),axisY=Math.min(Math.max(zeroPixel[1],g.top),g.bottom),axisX=Math.min(Math.max(zeroPixel[0],g.left),g.right);
+  for(const [low,high,axis]of [[xmin,xmax,'x'],[ymin,ymax,'y']]){
+    const count=axis==='x'?Math.max(3,Math.min(8,(g.right-g.left)/85)):Math.max(3,Math.min(8,(g.bottom-g.top)/42));
+    const step=niceStep(high-low,count),start=Math.ceil(low/step),end=Math.floor(high/step);
+    const digits=Math.min(14,Math.max(0,-Math.floor(Math.log10(step))));
+    for(let j=start;j<=end&&j<start+30;j++){
+      const v=j*step;if(axis==='x'){
+        line(grid,v,ymin,v,ymax,'#1c2f45');
+        if(Math.abs(v)>step*.01){const [px]=toPixel(v,0);labels.append(svgElement('text',{x:px,y:axisY+18,'text-anchor':'middle'},numberText(v,digits)));}
+      }else{
+        line(grid,xmin,v,xmax,v,'#1c2f45');
+        if(Math.abs(v)>step*.01){const [,py]=toPixel(0,v);labels.append(svgElement('text',{x:axisX-8,y:py+4,'text-anchor':'end'},numberText(v,digits)));}
+      }
+    }
+  }
+  line(grid,xmin,0,xmax,0,'#68839e',1.3);line(grid,0,ymin,0,ymax,'#68839e',1.3);
+  graphMath(labels,g.right-2,axisY-15,mi('x'));
+  graphMath(labels,axisX+15,g.top+10,mi('y'));
+  const e=currentExample();let path='',last=null;
+  for(let i=0;i<=800;i++){
+    const x=xmin+(xmax-xmin)*i/800,y=e.f(x);
+    if(!Number.isFinite(y)){last=null;continue;}
+    if(last){const clipped=clipLine(last[0],last[1],x,y);if(clipped){const a=toPixel(clipped[0],clipped[1]),b=toPixel(clipped[2],clipped[3]);path+=`M${a[0].toFixed(2)},${a[1].toFixed(2)}L${b[0].toFixed(2)},${b[1].toFixed(2)}`;}}
+    last=[x,y];
+  }
+  curves.append(svgElement('path',{d:path,fill:'none',stroke:'#6cd3f0','stroke-width':2.6,'stroke-linejoin':'round','stroke-linecap':'round'}));
+  if(state.example==='divergence'&&xmin<=0&&xmax>=0&&ymin<=0&&ymax>=0){
+    const [cx,cy]=toPixel(0,0);curves.append(svgElement('circle',{id:'knownRootMarker',cx,cy,r:8,fill:'none',stroke:'#e8edf6','stroke-width':2}));
+  }
+  const accepted=isAccepted(),baseIndex=accepted?iteration()-1:iteration();
+  for(const x of state.values.slice(Math.max(0,baseIndex-5),baseIndex)){
+    const y=e.f(x),s=e.df(x);line(curves,xmin,y+s*(xmin-x),xmax,y+s*(xmax-x),'#575044',1);dot(x,0,'#8a7c5f',3);
+  }
+  const x=state.values[baseIndex],y=e.f(x),s=e.df(x);
+  line(curves,x,0,x,y,'#6d99b2',1.4,'4 5');
+  const [px,py]=toPixel(x,0);
+  if(ymin<=0&&ymax>=0&&px>=g.left&&px<=g.right)graphMath(labels,Math.min(Math.max(px,g.left+15),g.right-15),Math.min(py+31,g.height-15),indexedX(baseIndex),'current');
+  if(state.phase>=1||accepted)line(curves,xmin,y+s*(xmin-x),xmax,y+s*(xmax-x),'#f3ce7b',2.1);
+  if(Math.abs(s)<1e-12&&!accepted)line(curves,xmin,y,xmax,y,'#f3a399',2.2);
+  dot(x,0,'#f3ce7b');dot(x,y,'#6cd3f0',6);
+  if(accepted){
+    dot(currentX(),0,'#9fe0bc',6.5);
+    const [nx,ny]=toPixel(currentX(),0);
+    graphMath(labels,Math.min(Math.max(nx,g.left+15),g.right-15),Math.max(ny-24,g.top+10),indexedX(iteration()),'accepted');
+  }
+  if(state.phase===2){
+    try{const next=preview();if(!next.faerdig){dot(next.x,0,'#9fe0bc',6.5);const [nx,ny]=toPixel(next.x,0);graphMath(labels,Math.min(Math.max(nx,g.left+15),g.right-15),Math.max(ny-24,g.top+10),indexedX(iteration()+1),'next');}}catch{}
+  }
+}
+function zoom(factor,point=null){
+  const [xmin,xmax,ymin,ymax]=state.view;
+  if((xmax-xmin)*factor<1e-10||(xmax-xmin)*factor>1e7||(ymax-ymin)*factor<1e-10||(ymax-ymin)*factor>1e20)return;
+  setFollow(false);
+  const [cx,cy]=point||[currentX(),0];
+  state.view=[cx+(xmin-cx)*factor,cx+(xmax-cx)*factor,cy+(ymin-cy)*factor,cy+(ymax-cy)*factor];draw();
+}
+function csvContent(){
+  const e=currentExample(),lines=[`n;x_n;${e.symbol}(x_n)`];
+  state.values.forEach((x,n)=>lines.push([sequenceIndex(n),String(x).replace('.',','),String(e.f(x)).replace('.',',')].join(';')));
+  return '\ufeff'+lines.join('\r\n')+'\r\n';
+}
+function exportCsv(){
+  const url=URL.createObjectURL(new Blob([csvContent()],{type:'text/csv;charset=utf-8'}));
+  const a=document.createElement('a');a.href=url;a.download='newtons_metode_bogens_kriterium.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+/* BETJENING */
+$('startForm').addEventListener('submit',applyStart);
+$('startRange').addEventListener('input',()=>reset(Number($('startRange').value)));
+$('example').addEventListener('change',()=>{state.example=$('example').value;reset(currentExample().start,true);});
+document.querySelectorAll('[data-start]').forEach(b=>b.addEventListener('click',()=>reset(Number(b.dataset.start))));
+$('horizontal').addEventListener('click',()=>reset(Math.sqrt(2/3)));
+$('next').addEventListener('click',()=>nextPhase());$('back').addEventListener('click',back);
+$('reset').addEventListener('click',()=>reset());$('play').addEventListener('click',togglePlay);
+$('zoomIn').addEventListener('click',()=>zoom(.7));$('zoomOut').addEventListener('click',()=>zoom(1/.7));
+$('focusStep').addEventListener('click',()=>{fitStep();draw();});
+$('follow').addEventListener('change',()=>{setFollow($('follow').checked);if(state.follow){fitStep();draw();}});
+$('resetView').addEventListener('click',()=>{setFollow(false);state.view=[...(currentExample().overview||currentExample().view)];ensureVisible();draw();});
+$('decimals').addEventListener('change',()=>{pause();state.decimals=Number($('decimals').value);if(state.follow)fitStep(true);render();});
+$('language').addEventListener('change',()=>render());$('export').addEventListener('click',exportCsv);
+document.querySelectorAll('[data-tab]').forEach(b=>{
+  b.addEventListener('click',()=>setTab(b.dataset.tab));
+  b.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
+    event.preventDefault();const tabs=['step','code','table'],i=tabs.indexOf(state.tab);
+    setTab(event.key==='Home'?'step':event.key==='End'?'table':tabs[(i+(event.key==='ArrowRight'?1:2))%3],true);
+  }});
+});
+$('helpButton').addEventListener('click',()=>{pause();$('help').showModal();});
+$('aboutButton').addEventListener('click',()=>{pause();$('about').showModal();});
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
+for(const dialog of document.querySelectorAll('dialog'))dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
+$('plot').addEventListener('click',event=>{
+  const r=$('plot').getBoundingClientRect(),px=event.clientX-r.left,py=event.clientY-r.top,g=geometry();
+  if(px<g.left||px>g.right||py<g.top||py>g.bottom)return;
+  const [x]=fromPixel(px,py);if(Number.isFinite(x)&&Math.abs(x)<=100)reset(x);
+});
+$('plot').addEventListener('wheel',event=>{event.preventDefault();const r=$('plot').getBoundingClientRect();zoom(event.deltaY<0?.8:1.25,fromPixel(event.clientX-r.left,event.clientY-r.top));},{passive:false});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'){pause();return;}
+  if(event.code==='Space'&&!['INPUT','SELECT','TEXTAREA','BUTTON'].includes(document.activeElement.tagName)&&!document.querySelector('dialog[open]')){event.preventDefault();nextPhase();}
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
+new ResizeObserver(()=>draw()).observe($('plot'));
+reset(2,true);
+</script>
+</body>
+</html>
