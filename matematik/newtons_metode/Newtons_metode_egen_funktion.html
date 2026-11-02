@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Newtons metode · egen funktion</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--card:#122033;--plot:#0d1929;--border:#2a3d55;--text:#e9eff8;--muted:#9fb1c8;--blue:#6cd3f0;--gold:#f3ce7b;--green:#9fe0bc;--red:#f3a399}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit;color:var(--text)}button,input,select{background:#192b42;border:1px solid var(--border);border-radius:7px;padding:8px 11px}button,select{cursor:pointer}button:hover:not(:disabled){background:#25415d}button:disabled{opacity:.45;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}input{min-width:0}input[type=checkbox]{accent-color:var(--blue);padding:0;margin:0}math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math",math;font-size:1.12em}mn,mo{font-style:normal}.wrap{width:min(1320px,100%);margin:auto;padding:20px 24px}header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}h1{margin:0;font-size:29px;font-weight:650;letter-spacing:-.6px}header p{color:var(--muted);margin:2px 0 0;font-size:13px}.help-link{font-size:12px;background:transparent;white-space:nowrap}.setup{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:15px}.formrow{display:flex;gap:12px;align-items:end;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:5px}.field>label{font-size:12px;color:var(--muted)}.expression-field{flex:1;min-width:210px}#expression{font:16px/1.5 ui-monospace,Consolas,monospace;background:var(--bg);width:100%}#start{width:105px}#decimals{width:116px}.syntax{color:var(--muted);font-size:12px;margin:9px 0 0}.syntax code{color:#c5d4e6}.error{color:var(--red);margin:8px 0 0;font-size:13px}.error:empty{display:none}.layout{display:grid;grid-template-columns:minmax(0,1fr) 345px;gap:15px;align-items:stretch}.graphcard,.side{background:var(--card);border:1px solid var(--border);border-radius:12px;min-width:0;overflow:hidden}.equations{padding:13px 16px 10px;background:var(--plot);overflow-x:auto}.equations>div{width:max-content;min-width:100%}#function{color:var(--blue);font-size:21px}#derivative{color:var(--muted);font-size:17px;margin-top:6px}.axes{padding:10px 13px;background:#132236;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.axes-grid{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.axis-field{display:flex;align-items:center;gap:5px}.axis-field label{color:var(--muted);font-size:13px}.axis-field input{width:85px;font:13px/1.4 ui-monospace,Consolas,monospace;padding:6px 7px}.axes button{padding:6px 10px;font-size:12px}.viewtools{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding-top:8px;color:var(--muted);font-size:12px}.follow{display:inline-flex;gap:6px;align-items:center;cursor:pointer;margin-right:auto}.zoom{width:30px}#plot{height:350px;background:var(--plot);touch-action:pan-y}#graph{display:block;width:100%;height:100%;overflow:hidden}.legend{display:flex;gap:14px;flex-wrap:wrap;padding:8px 15px;color:var(--muted);font-size:11px}.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}.legend .hint{margin-left:auto}#viewHint{color:var(--gold);font-size:12px;padding:0 15px 9px}#viewHint:empty{display:none}.side{padding:14px;display:flex;flex-direction:column}.runhead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px;color:var(--muted);font-size:12px}.badge{border-radius:20px;padding:3px 8px;background:#2d2b22;color:var(--gold);font-size:11px}.badge.done{background:#183b32;color:var(--green)}.values{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;align-items:center;font-size:15px}.values .value{text-align:right}.formula{color:var(--green);text-align:center;padding:16px 0;font-size:20px}.candidate{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:17px;color:var(--green);padding-bottom:12px}.candidate[hidden]{display:none}.result{padding:11px;border:1px solid #396c55;background:#153027;border-radius:8px;color:var(--green);margin-bottom:12px}.result[hidden]{display:none}.result small{font-size:11px;color:#c3e5d3;display:block}.result>div{font-size:23px;margin:4px 0}.result p{font-size:12px;line-height:1.6;margin:0;color:#c8e2d3}.comparison{color:var(--muted);font-size:12px;line-height:1.65;margin:0 0 10px}.comparison math{font-size:1.1em}.tablebox{border:1px solid var(--border);border-radius:7px;overflow:auto;max-height:220px;margin-top:auto}table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}th,td{padding:7px 8px;white-space:nowrap;text-align:right;border-bottom:1px solid #23364c}th{position:sticky;top:0;background:#1a2d44;font-weight:400}tr.current{background:#244357}.tablefoot{display:flex;gap:10px;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px;margin-top:8px}.tablefoot button{padding:4px 9px;font-size:12px}.callout{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:9px;padding:11px 15px;margin-top:14px}.callout h2{font-size:17px;color:var(--gold);margin:0 0 4px;font-weight:550}.callout p{font-size:13px;line-height:1.6;margin:0;color:#cddbea}.callout.done{border-left-color:var(--green)}.callout.done h2{color:var(--green)}.callout.failed{border-left-color:var(--red)}.callout.failed h2{color:var(--red)}.controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:12px}.primary{background:var(--blue);border-color:var(--blue);color:#071b27;font-weight:650;min-width:225px;padding:10px 14px}.primary:hover:not(:disabled){background:#9de7f9}.stoptext{margin-left:auto;color:var(--muted);font-size:12px}.stoptext math{font-size:15px}footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:11px;color:#8ea5be}dialog{max-width:650px;width:calc(100% - 30px);max-height:85vh;overflow:auto;background:var(--card);color:var(--text);border:1px solid #49627f;border-radius:12px;padding:24px}dialog::backdrop{background:#020711d0}dialog h2{margin-top:0}dialog p,dialog li{font-size:14px;line-height:1.65;color:#c7d7e8}dialog .close{float:right}dialog code{color:var(--blue)}svg text{font:11px system-ui,sans-serif;fill:var(--muted);font-variant-numeric:tabular-nums}.graphmath{text-align:center;color:var(--muted);line-height:1}.graphmath math{font-size:17px}.graphmath.current{color:var(--gold)}.graphmath.next{color:var(--green)}@media(min-width:821px) and (max-height:850px){.wrap{padding-top:14px}header{margin-bottom:12px}.setup{padding:10px 13px}#plot{height:240px}.equations{padding:9px 14px}.axes{padding:8px 12px}.formula{padding:10px 0}.tablebox{max-height:150px}.callout{margin-top:11px;padding:9px 13px}footer{margin-top:10px}}@media(max-width:900px){.layout{grid-template-columns:1fr}.wrap{padding:15px 12px}#plot{height:330px}.tablebox{max-height:200px}.side{padding:15px}.formula{padding:10px}.runhead{margin-bottom:8px}.stoptext{width:100%;margin-top:4px}.legend .hint{margin-left:0}.primary{min-width:210px}h1{font-size:25px}.axis-field input{width:80px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head><body>
+<main class="wrap">
+<header><div><h1>Newtons metode</h1><p>Egen funktion · automatisk differentiation · valgfrit akseudsnit</p></div><button type="button" id="helpButton" class="help-link">Sådan bruges modellen</button></header>
+<form id="functionForm" class="setup" novalidate><div class="formrow"><div class="field expression-field"><label for="expression">Funktionsforskrift <span id="inputSymbol"></span></label><input id="expression" type="text" value="exp(2*x)-10" autocomplete="off" spellcheck="false" maxlength="300" aria-describedby="syntax functionError"></div><div class="field"><label for="start">Startværdi <span id="startSymbol"></span></label><input id="start" type="text" inputmode="decimal" value="1,5" autocomplete="off"></div><div class="field"><label for="decimals">Sammenlign med</label><select id="decimals"><option value="3">3 decimaler</option><option value="5" selected>5 decimaler</option><option value="8">8 decimaler</option><option value="10">10 decimaler</option></select></div><button type="submit">Anvend funktion</button></div><p class="syntax" id="syntax">Eksempler: <code>x^2-2</code>, <code>e^(2*x)-10</code>, <code>sin(x)-0,5</code>, <code>ln(x)-1</code>. Både <code>2x</code> og <code>2*x</code> kan bruges.</p><p class="error" id="functionError" role="alert"></p></form>
+<div class="layout"><section class="graphcard" aria-label="Graf og akseindstillinger"><div class="equations"><div id="function"></div><div id="derivative"></div></div><form class="axes" id="axisForm" novalidate><div class="axes-grid"><div class="axis-field"><label for="xmin" id="xminLabel"></label><input id="xmin" type="text" inputmode="decimal" value="1" aria-label="Mindste værdi på den vandrette akse"></div><div class="axis-field"><label for="xmax" id="xmaxLabel"></label><input id="xmax" type="text" inputmode="decimal" value="1,65" aria-label="Største værdi på den vandrette akse"></div><div class="axis-field"><label for="ymin" id="yminLabel"></label><input id="ymin" type="text" inputmode="decimal" value="-5" aria-label="Mindste værdi på den lodrette akse"></div><div class="axis-field"><label for="ymax" id="ymaxLabel"></label><input id="ymax" type="text" inputmode="decimal" value="20" aria-label="Største værdi på den lodrette akse"></div><button type="submit">Anvend akser</button></div><div class="viewtools"><label class="follow"><input type="checkbox" id="follow">Følg trinnet automatisk</label><button type="button" id="focus">Vis trinnet</button><button type="button" id="zoomIn" class="zoom" aria-label="Zoom ind">+</button><button type="button" id="zoomOut" class="zoom" aria-label="Zoom ud">−</button></div><p id="axisError" class="error" role="alert"></p></form><div id="plot" tabindex="0" role="group" aria-label="Graf. Klik for at vælge en startværdi."><svg id="graph" role="img" aria-label="Graf, tangent og næste beregnede værdi"></svg></div><div class="legend"><span><i style="background:var(--blue)"></i>Graf</span><span><i style="background:var(--gold)"></i>Tangent</span><span><i style="background:var(--green)"></i>Nyeste værdi</span><span class="hint">Klik i grafen for at vælge startværdi.</span></div><div id="viewHint"></div></section>
+<aside class="side" aria-label="Beregning og resultater"><div class="runhead"><span id="counter"></span><span class="badge" id="badge"></span></div><div class="values"><span id="xLabel"></span><span class="value" id="xValue"></span><span id="yLabel"></span><span class="value" id="yValue"></span><span id="slopeLabel"></span><span class="value" id="slopeValue"></span></div><div class="formula" id="formula"></div><div class="candidate" id="candidate"><span id="nextLabel"></span><span id="nextValue"></span></div><div class="result" id="result" hidden><small id="answerCaption">Resultat</small><div id="answer"></div><p id="answerNote"></p></div><p class="comparison" id="comparison"></p><div class="tablebox" id="tableBox"><table><thead><tr><th id="tableN"></th><th id="tableX"></th><th id="tableY"></th></tr></thead><tbody id="rows"></tbody></table></div><div class="tablefoot"><span>Beregningerne bruger uafrundede værdier.</span><button type="button" id="export">Gem CSV</button></div></aside></div>
+<section class="callout" id="callout" aria-live="polite" aria-atomic="true"><h2 id="messageTitle"></h2><p id="message"></p></section><div class="controls"><button class="primary" id="next" type="button">Vis tangenten</button><button id="back" type="button">Tilbage</button><button id="reset" type="button">Forfra</button><button id="play" type="button" aria-pressed="false">Afspil</button><span class="stoptext" id="stopText"></span></div>
+<footer><span>Offline · Mellemrum: næste trin · Esc: pause · Musehjul i grafen: zoom</span><span>Kun startværdien vælges. De næste værdier beregnes.</span></footer>
+</main>
+<dialog id="help"><button type="button" class="close" id="closeHelp">Luk</button><h2>Egen funktion og egne akser</h2><p>Indtast højresiden af funktionsforskriften. Den afledte beregnes automatisk og vises over grafen. Tryk på <strong>Anvend funktion</strong> for at begynde.</p><p>Brug <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>^</code> og parenteser. Du kan også skrive <code>2x</code> og <code>2(x+1)</code>. Funktionerne <code>exp</code>, <code>ln</code>, <code>sqrt</code>, <code>sin</code>, <code>cos</code> og <code>tan</code> skal have argumentet i parentes. Vinkler regnes i radianer. Konstanterne <code>e</code> og <code>pi</code> kan bruges.</p><p>Eksempler: <code>x^3-2*x+2</code>, <code>exp(2*x)-10</code>, <code>sqrt(x)-2</code> og <code>ln(x)-1</code>. Både decimalkomma og decimalpunktum accepteres.</p><p>Vælg aksernes minimum og maksimum i grafvinduet, og tryk på <strong>Anvend akser</strong>. Udsnittet bevares, mens du regner videre. <strong>Vis trinnet</strong> tilpasser udsnittet én gang. Sæt flueben i <strong>Følg trinnet automatisk</strong>, hvis udsnittet skal ændres undervejs.</p><h3>Nummerering</h3><p id="indexingNote">Startværdien betegnes <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>x</mi><mn>1</mn></msub></math>. Den første beregnede værdi er <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>x</mi><mn>2</mn></msub></math>. Bogen begynder med <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>x</mi><mn>0</mn></msub></math>. Det er samme metode; kun nummereringen er forskellig.</p><p>Modellen bruger bogens stopkriterium: to efterfølgende værdier sammenlignes efter afrunding til det valgte antal decimaler. Når de er ens, bruges den nyeste værdi som tilnærmelse. Der standses også, hvis funktionsværdien beregnes til præcis nul. Afrundet lighed er et praktisk stopkrav, ikke en sikker fejlgrænse til det præcise nulpunkt.</p><p>Funktionen og dens afledte skal være definerede ved den aktuelle værdi. Ved vandret eller næsten vandret tangent, udefinerede værdier eller efter 20 beregninger kan forløbet blive afbrudt uden et godkendt resultat. Prøv da en ny startværdi eller et andet udsnit.</p><p>Filen er selvstændig og fungerer offline. Der indsamles ingen oplysninger. Stopkravets idé følger Mike Vandal Auerbachs <em>Differentialregning</em>, §3.2, på <a href="https://www.mathematicus.dk/matematik/kernestof/Differentialregning.pdf" target="_blank" rel="noopener noreferrer">mathematicus.dk</a>. Undervisningsmodel: CC BY-NC-SA 4.0.</p></dialog><noscript><p>Modellen kræver, at JavaScript er tilladt i browseren.</p></noscript>
+<script>
+/* Matematiske udtryk læses som et syntakstræ, uden eval eller JavaScript-kode. */
+const N=value=>({type:'number',value}), X=()=>({type:'variable'}), C=name=>({type:'constant',name});
+const isN=(node,value)=>node.type==='number'&&(value===undefined||node.value===value);
+function neg(a){return isN(a)?N(-a.value):a.type==='negative'?a.arg:{type:'negative',arg:a};}
+function op(operator,a,b){
+  if(isN(a)&&isN(b)){
+    const value=operator==='+'?a.value+b.value:operator==='-'?a.value-b.value:operator==='*'?a.value*b.value:operator==='/'?a.value/b.value:a.value**b.value;
+    if(Number.isFinite(value))return N(value);
+  }
+  if(operator==='+'){if(isN(a,0))return b;if(isN(b,0))return a;}
+  if(operator==='-'){if(isN(b,0))return a;if(isN(a,0))return neg(b);}
+  if(operator==='*'){
+    if(isN(a,0)||isN(b,0))return N(0);if(isN(a,1))return b;if(isN(b,1))return a;
+    if(isN(a,-1))return neg(b);if(isN(b,-1))return neg(a);if(!isN(a)&&isN(b))return op('*',b,a);
+  }
+  if(operator==='/'&&isN(b,1))return a;
+  if(operator==='^'){if(isN(b,1))return a;if(isN(b,0))return N(1);}
+  return {type:'binary',operator,left:a,right:b};
+}
+const FUNCS={exp:Math.exp,ln:Math.log,sqrt:Math.sqrt,sin:Math.sin,cos:Math.cos,tan:Math.tan};
+function call(name,arg){
+  if(isN(arg)){const value=FUNCS[name](arg.value);if(Number.isFinite(value))return N(value);}
+  if(name==='ln'&&arg.type==='constant'&&arg.name==='e')return N(1);
+  return {type:'call',name,arg};
+}
+function parseExpression(input){
+  let source=input.trim().replace(/^f\s*\(\s*x\s*\)\s*=\s*/i,'').replaceAll('−','-').replace(/[·×]/g,'*').replaceAll('÷','/').replaceAll('π','pi').replaceAll(',','.').replaceAll('**','^');
+  if(source.length===0)throw new Error('Skriv en funktionsforskrift.');
+  if(source.length>300)throw new Error('Forskriften er for lang. Brug højst 300 tegn.');
+  const tokens=[];let offset=0;
+  while(offset<source.length){
+    if(/\s/.test(source[offset])){offset++;continue;}
+    const rest=source.slice(offset);
+    const number=rest.match(/^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/);
+    if(number){const value=Number(number[0]);if(!Number.isFinite(value))throw new Error('Et tal i forskriften er for stort.');tokens.push({kind:'number',value});offset+=number[0].length;continue;}
+    const name=rest.match(/^[a-zA-Z]+/);
+    if(name){tokens.push({kind:'name',value:name[0].toLowerCase()});offset+=name[0].length;continue;}
+    const ch=source[offset];if('+-*/^()'.includes(ch)){tokens.push({kind:ch});offset++;continue;}
+    throw new Error('Tegnet »'+ch+'« kan ikke bruges i forskriften.');
+  }
+  if(tokens.length>240)throw new Error('Forskriften er for omfattende.');
+  tokens.push({kind:'end'});let index=0,depth=0;
+  const peek=()=>tokens[index].kind;
+  const take=kind=>{if(peek()!==kind)throw new Error(kind===')'?'Der mangler en afsluttende parentes.':'Der mangler et tal, en funktion eller en parentes.');return tokens[index++];};
+  function sum(){let a=product();while(peek()==='+'||peek()==='-'){const operator=tokens[index++].kind;a={type:'binary',operator,left:a,right:product()};}return a;}
+  function product(){
+    let a=unary();
+    while(true){
+      if(peek()==='*'||peek()==='/'){const operator=tokens[index++].kind;a={type:'binary',operator,left:a,right:unary()};}
+      else if(['number','name','('].includes(peek()))a={type:'binary',operator:'*',left:a,right:unary()};
+      else break;
+    }return a;
+  }
+  function unary(){if(++depth>64)throw new Error('Forskriften har for mange indlejrede led.');let a;if(peek()==='+'||peek()==='-'){const sign=tokens[index++].kind;a=unary();if(sign==='-')a={type:'negative',arg:a};}else a=power();depth--;return a;}
+  function power(){let a=atom();if(peek()==='^'){index++;a={type:'binary',operator:'^',left:a,right:unary()};}return a;}
+  function atom(){
+    if(peek()==='number')return N(tokens[index++].value);
+    if(peek()==='('){index++;const a=sum();take(')');return a;}
+    if(peek()==='name'){
+      const name=tokens[index++].value;
+      if(name==='x')return X();if(name==='e'||name==='pi')return C(name);
+      if(!Object.hasOwn(FUNCS,name))throw new Error('Ukendt navn: '+name+'. Brug x, e, pi, exp, ln, sqrt, sin, cos eller tan.');
+      if(peek()!=='(')throw new Error('Skriv argumentet til '+name+' i parentes, fx '+name+'(x).');
+      index++;const arg=sum();take(')');return {type:'call',name,arg};
+    }
+    throw new Error('Der mangler et tal, x eller en parentes.');
+  }
+  const tree=sum();if(peek()!=='end')throw new Error('Kontrollér parenteserne og regnetegnene.');return tree;
+}
+function evaluate(node,x){
+  switch(node.type){
+    case 'number':return node.value;
+    case 'variable':return x;
+    case 'constant':return node.name==='e'?Math.E:Math.PI;
+    case 'negative':return -evaluate(node.arg,x);
+    case 'call':return FUNCS[node.name](evaluate(node.arg,x));
+    case 'binary':{
+      const a=evaluate(node.left,x),b=evaluate(node.right,x);
+      return node.operator==='+'?a+b:node.operator==='-'?a-b:node.operator==='*'?a*b:node.operator==='/'?a/b:a**b;
+    }
+  }
+}
+function differentiate(a){
+  if(a.type==='number'||a.type==='constant')return N(0);
+  if(a.type==='variable')return N(1);
+  if(a.type==='negative')return neg(differentiate(a.arg));
+  if(a.type==='call'){
+    const u=a.arg,d=differentiate(u);
+    if(a.name==='exp')return op('*',call('exp',u),d);
+    if(a.name==='ln')return op('/',d,u);
+    if(a.name==='sqrt')return op('/',d,op('*',N(2),call('sqrt',u)));
+    if(a.name==='sin')return op('*',call('cos',u),d);
+    if(a.name==='cos')return neg(op('*',call('sin',u),d));
+    return op('/',d,op('^',call('cos',u),N(2)));
+  }
+  const u=a.left,v=a.right,du=differentiate(u),dv=differentiate(v);
+  if(a.operator==='+')return op('+',du,dv);
+  if(a.operator==='-')return op('-',du,dv);
+  if(a.operator==='*')return op('+',op('*',du,v),op('*',u,dv));
+  if(a.operator==='/')return op('/',op('-',op('*',du,v),op('*',u,dv)),op('^',v,N(2)));
+  // Konstante eksponenter behandles særskilt, så fx negative argumenter i x^2 virker.
+  const exponent=containsX(v)?NaN:evaluate(v,0);
+  if(Number.isFinite(exponent))return op('*',op('*',N(exponent),op('^',u,N(exponent-1))),du);
+  if(u.type==='constant'&&u.name==='e')return op('*',op('^',u,v),dv);
+  return op('*',a,op('+',op('*',dv,call('ln',u)),op('*',v,op('/',du,u))));
+}
+function containsX(a){return a.type==='variable'||(a.type==='negative'||a.type==='call'?containsX(a.arg):a.type==='binary'?containsX(a.left)||containsX(a.right):false);}
+function nodeCount(a){return 1+(a.type==='negative'||a.type==='call'?nodeCount(a.arg):a.type==='binary'?nodeCount(a.left)+nodeCount(a.right):0);}
+
+/* Native MathML giver kursiv for variabler og oprette tal og navngivne funktioner. */
+const tag=(name,...children)=>`<${name}>${children.join('')}</${name}>`;
+const mi=s=>tag('mi',s),mn=s=>tag('mn',String(s)),mo=s=>tag('mo',s),row=(...s)=>tag('mrow',...s);
+const sub=(a,b)=>tag('msub',a,b),sup=(a,b)=>tag('msup',a,b),frac=(a,b)=>tag('mfrac',a,b);
+const m=(...s)=>`<math xmlns="http://www.w3.org/1998/Math/MathML">${row(...s)}</math>`;
+// Arrayet begynder ved 0; følgens matematiske nummerering begynder ved 1.
+const sequenceIndex=arrayIndex=>arrayIndex+1;
+const xn=()=>sub(mi('x'),mi('n')),nextX=()=>sub(mi('x'),row(mi('n'),mo('+'),mn(1))),xi=arrayIndex=>sub(mi('x'),mn(sequenceIndex(arrayIndex)));
+const star=()=>sup(mi('x'),mo('∗'));
+const fcall=(a,prime=false)=>row(mi('f'),prime?'<mo form="postfix" lspace="0em" rspace="0em" stretchy="false">′</mo>':'',mo('('),a,mo(')'));
+function fixedText(value,digits=9){const s=value.toFixed(digits);return s.includes('.')?s.replace(/0+$/,'').replace(/\.$/,''):s;}
+function numberMath(value,digits=9){
+  if(!Number.isFinite(value))return tag('mtext','ikke defineret');if(value===0)return mn(0);
+  const sign=value<0?mo('−'):'',a=Math.abs(value);
+  if(a<1e-5||a>=1e7){const [c,e]=a.toExponential(3).split('e');return row(sign,mn(c.replace('.',',')),mo('×'),sup(mn(10),row(Number(e)<0?mo('−'):'',mn(Math.abs(Number(e))))));}
+  return row(sign,mn(fixedText(a,digits).replace('.',',')));
+}
+function astMath(a,parent=0){
+  let out,precedence=5;
+  if(a.type==='number'){out=numberMath(a.value,10);if(a.value<0)precedence=3;}
+  else if(a.type==='variable')out=mi('x');
+  else if(a.type==='constant')out='<mi mathvariant="normal">'+(a.name==='e'?'e':'π')+'</mi>';
+  else if(a.type==='negative'){precedence=3;out=row(mo('−'),astMath(a.arg,3));}
+  else if(a.type==='call'){
+    if(a.name==='sqrt')out=tag('msqrt',astMath(a.arg));
+    else out=row('<mi mathvariant="normal">'+a.name+'</mi>',mo('('),astMath(a.arg),mo(')'));
+  }else{
+    const k=a.operator;precedence=k==='+'||k==='-'?1:k==='*'?2:k==='/'?5:4;
+    if(k==='/')out=frac(astMath(a.left),astMath(a.right));
+    else if(k==='^')out=sup(astMath(a.left,5),astMath(a.right));
+    else if(k==='*')out=row(astMath(a.left,2),mo('·'),astMath(a.right,2));
+    else out=row(astMath(a.left,1),mo(k==='-'?'−':'+'),astMath(a.right,k==='-'?2:1));
+  }
+  return precedence<parent?row(mo('('),out,mo(')')):out;
+}
+
+/* LÆRERENS TEKSTER: disse forklaringer kan redigeres direkte i HTML-filen. */
+const TEKSTER={
+  point:['1 · Fra aksen til grafen','Den aktuelle værdi bestemmer et punkt på grafen. Vi søger den værdi på aksen, hvor grafen har højden nul.'],
+  tangent:['2 · Tegn tangenten','Tangenten har samme hældning som grafen i punktet. Dens skæring med den vandrette akse giver den næste beregnede værdi.'],
+  intersection:['3 · Sammenlign de to værdier','Sammenlign den nye værdi med den foregående efter afrunding. Er de ens, standser vi og bruger den nyeste værdi. Ellers fortsætter beregningen.'],
+  pair:['De afrundede værdier er ens','Vi bruger den nyeste beregnede værdi som tilnærmelse til nulpunktet.'],
+  zero:['Funktionsværdien er nul','Den aktuelle værdi giver nul med computerens præcision. Vi kan bruge den som nulpunkt uden at dividere med en hældning på nul.'],
+  flat:['Vandret eller næsten vandret tangent','En ny værdi kan ikke beregnes sikkert med denne hældning. Prøv en anden startværdi.'],
+  domain:['Funktionen eller den afledte kan ikke beregnes','Vælg en anden startværdi. Grafen vises dér, hvor funktionen kan beregnes.'],
+  domain_next:['Den næste værdi kan ikke bruges','Funktionsværdien kan ikke beregnes ved tangentens skæring med aksen. Prøv en anden startværdi.'],
+  large:['Værdierne bliver for store','Dette forløb går uden for modellens talområde. Vælg en anden startværdi eller en enklere forskrift.'],
+  limit:['Stoppet uden godkendt resultat','Der er udført 20 beregninger, og stopkravet er stadig ikke opfyldt. Grænsen forhindrer en endeløs løkke. Den gør ikke resultatet korrekt.']
+};
+const $=id=>document.getElementById(id),LIMIT=1e12;
+const state={tree:null,derivative:null,start:1.5,values:[1.5],phase:0,d:5,view:[1,1.65,-5,20],follow:false,timer:null};
+const n=()=>state.values.length-1,x=()=>state.values.at(-1);
+const fv=v=>evaluate(state.tree,v),dv=v=>evaluate(state.derivative,v);
+function afrund(value,d=state.d){const k=10**d;return Math.sign(value)*Math.floor(Math.abs(value)*k+.5)/k;}
+const pairMatches=()=>n()>0&&afrund(state.values.at(-2))===afrund(x());
+const rounded=value=>{const a=afrund(value);return row(a<0?mo('−'):'',mn(Math.abs(a).toFixed(state.d).replace('.',',')));};
+function assess(){
+  const current=x(),y=fv(current),s=dv(current);
+  if(!Number.isFinite(y))return {type:'domain',current,y,s};
+  if(Math.abs(y)>LIMIT)return {type:'large',current,y,s};
+  if(pairMatches())return {type:'pair',done:true,current,y,s};
+  if(y===0&&(!Number.isFinite(s)||Math.abs(s)<1e-12))return {type:'zero',done:true,current,y,s};
+  if(!Number.isFinite(s))return {type:'domain',current,y,s};
+  if(Math.abs(s)>LIMIT)return {type:'large',current,y,s};
+  if(Math.abs(s)<1e-12)return {type:'flat',current,y,s};
+  if(n()>=20)return {type:'limit',current,y,s};
+  const next=current-y/s;
+  if(!Number.isFinite(next)||Math.abs(next)>LIMIT)return {type:'large',current,y,s};
+  const nextY=fv(next);
+  if(!Number.isFinite(nextY))return {type:'domain_next',current,y,s,next};
+  if(Math.abs(nextY)>LIMIT)return {type:'large',current,y,s,next};
+  return {type:['point','tangent','intersection'][state.phase],current,y,s,next,valid:true};
+}
+function parseNumber(value){const s=value.trim().replaceAll('−','-').replace(',','.');return s===''?NaN:Number(s);}
+function pause(){if(state.timer!==null)clearTimeout(state.timer);state.timer=null;$('play').textContent='Afspil';$('play').setAttribute('aria-pressed','false');}
+function setFollow(enabled){state.follow=enabled;$('follow').checked=enabled;}
+function syncAxes(){['xmin','xmax','ymin','ymax'].forEach((id,i)=>{$(id).value=String(state.view[i]).replace('.',',');});}
+function applyAxes(event){
+  event?.preventDefault();const values=['xmin','xmax','ymin','ymax'].map(id=>parseNumber($(id).value));
+  if(!values.every(v=>Number.isFinite(v)&&Math.abs(v)<=LIMIT)){$('axisError').textContent='Skriv endelige tal mellem −1 000 000 000 000 og 1 000 000 000 000.';return;}
+  if(values[0]>=values[1]||values[2]>=values[3]){$('axisError').textContent='Minimum skal være mindre end maksimum på begge akser.';return;}
+  if(values[1]-values[0]<Number.EPSILON*Math.max(1,Math.abs(values[0]),Math.abs(values[1]))*8||values[3]-values[2]<Number.EPSILON*Math.max(1,Math.abs(values[2]),Math.abs(values[3]))*8){$('axisError').textContent='Aksegrænserne ligger for tæt på hinanden til computerens præcision.';return;}
+  pause();state.view=values;setFollow(false);$('axisError').textContent='';syncAxes();draw();viewHint();
+}
+function applyFunction(event){
+  event?.preventDefault();let tree,derivative,start;
+  try{
+    tree=parseExpression($('expression').value);derivative=differentiate(tree);
+    if(nodeCount(derivative)>3500)throw new Error('Den afledte bliver for omfattende. Prøv en enklere forskrift.');
+    start=parseNumber($('start').value);
+    if(!Number.isFinite(start)||Math.abs(start)>LIMIT)throw new Error('Startværdien skal være et endeligt tal i modellens talområde.');
+  }catch(error){pause();$('functionError').textContent=error.message;$('expression').setAttribute('aria-invalid','true');return false;}
+  state.tree=tree;state.derivative=derivative;$('functionError').textContent='';$('expression').removeAttribute('aria-invalid');
+  resetRun(start);return true;
+}
+function resetRun(value=state.start){
+  pause();state.start=value;state.values=[value];state.phase=0;$('start').value=String(value).replace('.',',');
+  if(state.follow)fitStep();render();
+}
+function step(automatic=false){
+  if(!automatic)pause();const a=assess();if(!a.valid){render();return;}
+  if(state.phase<2)state.phase++;else{state.values.push(a.next);state.phase=0;if(state.follow)fitStep(true);}
+  render();
+}
+function back(){pause();if(state.phase>0)state.phase--;else if(n()>0){state.values.pop();state.phase=2;}if(state.follow)fitStep();render();}
+function tick(){state.timer=null;step(true);if(!assess().valid){pause();return;}$('play').textContent='Pause';$('play').setAttribute('aria-pressed','true');state.timer=setTimeout(tick,1300);}
+function play(){if(state.timer!==null){pause();return;}if(!assess().valid)return;$('play').textContent='Pause';$('play').setAttribute('aria-pressed','true');state.timer=setTimeout(tick,300);}
+function fitStep(hold=false){
+  const a=assess();if(!Number.isFinite(a.y)||Math.abs(a.y)>LIMIT)return;
+  if(hold&&a.done&&x()>state.view[0]&&x()<state.view[1])return;
+  const other=a.done&&n()>0?state.values.at(-2):a.valid?a.next:x();
+  const span=Math.max(Math.abs(other-x())*2.6,other===x()?.5:Number.EPSILON*Math.max(1,Math.abs(x()))*128);
+  const center=(other+x())/2,left=center-span/2,right=center+span/2;
+  if(Math.abs(left)>LIMIT||Math.abs(right)>LIMIT)return;
+  const ys=[0,a.y];for(let i=0;i<=40;i++){const v=fv(left+(right-left)*i/40);if(Number.isFinite(v)&&Math.abs(v)<=LIMIT/4)ys.push(v);}
+  if(Number.isFinite(a.s))for(const end of [left,right]){const v=a.y+a.s*(end-x());if(Number.isFinite(v)&&Math.abs(v)<=LIMIT/4)ys.push(v);}
+  const lo=Math.min(...ys),hi=Math.max(...ys),height=Math.max(hi-lo,Number.EPSILON*Math.max(1,Math.abs(lo),Math.abs(hi))*128);
+  const view=[left,right,lo-height*.16,hi+height*.16];
+  if(view.every(Number.isFinite)&&view.every(v=>Math.abs(v)<=LIMIT)){state.view=view;syncAxes();$('axisError').textContent='';}
+}
+function render(){
+  const a=assess(),count=n(),bx=x(),by=fv(bx),bs=dv(bx);
+  $('function').innerHTML=m(fcall(mi('x')),mo('='),astMath(state.tree));
+  $('derivative').innerHTML=m(fcall(mi('x'),true),mo('='),astMath(state.derivative));
+  $('inputSymbol').innerHTML=m(fcall(mi('x')),mo('='));$('startSymbol').innerHTML=m(xi(0));
+  for(const axis of ['x','y'])for(const end of ['min','max'])$(axis+end+'Label').innerHTML=m(sub(mi(axis),tag('mtext',end)));
+  const displaySymbol=a.type==='pair'?nextX():xn(),valueLabel=a.done?xi(count):xn(),valueSymbol=a.done?mo('≈'):mo('=');
+  $('xLabel').innerHTML=m(displaySymbol,mo('='),xi(count));$('yLabel').innerHTML=m(fcall(valueLabel));$('slopeLabel').innerHTML=m(fcall(valueLabel,true));
+  $('xValue').innerHTML=m(valueSymbol,numberMath(bx,a.done?12:9));$('yValue').innerHTML=m(valueSymbol,numberMath(by));$('slopeValue').innerHTML=m(valueSymbol,numberMath(bs));
+  $('counter').textContent=count+' beregning'+(count===1?'':'er');$('badge').textContent=a.done?'Accepteret tilnærmelse':count?'Beregnet værdi':'Valgt startværdi';$('badge').className='badge'+(a.done?' done':'');
+  $('formula').innerHTML=a.done?m(star(),mo('≈'),a.type==='pair'?nextX():xn(),mo('='),xi(count)):m(nextX(),mo('='),xn(),mo('−'),frac(fcall(xn()),fcall(xn(),true)));
+  $('candidate').hidden=!!a.done;$('result').hidden=!a.done;
+  if(a.done){
+    $('answerCaption').textContent=count===0?'Resultat · valgt startværdi':'Resultat · nyeste beregnede værdi';
+    $('answer').innerHTML=m(star(),mo('≈'),numberMath(x(),12));
+    const geometryNote=a.type==='pair'?' Grafen viser den sidste tangent fra '+m(xi(count-1))+' til '+m(xi(count))+'.':'';
+    $('answerNote').innerHTML='Vi bruger '+(count===0?'startværdien ':'den nyeste beregnede værdi ')+m(displaySymbol,mo('='),xi(count))+'.'+geometryNote+' '+m(xi(count+1))+' beregnes ikke.';
+  }else{
+    $('nextLabel').innerHTML=a.valid?m(nextX()):'Resultat';
+    $('nextValue').innerHTML=a.valid?m(mo('='),state.phase===2?numberMath(a.next):mo('?')):'Ingen godkendt tilnærmelse';
+  }
+  if(a.type==='pair')$('comparison').innerHTML='Afrundet til '+state.d+' decimaler: '+m(xi(count-1),mo('≈'),rounded(state.values.at(-2)))+' og '+m(xi(count),mo('≈'),rounded(x()))+'.';
+  else if(a.type==='zero')$('comparison').innerHTML=m(fcall(xi(count)),mo('='),mn(0))+'. Den afledte behøver ikke kunne bruges til en ny beregning.';
+  else if(a.valid&&state.phase===2)$('comparison').innerHTML='Sammenlign '+m(xi(count),mo('≈'),rounded(x()))+' og '+m(xi(count+1),mo('≈'),rounded(a.next))+'.';
+  else $('comparison').textContent='Den afledte beregnes automatisk fra den indtastede forskrift.';
+  const text=TEKSTER[a.type];$('messageTitle').textContent=text[0];$('message').textContent=text[1];
+  $('callout').className='callout'+(a.done?' done':a.valid?'':' failed');
+  $('next').textContent=a.done?'Kravet er opfyldt':a.valid?['Vis tangenten','Find skæringen','Sammenlign og fortsæt'][state.phase]:'Beregningen er standset';
+  $('next').disabled=!a.valid;$('play').disabled=!a.valid;$('back').disabled=count===0&&state.phase===0;
+  if(!a.valid)pause();
+  $('stopText').textContent='Stop: to efterfølgende værdier er ens med '+state.d+' decimaler.';
+  $('tableN').innerHTML=m(mi('n'));$('tableX').innerHTML=m(xn());$('tableY').innerHTML=m(fcall(xn()));
+  $('rows').innerHTML=state.values.map((v,i)=>'<tr class="'+(i===count?'current':'')+'"><td>'+sequenceIndex(i)+'</td><td>'+m(numberMath(v,12))+'</td><td>'+m(numberMath(fv(v),6))+'</td></tr>').join('');
+  $('tableBox').scrollTop=$('tableBox').scrollHeight;draw();viewHint();
+}
+function viewHint(){
+  const a=assess(),[xmin,xmax,ymin,ymax]=state.view;
+  const visible=(xx,yy)=>Number.isFinite(yy)&&xx>=xmin&&xx<=xmax&&yy>=ymin&&yy<=ymax;
+  $('viewHint').textContent=!visible(x(),fv(x()))||(a.valid&&state.phase===2&&!visible(a.next,0))?'En del af trinnet ligger uden for udsnittet. Brug »Vis trinnet« eller justér akserne.':'';
+}
+
+/* SVG-GRAF */
+const SVG='http://www.w3.org/2000/svg';
+function svg(name,attrs={},text=null){const el=document.createElementNS(SVG,name);for(const[k,v]of Object.entries(attrs))el.setAttribute(k,v);if(text!==null)el.textContent=text;return el;}
+function geometry(){const r=$('plot').getBoundingClientRect();return {w:r.width,h:r.height,l:75,r:Math.max(130,r.width-24),t:17,b:Math.max(75,r.height-40)};}
+function pixel(xx,yy){const g=geometry(),[x0,x1,y0,y1]=state.view;return [g.l+(xx-x0)/(x1-x0)*(g.r-g.l),g.b-(yy-y0)/(y1-y0)*(g.b-g.t)];}
+function world(px,py){const g=geometry(),[x0,x1,y0,y1]=state.view;return [x0+(px-g.l)/(g.r-g.l)*(x1-x0),y1-(py-g.t)/(g.b-g.t)*(y1-y0)];}
+function clip(x0,y0,x1,y1){
+  const [xmin,xmax,ymin,ymax]=state.view,dx=x1-x0,dy=y1-y0;let lo=0,hi=1;
+  if(![x0,y0,x1,y1,dx,dy].every(Number.isFinite))return null;
+  for(const[p,q]of[[-dx,x0-xmin],[dx,xmax-x0],[-dy,y0-ymin],[dy,ymax-y0]]){
+    if(p===0){if(q<0)return null;}else{const k=q/p;if(p<0)lo=Math.max(lo,k);else hi=Math.min(hi,k);if(lo>hi)return null;}
+  }return [x0+lo*dx,y0+lo*dy,x0+hi*dx,y0+hi*dy];
+}
+function graphMath(group,px,py,node,kind=''){
+  const f=svg('foreignObject',{x:px-35,y:py-12,width:70,height:32,'pointer-events':'none'}),div=document.createElementNS('http://www.w3.org/1999/xhtml','div');
+  div.setAttribute('class','graphmath '+kind);div.innerHTML=m(node);f.append(div);group.append(f);
+}
+function tickText(v,d){if(Math.abs(v)<1e-5&&v!==0||Math.abs(v)>1e7)return v.toExponential(2).replace('.',',').replaceAll('-','−');return fixedText(v,d).replace('.',',').replace('-','−');}
+function niceStep(span,count){const raw=Math.max(span/count,1e-16),power=10**Math.floor(Math.log10(raw));return [1,2,5,10].map(k=>k*power).find(v=>v>=raw);}
+function draw(){
+  if(!state.tree)return;const root=$('graph'),g=geometry();if(g.w<100)return;
+  root.setAttribute('viewBox',`0 0 ${g.w} ${g.h}`);root.replaceChildren();
+  const defs=svg('defs'),cp=svg('clipPath',{id:'plotClip'});cp.append(svg('rect',{x:g.l,y:g.t,width:g.r-g.l,height:g.b-g.t}));defs.append(cp);root.append(defs);
+  const grid=svg('g'),curves=svg('g',{'clip-path':'url(#plotClip)'}),labels=svg('g');root.append(grid,curves,labels);
+  const [xmin,xmax,ymin,ymax]=state.view;
+  const line=(group,x0,y0,x1,y1,color,width=1,dash=null)=>{const c=clip(x0,y0,x1,y1);if(!c)return;const a=pixel(c[0],c[1]),b=pixel(c[2],c[3]);const attrs={x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:color,'stroke-width':width};if(dash)attrs['stroke-dasharray']=dash;group.append(svg('line',attrs));};
+  const dot=(xx,yy,color,r=5)=>{if(!Number.isFinite(yy)||xx<xmin||xx>xmax||yy<ymin||yy>ymax)return;const [cx,cy]=pixel(xx,yy);curves.append(svg('circle',{cx,cy,r,fill:color,stroke:'#0d1929','stroke-width':1.5}));};
+  const [zx,zy]=pixel(0,0),axisX=Math.min(Math.max(zx,g.l),g.r),axisY=Math.min(Math.max(zy,g.t),g.b);
+  for(const[low,high,axis]of[[xmin,xmax,'x'],[ymin,ymax,'y']]){
+    const count=axis==='x'?Math.max(3,Math.min(8,(g.r-g.l)/85)):Math.max(3,Math.min(8,(g.b-g.t)/42));
+    const step=niceStep(high-low,count),start=Math.ceil(low/step),end=Math.floor(high/step),digits=Math.min(14,Math.max(0,-Math.floor(Math.log10(step))));
+    for(let j=start;j<=end&&j<start+30;j++){
+      const v=j*step;if(axis==='x'){line(grid,v,ymin,v,ymax,'#1d3047');if(Math.abs(v)>step*.01){const [px]=pixel(v,0);labels.append(svg('text',{x:px,y:axisY+18,'text-anchor':'middle'},tickText(v,digits)));}}
+      else{line(grid,xmin,v,xmax,v,'#1d3047');if(Math.abs(v)>step*.01){const [,py]=pixel(0,v);labels.append(svg('text',{x:axisX-8,y:py+4,'text-anchor':'end'},tickText(v,digits)));}}
+    }
+  }
+  line(grid,xmin,0,xmax,0,'#6d849f',1.3);line(grid,0,ymin,0,ymax,'#6d849f',1.3);
+  graphMath(labels,g.r-3,axisY-15,mi('x'));graphMath(labels,axisX+15,g.t+9,mi('y'));
+  let path='',last=null;
+  for(let i=0;i<=850;i++){
+    const xx=xmin+(xmax-xmin)*i/850,yy=fv(xx);
+    if(!Number.isFinite(yy)||Math.abs(yy)>LIMIT*64){last=null;continue;}
+    if(last){
+      // En lodret asymptote må ikke blive tegnet som en forbindelse mellem to grene.
+      const opposite=(last[1]<ymin&&yy>ymax)||(last[1]>ymax&&yy<ymin),mid=fv((last[0]+xx)/2);
+      if(!opposite&&Number.isFinite(mid)){const c=clip(last[0],last[1],xx,yy);if(c){const a=pixel(c[0],c[1]),b=pixel(c[2],c[3]);path+=`M${a[0].toFixed(2)},${a[1].toFixed(2)}L${b[0].toFixed(2)},${b[1].toFixed(2)}`;}}
+    }last=[xx,yy];
+  }
+  curves.append(svg('path',{d:path,stroke:'#6cd3f0','stroke-width':2.6,fill:'none','stroke-linecap':'round'}));
+  const a=assess(),base=a.type==='pair'?n()-1:n(),bx=state.values[base],by=fv(bx),s=dv(bx);
+  for(const old of state.values.slice(Math.max(0,base-4),base)){const y=fv(old),slope=dv(old);line(curves,xmin,y+slope*(xmin-old),xmax,y+slope*(xmax-old),'#504b40');}
+  line(curves,bx,0,bx,by,'#6f9db7',1.4,'4 5');
+  if(state.phase>=1||a.type==='pair')line(curves,xmin,by+s*(xmin-bx),xmax,by+s*(xmax-bx),'#f3ce7b',2.1);
+  if(a.type==='flat')line(curves,xmin,by,xmax,by,'#f3a399',2);
+  dot(bx,0,a.type==='zero'?'#9fe0bc':'#f3ce7b');dot(bx,by,a.type==='zero'?'#9fe0bc':'#6cd3f0',6);
+  if(bx>=xmin&&bx<=xmax&&ymin<=0&&ymax>=0){const [px,py]=pixel(bx,0);graphMath(labels,px,Math.min(py+30,g.h-15),xi(base),a.type==='zero'?'next':'current');}
+  const candidate=a.type==='pair'?x():a.valid&&state.phase===2?a.next:null;
+  if(candidate!==null){dot(candidate,0,'#9fe0bc',6.5);const [px,py]=pixel(candidate,0);if(px>=g.l&&px<=g.r&&ymin<=0&&ymax>=0)graphMath(labels,px,Math.max(py-24,g.t+10),xi(a.type==='pair'?n():n()+1),'next');}
+}
+function zoom(factor,center=null){
+  const [l,r,b,t]=state.view,[cx,cy]=center||[x(),0],view=[cx+(l-cx)*factor,cx+(r-cx)*factor,cy+(b-cy)*factor,cy+(t-cy)*factor];
+  if(!view.every(Number.isFinite)||view.some(v=>Math.abs(v)>LIMIT)||r-l<1e-13&&factor<1||t-b<1e-13&&factor<1)return;
+  state.view=view;setFollow(false);syncAxes();draw();viewHint();
+}
+function csvContent(){return '\ufeffn;x_n;f(x_n)\r\n'+state.values.map((v,i)=>[sequenceIndex(i),String(v).replace('.',','),String(fv(v)).replace('.',',')].join(';')).join('\r\n')+'\r\n';}
+function exportCsv(){const url=URL.createObjectURL(new Blob([csvContent()],{type:'text/csv;charset=utf-8'})),link=document.createElement('a');link.href=url;link.download='newtons_metode_egen_funktion.csv';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+
+$('functionForm').addEventListener('submit',applyFunction);$('axisForm').addEventListener('submit',applyAxes);
+$('decimals').addEventListener('change',()=>{pause();state.d=Number($('decimals').value);if(state.follow)fitStep(true);render();});
+$('next').addEventListener('click',()=>step());$('back').addEventListener('click',back);$('reset').addEventListener('click',()=>resetRun());$('play').addEventListener('click',play);
+$('follow').addEventListener('change',()=>{setFollow($('follow').checked);if(state.follow){fitStep();draw();viewHint();}});
+$('focus').addEventListener('click',()=>{fitStep();draw();viewHint();});$('zoomIn').addEventListener('click',()=>zoom(.7));$('zoomOut').addEventListener('click',()=>zoom(1/.7));$('export').addEventListener('click',exportCsv);
+$('helpButton').addEventListener('click',()=>{pause();$('help').showModal();});$('closeHelp').addEventListener('click',()=>$('help').close());
+$('plot').addEventListener('click',event=>{const box=$('plot').getBoundingClientRect(),px=event.clientX-box.left,py=event.clientY-box.top,g=geometry();if(px<g.l||px>g.r||py<g.t||py>g.b)return;const [value]=world(px,py);if(Number.isFinite(value)&&Math.abs(value)<=LIMIT)resetRun(value);});
+$('plot').addEventListener('wheel',event=>{event.preventDefault();const r=$('plot').getBoundingClientRect();zoom(event.deltaY<0?.8:1.25,world(event.clientX-r.left,event.clientY-r.top));},{passive:false});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){pause();return;}if(event.code==='Space'&&!['INPUT','SELECT','TEXTAREA','BUTTON'].includes(document.activeElement.tagName)&&!$('help').hasAttribute('open')){event.preventDefault();step();}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
+new ResizeObserver(()=>draw()).observe($('plot'));
+applyFunction();syncAxes();
+
+</script></body></html>
