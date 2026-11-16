@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Induktionsbevis"
+title: "Applikationer med beviser"
 ---
 
-# Induktionsbevis
+# Liste med applikationer
 
-- [Applikation: Bevis](./induktionsbevis_for_summen_af_ulige_tal.html)
+- [Applikation: Induktionsbevis for summen af ulige tal og n^2](./induktionsbevis_for_summen_af_ulige_tal.html)
 
 <div style="text-align: center;">
 [Tilbage til forsiden](https://jenskaalby.github.io/matkem/) 
