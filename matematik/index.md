@@ -14,6 +14,7 @@ Velkommen til matematikdelen af læringsportalen!
 - [Deskriptiv statistik](./deskstat/index.html)
 - [Linje og cirkel](./lincir/index.html)
 - [Differentialregning](./diffr/index.html)
+- [Newtons metode](./newtons_metode/index.html)
 
 <div style="text-align: center;">
 [Tilbage til forsiden](https://jenskaalby.github.io/matkem/) 
