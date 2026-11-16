@@ -3,7 +3,7 @@ layout: default
 title: "Applikationer med beviser"
 ---
 
-# Liste med applikationer
+# Liste med bevisapplikationer
 
 - [Applikation: Induktionsbevis for summen af ulige tal og $n^2$](./induktionsbevis_for_summen_af_ulige_tal.html)
 
