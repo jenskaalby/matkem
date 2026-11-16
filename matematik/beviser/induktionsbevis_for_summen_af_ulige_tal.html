@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f4ef">
+<title>Summen af ulige tal · Induktionsbevis</title>
+<style>
+:root{--paper:#f5f4ef;--card:#fffefa;--ink:#182e31;--sub:#435a5a;--accent:#155f61;--pale:#e1ede8;--edge:#cbd4ce;--line:#a9bdb7;--serif:"STIX Two Text",Georgia,"Times New Roman",serif;--sans:"Source Sans 3","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55}
+main{max-width:1160px;padding:clamp(25px,5vw,66px) clamp(16px,4vw,54px) 48px;margin:auto}
+h1,h2,h3,p{margin:0}
+h1{font:500 clamp(2.3rem,5.7vw,4.7rem)/1.07 var(--serif);letter-spacing:-.048em}
+.intro{font-size:clamp(1rem,1.8vw,1.19rem);color:var(--sub);margin-top:12px;max-width:50em}
+math{font-size:1.08em;font-family:"STIX Two Math","Cambria Math",math}
+button,a{font:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid #ad590e;outline-offset:4px}
+.tabs{display:flex;gap:clamp(12px,3vw,38px);margin:26px 0 22px;border-bottom:1px solid #becdc6}
+.tab{padding:10px 1px 12px;color:var(--sub);text-decoration:none;border-bottom:3px solid transparent;font-weight:650}
+.tab[aria-current="page"]{color:var(--accent);border-color:var(--accent)}
+.panel{background:var(--card);border:1px solid var(--edge);border-radius:18px;overflow:hidden}
+.board{display:grid;grid-template-columns:1.06fr 1fr}
+.figure{margin:0;background:#eaf1eb;padding:18px 22px 15px;display:flex;flex-direction:column;min-width:0}
+.fighead,.legend,.stepper,.controls,.actions,.stepkeys{display:flex;align-items:center}
+.fighead{justify-content:space-between;gap:10px;font-size:.95rem;color:var(--sub)}
+#figure-id{font-size:1.09rem;color:var(--ink)}
+#drawing{width:100%;height:clamp(215px,25vw,290px);display:block;overflow:visible}
+.legend{justify-content:center;gap:24px;min-height:25px;flex-wrap:wrap;font-size:.83rem;color:#354e4d}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.mark{display:inline-block;width:12px;height:12px;border:2px solid #4a6665;border-radius:50%;background:#fffefa}
+.mark.added{background:var(--accent);border-color:var(--accent)}
+.copy{padding:clamp(22px,3.8vw,44px);display:flex;flex-direction:column;justify-content:center;gap:13px;min-width:0}
+.copy h2{font:500 clamp(1.7rem,3.2vw,2.65rem)/1.14 var(--serif);letter-spacing:-.025em}
+.bigmath{color:var(--accent);font-size:clamp(1.3rem,2.5vw,2rem);line-height:1.15}
+.bodytext{font-size:1.015rem;max-width:32em}
+.cumulative{margin-top:3px;padding-top:13px;border-top:1px solid var(--edge);color:var(--sub)}
+.cumulative div:first-child{font-size:.85rem;margin-bottom:3px}
+.cumulative .formula{font-size:1.1rem;color:var(--ink)}
+.stepper{gap:12px;flex-wrap:wrap;padding:16px 22px;border-top:1px solid var(--edge);background:#fbfcf8}
+.step-label{font-size:.86rem;font-weight:650;color:var(--sub)}
+.stepkeys{gap:6px;flex-wrap:wrap}
+.stepkey{border:1px solid var(--edge);background:transparent;min-width:38px;height:36px;padding:0 9px;border-radius:8px;color:var(--sub);line-height:1}
+.stepkey[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.stepkey:hover:not([aria-pressed="true"]),.btn:hover:not(:disabled){background:var(--pale);border-color:#759993}
+.controls{justify-content:space-between;gap:12px;margin:16px 0 0;flex-wrap:wrap}
+.actions{gap:8px}
+.btn{color:var(--ink);background:#fffefa;border:1px solid #b0c0b9;border-radius:9px;min-height:43px;padding:8px 15px;font-weight:600;font-size:.94rem;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:white}
+.btn.primary:hover:not(:disabled){background:#0c4b4c;color:white}
+.btn:disabled{opacity:.45;cursor:default}
+.btn svg{width:16px;height:16px;flex-shrink:0}
+.hint{color:var(--sub);font-size:.93rem;margin-top:21px}
+.hint a,.proof a{color:var(--accent);font-weight:650;text-underline-offset:3px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.proof{max-width:840px;padding:clamp(20px,4vw,44px);background:var(--card);border:1px solid var(--edge);border-radius:15px}
+.proof h2{font:500 clamp(1.8rem,3.3vw,2.5rem)/1.2 var(--serif);margin-bottom:12px}
+.proof h3{font-size:1.13rem;line-height:1.3;margin:25px 0 8px}
+.proof p{margin:9px 0}
+.display{margin:13px 0;text-align:center;line-height:1.65;font-size:clamp(1.04rem,2vw,1.24rem)}
+.sumchain{display:flex;flex-wrap:wrap;gap:0 .21em;justify-content:center;align-items:baseline}
+.focusterm{color:var(--accent)}
+.proof-end{display:inline-block;font-size:.8em;margin-left:.4em}
+.proofnav{margin-top:24px}
+svg .added-dot{transform-box:fill-box;transform-origin:center;animation:dot-in .37s ease-out backwards;animation-delay:var(--delay,0s)}
+@keyframes dot-in{from{opacity:0;transform:scale(.38)}to{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:680px){main{padding-top:23px}.tabs{margin:17px 0 15px}.board{grid-template-columns:1fr}.figure{padding:11px 16px 10px}#drawing{height:206px}.copy{padding:19px 18px;gap:8px}.copy h2{font-size:1.65rem}.cumulative{padding-top:7px}.stepper{gap:7px;padding:12px}.stepkey{min-width:32px;height:34px;padding:0 7px}.controls{gap:8px}.btn{padding:8px 11px;font-size:.89rem}.legend{font-size:.78rem}.hint{margin-top:14px}.proof{padding:19px 15px}}
+@media(max-width:370px){.controls{align-items:stretch}.actions{flex:1}.actions button{flex:1}.stepper{align-items:flex-start;flex-direction:column}.tab{font-size:.9rem}}
+@media print{body{color:#111;background:white}main{max-width:none;padding:0}header h1{font-size:23pt}.intro{font-size:11pt}.tabs,#figurepane,.proofnav,.noscript{display:none!important}#proofpane[hidden],#proofpane{display:block!important}.proof{border:0;padding:0;max-width:none}.proof h2{font-size:16pt;margin:8pt 0}.proof h3{font-size:12pt;margin:12pt 0 4pt}.proof p,.proof{font-size:11pt}.display{font-size:12pt;margin:5pt 0}h2,h3,.display{break-after:avoid}@page{size:A4;margin:19mm}}
+.tab{font-size:clamp(.84rem,1.6vw,1rem)}
+.proof-caption{min-height:26px;text-align:center;font-size:.88rem;color:var(--sub)}
+.proofcopy{gap:16px}
+.proofcopy h2{font-size:clamp(1.6rem,3vw,2.13rem)}
+#proofkeys .stepkey{font-size:.82rem}
+.motionmath{font-size:clamp(1.02rem,1.75vw,1.3rem);min-height:73px}
+.mathline{display:flex;flex-wrap:wrap;align-items:center;gap:.35em;line-height:1.65}
+.eqstep{display:block;margin:4px 0;color:var(--accent);animation:reveal .45s ease-out both;animation-delay:var(--wait,.3s)}
+@keyframes reveal{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.swaprow{display:flex;flex-wrap:wrap;align-items:center;gap:3px;min-height:52px}
+.swap{display:inline-grid;align-items:center;justify-items:center;min-height:38px;padding:3px 8px;background:var(--pale);border-bottom:2px solid var(--accent);border-radius:4px;color:var(--accent)}
+.swap>*{grid-area:1/1}
+.before{animation:swap-out 2.4s ease-in-out forwards}
+.after{animation:swap-in 2.4s ease-in-out forwards}
+@keyframes swap-out{0%,55%{opacity:1;transform:translateY(0)}78%,100%{opacity:0;transform:translateY(-7px)}}
+@keyframes swap-in{0%,55%{opacity:0;transform:translateY(7px)}88%,100%{opacity:1;transform:translateY(0)}}
+.area-appear{animation:reveal .55s ease-out both;animation-delay:var(--wait,0s)}
+.replay{display:inline-block;background:transparent;border:none;padding:5px 1px;margin:8px 0 0;color:var(--accent);font-weight:650;font-size:.79rem;text-decoration:underline;text-underline-offset:3px}
+.is-paused *{animation-play-state:paused!important}
+.outer-trace{stroke-dasharray:800;animation:trace 1.7s ease-out both}
+@keyframes trace{from{stroke-dashoffset:800}to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.before{visibility:hidden}.after{opacity:1}.outer-trace{stroke-dashoffset:0}}
+@media(max-width:680px){.tabs{gap:clamp(8px,3.6vw,24px)}.proofcopy{gap:10px}.motionmath{min-height:50px}.proof-caption{min-height:18px}.tab{line-height:1.3}}
+@media print{#animatedpane{display:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>Summen af ulige tal</h1><p class="intro">Summen af de første <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>n</mi></mrow></math> positive ulige tal er <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><msup><mi>n</mi><mn>2</mn></msup></mrow></math>.</p></header>
+<nav class="tabs" aria-label="Visning"><a class="tab" id="figlink" href="#figur" aria-current="page">Kvadratfiguren</a><a class="tab" id="animlink" href="#trin">Bevis trin for trin</a><a class="tab" id="prooflink" href="#bevis">Læs hele beviset</a></nav>
+<noscript><p class="noscript">Animationen kræver JavaScript. Du kan læse hele beviset nedenfor.</p></noscript>
+<section id="figurepane" hidden aria-label="Animeret kvadratfigur">
+<div class="panel">
+<div class="board">
+<figure class="figure">
+<div class="fighead"><span id="figure-id"></span><span id="figure-count"></span></div>
+<svg id="drawing" viewBox="0 0 400 262" role="img" aria-labelledby="svgtitle svgdesc"></svg>
+<figcaption class="legend" id="legend"><span><i class="mark" aria-hidden="true"></i>Tidligere prikker</span><span><i class="mark added" aria-hidden="true"></i>Nye prikker</span></figcaption>
+</figure>
+<div class="copy">
+<h2 id="stage-title"></h2><div id="step-equation" class="bigmath"></div>
+<p id="step-text" class="bodytext"></p>
+<div class="cumulative"><div id="sum-label"></div><div id="sum-equation" class="formula"></div></div>
+</div></div>
+<div class="stepper"><span class="step-label">Vælg trin</span><div class="stepkeys" id="keys" role="group" aria-label="Vælg et kvadrat eller det generelle trin"></div></div>
+</div>
+<div class="controls"><button type="button" class="btn" id="play"></button><div class="actions"><button type="button" class="btn" id="back">← Tilbage</button><button type="button" class="btn primary" id="next"></button></div></div>
+<p class="hint" id="hint"></p><div class="sr" id="announcement" aria-live="polite" aria-atomic="true"></div>
+</section>
+<section id="animatedpane" hidden aria-label="Animation af induktionsbeviset">
+<div class="panel"><div class="board">
+<figure class="figure"><div class="fighead"><span id="proof-fig-title"></span><span id="proof-counter"></span></div>
+<svg id="proof-drawing" viewBox="0 0 400 262" role="img" aria-labelledby="proof-svgtitle proof-svgdesc"></svg>
+<figcaption id="proof-caption" class="proof-caption"></figcaption></figure>
+<div class="copy proofcopy" id="explanation"><h2 id="prooftitle"></h2><p class="bodytext" id="prooftext"></p><div id="motionmath" class="motionmath"></div></div>
+</div><div class="stepper"><span class="step-label">Vælg bevisskridt</span><div class="stepkeys" id="proofkeys" role="group" aria-label="Vælg bevisskridt"></div></div></div>
+<div class="controls"><button class="btn" type="button" id="proofplay"></button><div class="actions"><button type="button" class="btn" id="proofback">← Tilbage</button><button type="button" class="btn primary" id="proofnext"></button></div></div>
+<p class="hint"><a href="#bevis">Læs hele beviset samlet</a></p><div class="sr" id="proofannouncement" aria-live="polite" aria-atomic="true"></div>
+</section>
+
+<section id="proofpane" aria-label="Det skrevne induktionsbevis">
+<article class="proof"><h2>Induktionsbeviset</h2>
+<h3>Sætning</h3><p>For ethvert positivt heltal <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>n</mi></mrow></math> er summen af de første <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>n</mi></mrow></math> positive ulige tal lig med <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><msup><mi>n</mi><mn>2</mn></msup></mrow></math>.</p>
+<div class="display"><math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mn>1</mn><mo>+</mo><mn>3</mn><mo>+</mo><mo>⋯</mo><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>n</mi><mn>2</mn></msup></mrow></math></div>
+<h3>Bevis</h3><p>Lad <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi mathvariant="normal">ℕ</mi><mo>=</mo><mrow><mo>{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mo>…</mo><mo>}</mo></mrow></mrow></math>. For <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>n</mi><mo>∈</mo><mi mathvariant="normal">ℕ</mi></mrow></math> lader vi <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>p</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></mrow></math> betegne udsagnet ovenfor. Her er <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>n</mi></mrow></math> antallet af led, og <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn></mrow></math> er det sidste led.</p>
+<h3>Induktionsstarten</h3><p>For <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow></math> består summen af ét led, nemlig <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mn>1</mn></mrow></math>. Da <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mn>1</mn><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup></mrow></math>, er <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>p</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></mrow></math> sand.</p>
+<h3>Induktionsskridtet med induktionsantagelsen</h3><p>Lad <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>m</mi><mo>∈</mo><mi mathvariant="normal">ℕ</mi></mrow></math> være vilkårligt. Vi vil vise, at <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>p</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></mrow></math> medfører <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>p</mi><mrow><mo>(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow></math>. Vi antager derfor i dette trin, at <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>p</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></mrow></math> er sand. Det vil sige, at</p>
+<div class="display"><math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mn>1</mn><mo>+</mo><mn>3</mn><mo>+</mo><mo>⋯</mo><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>=</mo><msup><mi>m</mi><mn>2</mn></msup></mrow></math>.</div>
+<p>Vi skal vise, at summen af de første <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></math> positive ulige tal er <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><msup><mrow><mo>(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></math>. Det nye led finder vi ved at sætte <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></math> ind på <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>n</mi></mrow></math>’s plads i <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn></mrow></math>. Det giver</p>
+<div class="display"><math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mn>2</mn><mrow><mo>(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn><mi>m</mi><mo>+</mo><mn>2</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn></mrow></math>.</div>
+<p>Vi lægger dette led til summen af de første <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>m</mi></mrow></math> positive ulige tal og får</p>
+<div class="display sumchain"><span class="focusterm"><math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>+</mo><mo>⋯</mo><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>)</mo></mrow></mrow></math></span><span><math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mo>+</mo><mrow><mo>(</mo><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow></math></span><span><math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mo>=</mo></mrow></math> <span class="focusterm"><math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><msup><mi>m</mi><mn>2</mn></msup></mrow></math></span> <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mo>+</mo><mn>2</mn><mi>m</mi><mo>+</mo><mn>1</mn></mrow></math></span><span><math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mo>=</mo><msup><mrow><mo>(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup></mrow></math>.</span></div>
+<p>Ved det første lighedstegn bruger vi induktionsantagelsen til at erstatte summen af de første <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>m</mi></mrow></math> positive ulige tal med <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><msup><mi>m</mi><mn>2</mn></msup></mrow></math>. Ved det sidste lighedstegn bruger vi kvadratsætningen.</p>
+<h3>Konklusion</h3><p>Vi har vist <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>p</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></mrow></math>, og vi har vist, at <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>p</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></mrow></math> medfører <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>p</mi><mrow><mo>(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow></math> for ethvert <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>m</mi><mo>∈</mo><mi mathvariant="normal">ℕ</mi></mrow></math>. Dermed gælder <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>p</mi><mrow><mo>(</mo><mi>n</mi><mo>)</mo></mrow></mrow></math> for alle <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow><mi>n</mi><mo>∈</mo><mi mathvariant="normal">ℕ</mi></mrow></math>. <span class="proof-end" aria-label="Bevis slut">∎</span></p>
+</article><div class="proofnav"><a class="btn" href="#figur">← Til kvadratfiguren</a></div>
+</section>
+</main>
+<script>
+'use strict';
+function math(s) {
+  const tokens = (s.match(/\d+|[A-Za-zℕ]|[^\s]/gu) || []);
+  let i = 0;
+  const escape = t => t.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+  function read(end) {
+    const atoms = [];
+    while (i < tokens.length && tokens[i] !== end) {
+      const t = tokens[i++];
+      let a;
+      if (t === '(' || t === '{') {
+        const close = t === '(' ? ')' : '}';
+        const inner = read(close);
+        if(tokens[i] === close) i++;
+        a = '<mrow><mo>'+t+'</mo>'+inner+'<mo>'+close+'</mo></mrow>';
+      } else if (/^\d+$/.test(t)) a = '<mn>'+t+'</mn>';
+      else if (/^[A-Za-z]$/.test(t)) a = '<mi>'+t+'</mi>';
+      else if (t === 'ℕ') a='<mi mathvariant="normal">ℕ</mi>';
+      else a='<mo>'+escape(t)+'</mo>';
+      if (tokens[i] === '^') {
+        i++;
+        const exp=tokens[i++];
+        a='<msup>'+a+'<mn>'+escape(exp)+'</mn></msup>';
+      }
+      atoms.push(a);
+    }
+    return atoms.join('');
+  }
+  return '<math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr"><mrow>'+read(undefined)+'</mrow></math>';
+}
+
+const el = id => document.getElementById(id);
+const ink='#203b3d', teal='#155f61', pale='#d0e6dc';
+const numbers=['1','2','3','4','5','6'];
+const stageNames=['Start','Antagelse','Næste led','Indsættelse','Kvadratsætning','Konklusion'];
+const state={view:'figur',n:1,general:false,proof:0,playing:false,paused:false,timer:null};
+const playIcon='<svg aria-hidden="true" viewBox="0 0 16 16"><path d="M4 2.5 13 8l-9 5.5Z" fill="currentColor"/></svg>';
+const pauseIcon='<svg aria-hidden="true" viewBox="0 0 16 16"><path d="M3.5 2.5h3v11h-3zm6 0h3v11h-3z" fill="currentColor"/></svg>';
+const textMath=str=>str.replace(/«([^»]+)»/g,(_,s)=>math(s));
+function node(tag,props,content=''){return '<'+tag+' '+Object.entries(props).map(([a,b])=>a+'="'+b+'"').join(' ')+'>'+content+'</'+tag+'>'}
+const svgText=(x,y,t,props={})=>node('text',{x,y,'text-anchor':'middle','font-family':'Georgia,serif','font-size':19,fill:ink,...props},t);
+function description(id,title,desc){return '<title id="'+id+'svgtitle">'+title+'</title><desc id="'+id+'svgdesc">'+desc+'</desc>'}
+function dots(n,id=''){
+ const margin=n>1?34:18;
+ const pitch=n===1?0:Math.min(47,183/(n-1));
+ const side=(n-1)*pitch, x0=202-(side/2), y0=139+side/2;
+ const radius=n===1?11.5:Math.min(10.2,pitch*.28);
+ let html=description(id,'Kvadrat med '+n+' prikker på hver led',
+  n*n+' prikker i alt. De '+(2*n-1)+' nye, fyldte prikker ligger langs toppen og højre side.');
+ for(let j=0;j<n;j++)for(let i=0;i<n;i++){
+   const added=i===n-1||j===n-1;
+   const rank=i===n-1&&j===n-1?2*(n-1):j===n-1?i:(n-1)+j;
+   html+=node('circle',{cx:x0+i*pitch,cy:y0-j*pitch,r:radius,
+     fill:added?teal:'#fffefa',stroke:added?teal:'#4c6b69','stroke-width':added?1.8:2.0,
+     class:added?'added-dot':'old-dot','data-kind':added?'new':'previous',
+     style:'--delay:'+Math.min(rank*.052,.9)+'s'});
+ }
+ const a=x0-radius-3,b=x0+side+radius+3,top=y0-side-radius-margin*.43;
+ html+=node('path',{d:'M'+a+' '+(top+4)+'v-4H'+b+'v4',stroke:'#78938d',fill:'none','stroke-width':1.25});
+ html+=svgText((a+b)/2,top-6,n,{'font-size':16});
+ return html;
+}
+function regionPicture(stage, numeric){
+ const sym=numeric===undefined,m=sym?'m':String(numeric),a=142,b=32,x=109,y=60;
+ const showLayer=stage!=='assume', fill=stage==='target'?'#eaf1eb':pale;
+ const props={'stroke-width':1.8,stroke:teal};
+ const t=(cx,cy,value,extra={})=>svgText(cx,cy,value,{'font-style':sym&&value==='m'?'italic':'normal',...extra});
+ let h=description(stage==='figure'?'':'proof-','Udvidelse af et kvadrat','Kvadratet får en stribe foroven, en stribe til højre og ét nyt hjørne.');
+ h+=node('rect',{x,y,width:a,height:a,fill:stage==='replace'?'#bad9cc':'#fffefa',stroke:'#617c77','stroke-width':2});
+ h+=t(x+a/2-4,y+a/2+9,m,{'font-size':28});
+ h+=svgText(x+a/2+(sym?10:Math.max(10,m.length*7)),y+a/2-4,'2',{'font-size':15});
+ if(showLayer){
+  const rect=(rx,ry,w,ht,delay,text,cx,cy)=>node('g',{class:'area-appear',style:'--wait:'+delay+'s'},
+    node('rect',{x:rx,y:ry,width:w,height:ht,fill,...props})+t(cx,cy,text));
+  h+=rect(x,y-b,a,b,.08,m,x+a/2,y-b/2+6);
+  h+=rect(x+a,y,b,a,.28,m,x+a+b/2,y+a/2+6);
+  h+=rect(x+a,y-b,b,b,.50,'1',x+a+b/2,y-b/2+6);
+ }
+ const end=showLayer?x+a+b:x+a, tickY=y+a+12;
+ h+=node('path',{d:'M'+x+' '+tickY+'v5H'+end+'v-5',stroke:'#78938d',fill:'none','stroke-width':1.4});
+ const mid=(x+end)/2;
+ if(showLayer&&sym){
+  h+=t(mid-16,tickY+26,'m')+svgText(mid+9,tickY+26,'+ 1');
+ }else h+=t(mid,tickY+26,showLayer?String(numeric+1):m);
+ if(stage==='square'||stage==='conclusion') h+=node('rect',{x:x-2,y:y-b-2,width:a+b+4,height:a+b+4,fill:'none',stroke:teal,'stroke-width':3,class:'outer-trace'});
+ return h;
+}
+function cumulative(n){
+ if(n<=6)return Array.from({length:n},(_,i)=>2*i+1).join('+')+'='+n*n;
+ return '1+3+⋯+'+(2*n-1)+'='+n*n;
+}
+function controls(){
+ const btn=state.view==='trin'?el('proofplay'):el('play');
+ btn.innerHTML=state.playing?pauseIcon+'Pause':playIcon+(state.paused?'Fortsæt afspilning':'Afspil fra start');
+}
+function figure(){
+ const {n,general}=state, odd=2*n-1,old=n-1;
+ el('figure-id').innerHTML=math(general?'m→m+1':'n='+n);
+ el('figure-count').textContent=general?'Induktionsskridtet':(n*n).toLocaleString('da-DK')+(n===1?' prik':' prikker');
+ const drawnAbstract=general||n>12;
+ el('drawing').innerHTML=drawnAbstract?regionPicture('figure',general?undefined:old):dots(n);
+ el('legend').hidden=drawnAbstract;
+ if(general){
+  el('stage-title').textContent='Det næste kvadrat';
+  el('step-equation').innerHTML=math('m^2+(2m+1)=(m+1)^2');
+  el('step-text').innerHTML=textMath('Lad «m» være et vilkårligt positivt heltal. Til kvadratet føjer vi «m» prikker foroven, «m» til højre og én i hjørnet. Det giver «2m+1» nye prikker.');
+  el('sum-label').textContent='Det næste ulige tal';el('sum-equation').innerHTML=math('2(m+1)−1=2m+1');
+ }else if(n===1){
+  el('stage-title').textContent='Det første kvadrat';el('step-equation').innerHTML=math('1=1^2');
+  el('step-text').textContent='Den første prik danner et kvadrat med én række og én kolonne.';
+  el('sum-label').textContent='Induktionsstarten';el('sum-equation').innerHTML=textMath('Påstanden «p(1)» er sand.');
+ }else{
+  el('stage-title').innerHTML='Fra '+math(old+'^2')+' til '+math(n+'^2');el('step-equation').innerHTML=math(old+'^2+'+odd+'='+n+'^2');
+  el('step-text').innerHTML='Det nye lag har '+old+(old===1?' prik':' prikker')+' foroven, '+old+' til højre og én i det nye hjørne. Det giver '+math(old+'+'+old+'+1='+odd)+' nye prikker.';
+  el('sum-label').textContent='Summen af de første '+n+' ulige tal';el('sum-equation').innerHTML=math(cumulative(n));
+ }
+ el('keys').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(general?b.dataset.k==='g':Number(b.dataset.k)===n)));
+ el('back').disabled=!general&&n===1;
+ el('next').textContent=general?'Byg videre →':'Næste kvadrat →';
+ el('hint').innerHTML=general?'Se, hvordan det nye lag indgår i <a href="#trin">beviset trin for trin</a>.':'Vælg '+math('m→m+1')+' for at se, hvordan kvadratet vokser fra en vilkårlig størrelse.';
+ el('announcement').textContent=general?'Det generelle trin fra m til m plus 1.':'Kvadrat '+n+'. '+odd+' nye prikker, '+n*n+' i alt.';
+ controls();
+}
+const proofSteps=[
+ {title:'Induktionsstarten',stage:'base',fig:'n=1',caption:'Ét led i summen. Én prik i kvadratet.',
+ text:'For «n=1» består summen af ét led. Begge sider af formlen er lig med «1», og dermed er «p(1)» sand.'},
+ {title:'Induktionsantagelsen',stage:'assume',fig:'p(m)',caption:'Kvadratet har «m» rækker og «m» kolonner.',
+ text:'Lad «m» være et vilkårligt positivt heltal. Vi vil vise, at «p(m)» medfører «p(m+1)». I dette trin antager vi derfor, at «p(m)» er sand.'},
+ {title:'Find det næste led',stage:'layer',fig:'m→m+1',caption:'De to striber og hjørnet udgør det nye lag.',
+ text:'Vi skal vise, at den nye sum er «(m+1)^2». Vi finder det næste ulige tal ved at sætte «m+1» ind i udtrykket «2n−1».'},
+ {title:'Brug induktionsantagelsen',stage:'replace',fig:'p(m)',caption:'Det indre kvadrat svarer til summen af de første «m» led.',
+ text:'Ifølge induktionsantagelsen er summen af de første «m» positive ulige tal lig med «m^2». Vi erstatter denne sum med «m^2». Det nye led «2m+1» bliver stående.'},
+ {title:'Brug kvadratsætningen',stage:'square',fig:'p(m+1)',caption:'Hele kvadratet har «m+1» prikker på hver led.',
+ text:'Kvadratsætningen giver «m^2+2m+1=(m+1)^2». Det er netop den sum, vi skulle nå frem til. Dermed har vi vist, at «p(m)» medfører «p(m+1)».'},
+ {title:'Konklusionen',stage:'conclusion',fig:'m→m+1',caption:'Den samme overgang gælder for ethvert positivt heltal «m».',
+ text:'Fra induktionsstarten ved vi, at «p(1)» er sand. Overgangen med «m=1» giver så «p(2)». Nu er «p(2)» bevist, og overgangen med «m=2» giver «p(3)». Ethvert positivt heltal nås fra «1» efter endeligt mange skridt.'}
+];
+function equations(i){
+ const line=(s,d)=>'<div class="eqstep" style="--wait:'+d+'s">'+math(s)+'</div>';
+ if(i===0)return '<div class="mathline">'+math('1=1^2')+'</div>';
+ if(i===1)return '<div class="mathline">'+math('1+3+⋯+(2m−1)=m^2')+'</div>';
+ if(i===2)return math('2(m+1)−1')+line('=2m+2−1',.65)+line('=2m+1',1.5);
+ if(i===3)return '<div class="swaprow" aria-label="Summen af de første m ulige tal erstattes af m i anden. Det næste led to m plus en bliver stående."><span class="swap"><span class="before">'+math('(1+3+⋯+(2m−1))')+'</span><span class="after">'+math('m^2')+'</span></span><span>'+math('+(2m+1)')+'</span></div>';
+ if(i===4)return math('m^2+(2m+1)')+line('=m^2+2m+1',.6)+line('=(m+1)^2',1.45);
+ return '<div class="mathline">'+math('p(1)')+[2,3].map((v,k)=>'<span class="eqstep" style="--wait:'+(k+.6)+'s">'+math('⇒p('+v+')')+'</span>').join('')+'<span class="eqstep" style="--wait:2.2s">'+math('⇒⋯')+'</span></div>'+line('1+3+⋯+(2n−1)=n^2',2.65)+'<span style="font-size:.86em">for alle '+math('n∈ℕ')+'</span>';
+}
+function proof(){
+ const s=proofSteps[state.proof], i=state.proof;
+ el('proof-fig-title').innerHTML=math(s.fig);
+ el('proof-counter').textContent='Trin '+(i+1)+' af '+proofSteps.length;
+ el('proof-drawing').innerHTML=i===0?dots(1,'proof-'):regionPicture(s.stage);
+ el('proof-caption').innerHTML=textMath(s.caption);
+ el('prooftitle').textContent=s.title;el('prooftext').innerHTML=textMath(s.text);
+ el('motionmath').innerHTML=equations(i)+(i>=2?'<button class="replay" type="button" id="replaymath">Gentag dette trin</button>':'');
+ if(el('replaymath'))el('replaymath').onclick=()=>{stop();proof()};
+ el('proofkeys').querySelectorAll('button').forEach((b,k)=>b.setAttribute('aria-pressed',String(k===i)));
+ el('proofback').disabled=i===0;el('proofnext').textContent=i===5?'Læs hele beviset →':'Næste bevisskridt →';
+ el('proofannouncement').textContent='Trin '+(i+1)+' af 6. '+s.title;
+ controls();
+}
+function stop(paused=false){
+ clearTimeout(state.timer);state.timer=null;state.playing=false;state.paused=paused;
+ el('animatedpane').classList.toggle('is-paused',paused);
+ el('figurepane').classList.toggle('is-paused',paused);
+ controls();
+}
+function schedule(){
+ state.timer=setTimeout(()=>{
+  if(!state.playing)return;
+  if(state.view==='figur'){
+   if(state.n<6){state.n++;figure();schedule()}
+   else{state.general=true;stop();figure()}
+  }else if(state.view==='trin'){
+   if(state.proof<5){state.proof++;proof();schedule()}
+   else stop();
+  }
+ },state.view==='trin'?9500:3100);
+}
+function playback(){
+ if(state.playing){stop(true);return}
+ if(!state.paused){
+   if(state.view==='figur'){state.n=1;state.general=false;figure()}
+   else{state.proof=0;proof()}
+ }
+ state.paused=false;state.playing=true;
+ el('animatedpane').classList.remove('is-paused');el('figurepane').classList.remove('is-paused');
+ controls();schedule();
+}
+function switchView(){
+ stop();state.view=location.hash==='#bevis'?'bevis':location.hash==='#trin'?'trin':'figur';
+ const tabs={figur:['figurepane','figlink'],trin:['animatedpane','animlink'],bevis:['proofpane','prooflink']};
+ for(const [view,[pane,link]] of Object.entries(tabs)){
+  el(pane).hidden=view!==state.view;
+  if(view===state.view)el(link).setAttribute('aria-current','page');else el(link).removeAttribute('aria-current');
+ }
+ if(state.view==='figur')figure();else if(state.view==='trin')proof();
+}
+for(const k of [...numbers,'g']){
+ const b=document.createElement('button');b.type='button';b.className='stepkey';b.dataset.k=k;
+ b.setAttribute('aria-label',k==='g'?'Vis det generelle trin':'Vis kvadrat '+k);
+ b.innerHTML=k==='g'?math('m→m+1'):k;
+ b.onclick=()=>{stop();state.general=k==='g';if(k!=='g')state.n=Number(k);figure()};
+ el('keys').append(b);
+}
+stageNames.forEach((label,i)=>{
+ const b=document.createElement('button');b.type='button';b.className='stepkey';b.textContent=label;
+ b.setAttribute('aria-label','Trin '+(i+1)+'. '+proofSteps[i].title);
+ b.onclick=()=>{stop();state.proof=i;proof()};el('proofkeys').append(b);
+});
+el('play').onclick=playback;el('proofplay').onclick=playback;
+el('next').onclick=()=>{stop();state.n++;state.general=false;figure()};
+el('back').onclick=()=>{stop();if(state.general)state.general=false;else state.n=Math.max(1,state.n-1);figure()};
+el('proofnext').onclick=()=>{stop();if(state.proof===5){location.hash='bevis';return}state.proof++;proof()};
+el('proofback').onclick=()=>{stop();state.proof=Math.max(0,state.proof-1);proof()};
+window.addEventListener('hashchange',switchView);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&state.playing)stop(true)});
+switchView();
+
+</script>
+</body></html>
