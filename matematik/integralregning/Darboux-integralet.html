@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Darboux-integralet</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper: #f5f3eb;
+  --panel: #fffefa;
+  --ink: #18362c;
+  --quiet: #4e655a;
+  --line: #d9e2d7;
+  --soft: #eef3ea;
+  --green: #225442;
+  --gold: #f5db9e;
+  --amber: #92551d;
+  --sage: #a7cbb3;
+  --blue: #aacfc9;
+  font: 16px/1.5 system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: var(--paper); }
+a { color: inherit; }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 3px solid #96612a; outline-offset: 3px; }
+main { max-width: 1290px; padding: 22px clamp(15px, 4.2vw, 56px) 45px; margin: auto; }
+nav { display: flex; flex-wrap: wrap; gap: 5px 15px; border-bottom: 1px solid #bccbbd; padding-bottom: 9px; }
+nav a { padding: 7px 4px; text-decoration: none; color: var(--quiet); font-weight: 600; font-size: .93rem; }
+nav a[aria-current] { color: var(--ink); box-shadow: inset 0 -2px var(--green); }
+nav a:hover { color: var(--ink); }
+.hero { padding: 24px 0 20px; max-width: 850px; }
+h1, h2, h3 { font-family: Georgia, serif; line-height: 1.09; margin: 0; font-weight: 500; text-wrap: balance; }
+h1 { font-size: clamp(2.35rem, 5.3vw, 4.6rem); letter-spacing: -.057em; }
+h2 { font-size: clamp(1.45rem, 2.8vw, 2.07rem); letter-spacing: -.026em; }
+h3 { font-size: 1.27rem; }
+.hero p { margin: 11px 0 0; max-width: 650px; color: var(--quiet); font-size: 1.02rem; }
+.stepbar, .segmented { display: flex; gap: 5px; flex-wrap: wrap; }
+.stepbar { margin-bottom: 11px; }
+.stepbar button, .segmented button, .btn {
+  min-height: 38px; border: 1px solid #c8d7c9; border-radius: 8px; background: var(--panel);
+  padding: 6px 12px; font-weight: 650; font-size: .88rem;
+}
+.stepbar button[aria-pressed=true], .segmented button[aria-pressed=true], .btn.primary {
+  color: #fff; background: var(--green); border-color: var(--green);
+}
+.btn:enabled:hover, .segmented button:hover, .stepbar button:hover { box-shadow: inset 0 0 0 1px #799384; }
+.btn:disabled { opacity: .46; }
+.workspace {
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(316px,370px);
+  border: 1px solid var(--line); border-radius: 17px; overflow: hidden; background: var(--panel);
+  box-shadow: 0 13px 34px #23382c0e;
+}
+figure { margin: 0; display: flex; flex-direction: column; align-self: stretch; min-width: 0; padding: 10px 11px 14px; }
+.graph { display: block; width: 100%; margin: auto 0; }
+figcaption { min-height: 26px; text-align: center; padding: 2px 8px 0; font-size: .89rem; color: var(--quiet); }
+.controls { background: #fcfdf8; border-left: 1px solid var(--line); padding: 22px 21px 19px; min-width: 0; }
+.controls p { color: var(--quiet); font-size: .91rem; margin: 9px 0 15px; }
+.range-caption { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-weight: 630; }
+output { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.range-caption output { color: var(--green); }
+input[type=range] { width: 100%; display: block; margin: 3px 0 11px; accent-color: var(--green); min-height: 29px; }
+.select { display: grid; gap: 4px; font-weight: 630; margin: 13px 0 11px; }
+select { padding: 6px 8px; border: 1px solid #b9cdbb; background: #fff; border-radius: 7px; min-height: 36px; width: 100%; }
+.actions { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.row { margin-top: 12px; }
+.inspect { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 11px; }
+.inspect p { margin: 5px 0 9px; }
+.inspect-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.pager { display: flex; gap: 5px; flex-shrink: 0; }
+.pager .btn { width: 38px; padding: 3px; font-size: 1.05rem; }
+.values { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px 8px; margin: 13px 0 0; }
+.values.three { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.values div { min-width: 0; padding: 7px 8px; background: var(--soft); border-radius: 7px; }
+.values dt { color: var(--quiet); font-size: .79rem; }
+.values dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.mathline { container-type: inline-size; text-align: center; margin: 9px 0; }
+.mathline math { font-size: min(1.25rem, 6.1cqi); white-space: nowrap; }
+.mathline.compact math { font-size: min(1.17rem, 5.5cqi); }
+.legend { min-height: 43px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3px 17px; padding: 3px 8px; font-size: .84rem; color: var(--quiet); }
+.legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.key { width: 15px; height: 10px; border-radius: 2px; display: inline-block; flex: 0 0 auto; }
+.key.green { background: var(--sage); }
+.key.gold { background: var(--gold); }
+.key.blue { background: var(--blue); }
+.key.dash { border: 1px dashed var(--amber); }
+.below { margin: 16px 0 4px; max-width: 820px; }
+.below summary { cursor: pointer; color: var(--green); font-weight: 650; padding: 5px 0; }
+.below p { color: var(--quiet); margin: 6px 0 13px; }
+.below math[display=block] { font-size: 1.14rem; margin: 8px 0; }
+[hidden] { display: none !important; }
+.svg-label { fill: #18362c; font: italic 17px Georgia, serif; text-anchor: middle; dominant-baseline: middle; }
+.svg-label .ord { font-style: normal; }
+.svg-note { fill: #4e655a; font: 12px system-ui, sans-serif; text-anchor: middle; dominant-baseline: middle; }
+.axis { stroke: #62786a; stroke-width: 1.1; fill: none; }
+.guide { stroke: #819386; stroke-width: 1; fill: none; stroke-dasharray: 4 4; }
+.tick { stroke: #62786a; stroke-width: 1.05; fill: none; }
+.curve { stroke: #224b3a; stroke-width: 2.65; stroke-linecap: round; fill: none; }
+.partition { stroke: #386457; stroke-opacity: .66; stroke-width: .7; }
+.sample { fill: #225442; }
+.focus-pin { fill: #77491b; stroke: #fffefa; stroke-width: 1.15; }
+.focus-line { stroke: #77491b; stroke-width: 1.2; stroke-dasharray: 3 3; fill: none; }
+.upper-line { stroke: #92551d; stroke-width: 1.15; stroke-dasharray: 4 3; }
+path.upper-line { fill: none; }
+.lower-line { stroke: #2e6a51; stroke-width: 1.05; }
+.frame { stroke: #536b5c; stroke-width: 1.05; stroke-dasharray: 4 3; fill: none; }
+.graph .hit { cursor: pointer; }
+@media(max-width: 830px) {
+  .workspace { grid-template-columns: minmax(0,1fr); }
+  .controls { border-left: 0; border-top: 1px solid var(--line); }
+  .hero { padding: 21px 0 17px; }
+}
+@media(max-width: 410px) {
+  main { padding-top: 13px; }
+  figure { padding: 3px 5px 9px; }
+  .controls { padding: 17px 14px 16px; }
+  .stepbar button, .segmented button, .btn { padding-inline: 8px; }
+  nav { gap: 5px 11px; }
+  nav a { font-size: .84rem; }
+  .values div { padding-inline: 5px; }
+  .svg-label { font-size: 15px; }
+}
+
+</style>
+</head>
+<body data-page="darboux">
+<main>
+<nav aria-label="De tre integralfigurer"><a href="Arealfunktionen.html">Arealfunktionen</a><a href="Riemann-integralet.html">Riemann-integralet</a><a href="Darboux-integralet.html" aria-current="page">Darboux-integralet</a></nav>
+<header class="hero">
+<h1>Darboux-integralet</h1>
+<p>Se arealet blive klemt inde mellem under- og oversummen. Følg især det samlede areal mellem rektanglernes overkanter.</p>
+</header>
+<div class="workspace"><figure><svg id="graf" class="graph" role="img" aria-labelledby="graf-titel graf-tekst" xmlns="http://www.w3.org/2000/svg"></svg>
+<div class="legend"><span id="under-legend"><i aria-hidden="true" class="key green"></i>Underrektangler</span><span id="over-legend"><i aria-hidden="true" class="key dash"></i>Overrektangler</span><span id="forskel-legend"><i aria-hidden="true" class="key gold"></i>Forskelsstykker</span></div>
+<figcaption id="figurtekst"></figcaption>
+</figure><aside class="controls" aria-labelledby="kontrol-titel">
+<h2 id="kontrol-titel">Afgræns arealet</h2>
+<p>Brug den mindste og den største højde i hvert delinterval. Prøv <strong>Forskel</strong> for at se de mellemliggende stykker samlet.</p>
+<div class="range-caption"><label for="antal">Antal delintervaller <math><mrow><mi>n</mi></mrow></math></label><output for="antal" id="antal-tal" aria-live="off"></output></div><input type="range" id="antal" min="2" max="64" step="1" value="6"><button id="afspil-n" type="button" class="btn primary">Afspil forfining</button><div class="segmented row" role="group" aria-label="Vælg summer"><button type="button" data-sum="under" aria-pressed="false">Undersum</button><button type="button" data-sum="over" aria-pressed="false">Oversum</button><button type="button" data-sum="begge" aria-pressed="true">Begge</button><button type="button" data-sum="forskel" aria-pressed="false">Forskel</button></div>
+<dl class="values three"><div><dt>Undersum <math><mrow><msub><mi>L</mi><mi>n</mi></msub></mrow></math></dt><dd><output id="under-tal" aria-live="off"></output></dd></div><div><dt>Oversum <math><mrow><msub><mi>U</mi><mi>n</mi></msub></mrow></math></dt><dd><output id="over-tal" aria-live="off"></output></dd></div><div><dt>Forskel</dt><dd><output id="forskel-tal" aria-live="off"></output></dd></div></dl>
+<div class="mathline"><math><mrow><msub><mi>U</mi><mi>n</mi></msub><mo>−</mo><msub><mi>L</mi><mi>n</mi></msub><mo>=</mo><mi>h</mi><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="false">(</mo><msub><mi>M</mi><mi>i</mi></msub><mo>−</mo><msub><mi>m</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></math></div>
+<div class="inspect">
+<div class="inspect-row">
+<strong>Delinterval <output id="interval-tal" aria-live="off"></output></strong>
+<div class="pager">
+<button type="button" class="btn" id="forrige" aria-label="Forrige delinterval">←</button>
+<button type="button" class="btn" id="naeste" aria-label="Næste delinterval">→</button>
+</div>
+</div>
+<dl class="values"><div><dt>Laveste <math><mrow><msub><mi>m</mi><mi>i</mi></msub></mrow></math></dt><dd><output id="lav-tal" aria-live="off"></output></dd></div><div><dt>Højeste <math><mrow><msub><mi>M</mi><mi>i</mi></msub></mrow></math></dt><dd><output id="hoej-tal" aria-live="off"></output></dd></div></dl>
+<p>Alle delintervaller har fælles bredde <math><mrow><mi>h</mi><mo>=</mo><mfrac><mrow><mi>b</mi><mo>−</mo><mi>a</mi></mrow><mrow><mi>n</mi></mrow></mfrac></mrow></math>. Værdien af <math><mrow><mi>h</mi></mrow></math> er <output id="bredde-tal" aria-live="off"></output>.</p>
+</div>
+</aside></div><details class="below"><summary>Hvor ligger Riemannsummen?</summary><div class="mathline"><math><mrow><msub><mi>L</mi><mi>n</mi></msub><mo>≤</mo><msub><mi>S</mi><mi>n</mi></msub><mo>≤</mo><msub><mi>U</mi><mi>n</mi></msub></mrow></math></div><p>Ved samme inddeling ligger hvert valgt rektangel mellem under- og overrektanglet. Derfor ligger alle Riemannsummer for den inddeling mellem de to summer. Værdierne på siden er afrundede.</p></details><details class="below"><summary>Hvornår findes Darboux-integralet?</summary><p>Vi ser i definitionen på alle mulige inddelinger. Undersummerne har en mindste øvre grænse, og oversummerne har en største nedre grænse. Når de to grænser er ens, er den fælles værdi Darboux-integralet.</p><p>For en kontinuert funktion på et lukket interval kan vi gøre forskellen mellem den mindste og største højde lille samtidig i alle delintervaller. Det følger af ensartet kontinuitet på intervallet. Da forskelsstykkerne tilsammen har bredden <math><mrow><mi>b</mi><mo>−</mo><mi>a</mi></mrow></math>, kan deres samlede areal gøres vilkårligt lille.</p><p>Med en fælles forfinelse kan man se, at enhver undersum er højst enhver oversum. Når forskellen kan gøres vilkårligt lille, må de to grænser derfor være ens.</p></details>
+<noscript>Slå JavaScript til for at bruge den interaktive figur.</noscript>
+</main>
+<script>
+'use strict';
+
+const $ = id => document.getElementById(id);
+const svg = $('graf');
+const number = new Intl.NumberFormat('da-DK', {maximumFractionDigits: 3});
+const dec = value => number.format(Math.abs(value) < 1e-10 ? 0 : value).replace('-', '−');
+const output = (id, value) => { $(id).value = typeof value === 'number' ? dec(value) : value; };
+const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const mi = letter => '<mi>' + letter + '</mi>';
+const mo = sign => '<mo>' + sign + '</mo>';
+const paren = sign => '<mo stretchy="false">' + sign + '</mo>';
+const xzero = '<msub><mi>x</mi><mn>0</mn></msub>';
+const math = inner => '<math><mrow>' + inner + '</mrow></math>';
+const apply = (name, argument) => mi(name) + paren('(') + argument + paren(')');
+const vsub = (base, sub) => base + '<tspan '+(sub === '0' ? 'class="ord" ' : '')+'font-size="69%" baseline-shift="sub">' + sub + '</tspan>';
+
+function pressed(selector, key, val) {
+  for (const button of document.querySelectorAll(selector)) {
+    button.setAttribute('aria-pressed', String(button.dataset[key] === val));
+  }
+}
+
+let frame = 0;
+let activeButton = null;
+let activeLabel = '';
+function stopPlayback() {
+  cancelAnimationFrame(frame);
+  frame = 0;
+  if (activeButton) activeButton.innerHTML = activeLabel;
+  activeButton = null;
+}
+function play(button, duration, update) {
+  if (activeButton === button) { stopPlayback(); return; }
+  stopPlayback();
+  if (reducedMotion.matches) { update(1); return; }
+  activeButton = button;
+  activeLabel = button.innerHTML;
+  button.textContent = 'Pause';
+  const start = performance.now();
+  function tick(now) {
+    const fraction = clamp((now - start) / duration, 0, 1);
+    update(fraction);
+    if (fraction < 1) frame = requestAnimationFrame(tick);
+    else stopPlayback();
+  }
+  frame = requestAnimationFrame(tick);
+}
+
+const line = (x1, y1, x2, y2, c) => '<line class="' + c + '" x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '"/>';
+const path = (d, c, style = '') => '<path class="' + c + '" d="' + d + '"' + style + '/>';
+const dot = (x, y, r, c) => '<circle class="' + c + '" cx="' + x + '" cy="' + y + '" r="' + r + '"/>';
+const label = (x, y, value, style = '') => '<text class="svg-label" x="' + x + '" y="' + y + '"' + style + '>' + value + '</text>';
+const box = (x, y, w, h, paint) => '<rect x="' + x + '" y="' + y + '" width="' + Math.max(0, w) + '" height="' + Math.max(0, h) + '" ' + paint + '/>';
+
+function plotPlane(lo, hi, ymax, bottom, reserved = 0) {
+  const w = Math.max(245, Math.round(svg.clientWidth));
+  const height = Math.max(300, Math.min(430, 0.64*w));
+  const origin = height - bottom;
+  const right = w - 28, at = -lo/(hi-lo);
+  const left = Math.max(10, (reserved - at*right)/(1-at));
+  const X = x => left + (x-lo)*(right-left)/(hi-lo);
+  const Y = y => origin - y*(origin-26)/ymax;
+  const segments = (g, p, q, n) => {
+    const pts = [];
+    for (let i = 0; i <= n; i++) {
+      const x = p + (q-p)*i/n;
+      pts.push(X(x).toFixed(3) + ',' + Y(g(x)).toFixed(3));
+    }
+    return pts.join(' L');
+  };
+  const curve = (g, p, q) => path('M' + segments(g, p, q, 130), 'curve');
+  const area = (g, p, q, color) => q-p < 1e-9 ? '' : path(
+    'M' + X(p) + ',' + origin + ' L' + segments(g, p, q, 80) + ' L' + X(q) + ',' + origin + ' Z',
+    '', ' fill="' + color + '"'
+  );
+  function axes(a, b, yText = 'y') {
+    const end = X(hi) + 5, yTop = 16, zero = X(0);
+    return line(X(lo),origin,end,origin,'axis') + line(zero,origin+4,zero,yTop,'axis')
+      + path('M'+(end-8)+','+(origin-4)+' L'+end+','+origin+' l-8,4','axis')
+      + path('M'+(zero-4)+','+(yTop+8)+' L'+zero+','+yTop+' l4,8','axis')
+      + label(end+11,origin,'x') + label(zero+13,yTop+2,yText)
+      + line(X(a),origin-3,X(a),origin+5,'tick') + label(X(a),origin+17,'a')
+      + line(X(b),origin-3,X(b),origin+5,'tick') + label(X(b),origin+17,'b');
+  }
+  function install(title, description, content) {
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + height);
+    svg.innerHTML = '<title id="graf-titel">' + title + '</title><desc id="graf-tekst">' + description + '</desc>' + content;
+  }
+  return {w,height,origin,X,Y,curve,area,axes,install};
+}
+
+function paintOnResize(render) {
+  let lastWidth = 0;
+  new ResizeObserver(() => {
+    const width = svg.clientWidth;
+    if (width > 0 && width !== lastWidth) {
+      lastWidth = width;
+      render();
+    }
+  }).observe(svg.parentElement);
+  render();
+}
+
+const isDarboux = document.body.dataset.page === 'darboux';
+const a = 0.25, b = 3.99;
+const kritiske = [0.6, 1.64, 3.50];
+const [v,w,z] = kritiske;
+const sumRoots = v+w+z, pairRoots = v*w+v*z+w*z, productRoots = v*w*z;
+const f = x => 2.9+0.74*(x**4/4-sumRoots*x**3/3+pairRoots*x**2/2-productRoots*x);
+const F = x => 2.9*x+0.74*(x**5/20-sumRoots*x**4/12+pairRoots*x**3/6-productRoots*x**2/2);
+const exact = F(b)-F(a);
+const count = $('antal');
+const playButton = $('afspil-n');
+let n = Number(count.value);
+let focus = 2;
+let mode = 'begge';
+let sampleMode = 'midt';
+
+function setCount(next) {
+  const position = (focus+0.5)/n;
+  n = clamp(Math.round(next), Number(count.min), Number(count.max));
+  focus = clamp(Math.floor(position*n), 0, n-1);
+  count.value = String(n);
+  render();
+}
+
+function partition() {
+  const dx = (b-a)/n;
+  const parts = Array.from({length:n}, (_,i) => {
+    const p = a+i*dx;
+    const q = i===n-1 ? b : a+(i+1)*dx;
+    let c = p+dx/2;
+    if (sampleMode==='venstre') c=p;
+    if (sampleMode==='hoejre') c=q;
+    if (sampleMode==='blandet') c=p+dx*(0.12+0.76*(Math.sin((i+1)*3.232)+1)/2);
+    const values = [p,q,...kritiske.filter(x => x>p && x<q)].map(x => ({x, y:f(x)}));
+    const low = values.reduce((a,e) => e.y<a.y ? e : a);
+    const high = values.reduce((a,e) => e.y>a.y ? e : a);
+    return {p,q,c,value:f(c),low,high};
+  });
+  return {dx,parts};
+}
+
+function render() {
+  const {dx,parts} = partition();
+  const gapMode = isDarboux && mode==='forskel';
+  const chart = plotPlane(-.46,4.49,gapMode ? 2.25 : 4.62,58);
+  const {X,Y,origin} = chart;
+  const left = X(parts[focus].p), right = X(parts[focus].q);
+  let rectangles = '';
+  let samples = '';
+  let hitAreas = '';
+  const top = Y(0);
+  for (const [i,part] of parts.entries()) {
+    const x = X(part.p), width = X(part.q)-x;
+    const active = i===focus;
+    if (!isDarboux) {
+      rectangles += box(x,Y(part.value),width,origin-Y(part.value),
+        'fill="'+(active?'#f4d595':'#afcfca')+'" class="partition"');
+      if (n <= 30 && !active) samples += dot(X(part.c),Y(part.value),2.5,'sample');
+    } else if (gapMode) {
+      const gap = part.high.y-part.low.y;
+      rectangles += box(x,Y(gap),width,origin-Y(gap),
+        'fill="'+(active?'#e6ad55':'#f5db9e')+'" class="upper-line"');
+    } else {
+      if (mode!=='over') {
+        rectangles += box(x,Y(part.low.y),width,origin-Y(part.low.y),
+          'fill="'+(active?'#78aa8f':'#a7cbb3')+'" class="lower-line"');
+      }
+      if (mode!=='under') {
+        const bottom = mode==='begge' ? Y(part.low.y) : origin;
+        rectangles += box(x,Y(part.high.y),width,bottom-Y(part.high.y),
+          'fill="'+(active?'#edbb6e':'#f5db9e')+'" fill-opacity="'+(mode==='over'?0.66:0.9)+'"');
+        const y = Y(part.high.y);
+        rectangles += path('M'+x+','+origin+' V'+y+' H'+(x+width)+' V'+origin,'upper-line');
+      }
+    }
+    hitAreas += box(x,14,width,top-14,'class="hit" fill="none" pointer-events="all" data-index="'+i+'"');
+  }
+  let drawing = rectangles;
+  if (!gapMode) {
+    drawing += line(X(a),origin,X(a),Y(f(a)),'guide') + line(X(b),origin,X(b),Y(f(b)),'guide');
+    drawing += chart.curve(f,-.35,4.38) + label(X(4.38)+10,Y(f(4.38))-3,'f');
+  }
+  drawing += chart.axes(a,b) + samples;
+  drawing += line(left,origin+3,right,origin+3,'focus-line');
+  if (!isDarboux) {
+    const part = parts[focus];
+    const cx = X(part.c), cy = Y(part.value);
+    drawing += line(cx,cy,cx,origin,'focus-line') + dot(cx,cy,4.2,'focus-pin')
+      + label(cx,origin+40,vsub('c','i'));
+  } else if (!gapMode) {
+    const part = parts[focus];
+    if (mode!=='over') drawing += dot(X(part.low.x),Y(part.low.y),3.6,'sample');
+    if (mode!=='under') drawing += dot(X(part.high.x),Y(part.high.y),3.8,'focus-pin');
+  }
+  const description = gapMode ? n+' rektangler fra forskellen mellem over- og undersummen.'
+    : isDarboux ? n+' delintervaller. De valgte rektangler viser '+(mode==='begge'?'begge summer.':mode==='under'?'undersummen.':'oversummen.')
+      : n+' rektangler. Det valgte punkt i det fremhævede rektangel bestemmer højden.';
+  chart.install(gapMode ? 'Forskelsstykkerne på samme grundlinje' : 'Rektangler under og omkring den buede graf', description, drawing+hitAreas);
+  output('antal-tal',n);
+  output('interval-tal',(focus+1)+' af '+n);
+  output('bredde-tal',dx);
+  $('forrige').disabled = focus===0;
+  $('naeste').disabled = focus===n-1;
+  const current = parts[focus];
+  if (isDarboux) {
+    const lower = dx*parts.reduce((s,p) => s+p.low.y,0);
+    const upper = dx*parts.reduce((s,p) => s+p.high.y,0);
+    output('under-tal',lower);
+    output('over-tal',upper);
+    output('forskel-tal',upper-lower);
+    output('lav-tal',current.low.y);
+    output('hoej-tal',current.high.y);
+    $('under-legend').hidden = mode==='over' || gapMode;
+    $('over-legend').hidden = mode==='under' || gapMode;
+    $('forskel-legend').hidden = !gapMode;
+    $('figurtekst').textContent = gapMode
+      ? 'Stykkerne mellem de to summer er flyttet ned på aksen. Deres samlede areal er forskellen.'
+      : 'Klik på et delinterval for at se den mindste og den største højde.';
+  } else {
+    const sum = dx*parts.reduce((s,p) => s+p.value,0);
+    output('sum-tal',sum);
+    output('integral-tal',exact);
+    output('punkt-tal',current.c);
+    output('hoejde-tal',current.value);
+  }
+}
+
+function selectInterval(i) {
+  focus = clamp(i,0,n-1);
+  render();
+}
+svg.addEventListener('click', event => {
+  const target = event.target.closest('[data-index]');
+  if (target) selectInterval(Number(target.dataset.index));
+});
+$('forrige').addEventListener('click', () => selectInterval(focus-1));
+$('naeste').addEventListener('click', () => selectInterval(focus+1));
+count.addEventListener('input', () => {stopPlayback();setCount(Number(count.value));});
+playButton.addEventListener('click', () => {
+  const start = n>=64 ? 2 : n;
+  play(playButton, 3400, progress => {
+    const next = Math.round(start*(64/start)**progress);
+    if (next!==n) setCount(next);
+  });
+});
+if (isDarboux) {
+  for (const button of document.querySelectorAll('[data-sum]')) {
+    button.addEventListener('click', () => {
+      mode = button.dataset.sum;
+      pressed('[data-sum]','sum',mode);
+      render();
+    });
+  }
+} else {
+  $('punktvalg').addEventListener('change', () => {
+    sampleMode = $('punktvalg').value;
+    render();
+  });
+}
+paintOnResize(render);
+
+</script>
+</body>
+</html>

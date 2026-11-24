@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arealfunktionen</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper: #f5f3eb;
+  --panel: #fffefa;
+  --ink: #18362c;
+  --quiet: #4e655a;
+  --line: #d9e2d7;
+  --soft: #eef3ea;
+  --green: #225442;
+  --gold: #f5db9e;
+  --amber: #92551d;
+  --sage: #a7cbb3;
+  --blue: #aacfc9;
+  font: 16px/1.5 system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: var(--paper); }
+a { color: inherit; }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 3px solid #96612a; outline-offset: 3px; }
+main { max-width: 1290px; padding: 22px clamp(15px, 4.2vw, 56px) 45px; margin: auto; }
+nav { display: flex; flex-wrap: wrap; gap: 5px 15px; border-bottom: 1px solid #bccbbd; padding-bottom: 9px; }
+nav a { padding: 7px 4px; text-decoration: none; color: var(--quiet); font-weight: 600; font-size: .93rem; }
+nav a[aria-current] { color: var(--ink); box-shadow: inset 0 -2px var(--green); }
+nav a:hover { color: var(--ink); }
+.hero { padding: 24px 0 20px; max-width: 850px; }
+h1, h2, h3 { font-family: Georgia, serif; line-height: 1.09; margin: 0; font-weight: 500; text-wrap: balance; }
+h1 { font-size: clamp(2.35rem, 5.3vw, 4.6rem); letter-spacing: -.057em; }
+h2 { font-size: clamp(1.45rem, 2.8vw, 2.07rem); letter-spacing: -.026em; }
+h3 { font-size: 1.27rem; }
+.hero p { margin: 11px 0 0; max-width: 650px; color: var(--quiet); font-size: 1.02rem; }
+.stepbar, .segmented { display: flex; gap: 5px; flex-wrap: wrap; }
+.stepbar { margin-bottom: 11px; }
+.stepbar button, .segmented button, .btn {
+  min-height: 38px; border: 1px solid #c8d7c9; border-radius: 8px; background: var(--panel);
+  padding: 6px 12px; font-weight: 650; font-size: .88rem;
+}
+.stepbar button[aria-pressed=true], .segmented button[aria-pressed=true], .btn.primary {
+  color: #fff; background: var(--green); border-color: var(--green);
+}
+.btn:enabled:hover, .segmented button:hover, .stepbar button:hover { box-shadow: inset 0 0 0 1px #799384; }
+.btn:disabled { opacity: .46; }
+.workspace {
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(316px,370px);
+  border: 1px solid var(--line); border-radius: 17px; overflow: hidden; background: var(--panel);
+  box-shadow: 0 13px 34px #23382c0e;
+}
+figure { margin: 0; display: flex; flex-direction: column; align-self: stretch; min-width: 0; padding: 10px 11px 14px; }
+.graph { display: block; width: 100%; margin: auto 0; }
+figcaption { min-height: 26px; text-align: center; padding: 2px 8px 0; font-size: .89rem; color: var(--quiet); }
+.controls { background: #fcfdf8; border-left: 1px solid var(--line); padding: 22px 21px 19px; min-width: 0; }
+.controls p { color: var(--quiet); font-size: .91rem; margin: 9px 0 15px; }
+.range-caption { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-weight: 630; }
+output { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.range-caption output { color: var(--green); }
+input[type=range] { width: 100%; display: block; margin: 3px 0 11px; accent-color: var(--green); min-height: 29px; }
+.select { display: grid; gap: 4px; font-weight: 630; margin: 13px 0 11px; }
+select { padding: 6px 8px; border: 1px solid #b9cdbb; background: #fff; border-radius: 7px; min-height: 36px; width: 100%; }
+.actions { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.row { margin-top: 12px; }
+.inspect { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 11px; }
+.inspect p { margin: 5px 0 9px; }
+.inspect-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.pager { display: flex; gap: 5px; flex-shrink: 0; }
+.pager .btn { width: 38px; padding: 3px; font-size: 1.05rem; }
+.values { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px 8px; margin: 13px 0 0; }
+.values.three { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.values div { min-width: 0; padding: 7px 8px; background: var(--soft); border-radius: 7px; }
+.values dt { color: var(--quiet); font-size: .79rem; }
+.values dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.mathline { container-type: inline-size; text-align: center; margin: 9px 0; }
+.mathline math { font-size: min(1.25rem, 6.1cqi); white-space: nowrap; }
+.mathline.compact math { font-size: min(1.17rem, 5.5cqi); }
+.legend { min-height: 43px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3px 17px; padding: 3px 8px; font-size: .84rem; color: var(--quiet); }
+.legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.key { width: 15px; height: 10px; border-radius: 2px; display: inline-block; flex: 0 0 auto; }
+.key.green { background: var(--sage); }
+.key.gold { background: var(--gold); }
+.key.orange { background: #f2bf7b; }
+.key.blue { background: var(--blue); }
+.key.dash { border: 1px dashed var(--amber); }
+.below { margin: 16px 0 4px; max-width: 820px; }
+.below summary { cursor: pointer; color: var(--green); font-weight: 650; padding: 5px 0; }
+.below p { color: var(--quiet); margin: 6px 0 13px; }
+.below math[display=block] { font-size: 1.14rem; margin: 8px 0; }
+[hidden] { display: none !important; }
+.svg-label { fill: #18362c; font: italic 17px Georgia, serif; text-anchor: middle; dominant-baseline: middle; }
+.svg-label .ord { font-style: normal; }
+.svg-note { fill: #4e655a; font: 12px system-ui, sans-serif; text-anchor: middle; dominant-baseline: middle; }
+.axis { stroke: #62786a; stroke-width: 1.1; fill: none; }
+.guide { stroke: #819386; stroke-width: 1; fill: none; stroke-dasharray: 4 4; }
+.tick { stroke: #62786a; stroke-width: 1.05; fill: none; }
+.curve { stroke: #224b3a; stroke-width: 2.65; stroke-linecap: round; fill: none; }
+.partition { stroke: #386457; stroke-opacity: .66; stroke-width: .7; }
+.sample { fill: #225442; }
+.focus-pin { fill: #77491b; stroke: #fffefa; stroke-width: 1.15; }
+.focus-line { stroke: #77491b; stroke-width: 1.2; stroke-dasharray: 3 3; fill: none; }
+.upper-line { stroke: #92551d; stroke-width: 1.15; stroke-dasharray: 4 3; }
+path.upper-line { fill: none; }
+.lower-line { stroke: #2e6a51; stroke-width: 1.05; }
+.frame { stroke: #536b5c; stroke-width: 1.05; stroke-dasharray: 4 3; fill: none; }
+.graph .hit { cursor: pointer; }
+@media(max-width: 830px) {
+  .workspace { grid-template-columns: minmax(0,1fr); }
+  .controls { border-left: 0; border-top: 1px solid var(--line); }
+  .hero { padding: 21px 0 17px; }
+}
+@media(max-width: 410px) {
+  main { padding-top: 13px; }
+  figure { padding: 3px 5px 9px; }
+  .controls { padding: 17px 14px 16px; }
+  .stepbar button, .segmented button, .btn { padding-inline: 8px; }
+  nav { gap: 5px 11px; }
+  nav a { font-size: .84rem; }
+  .values div { padding-inline: 5px; }
+  .svg-label { font-size: 15px; }
+}
+
+</style>
+</head>
+<body data-page="areal">
+<main>
+<nav aria-label="De tre integralfigurer"><a href="Arealfunktionen.html" aria-current="page">Arealfunktionen</a><a href="Riemann-integralet.html">Riemann-integralet</a><a href="Darboux-integralet.html">Darboux-integralet</a></nav>
+<header class="hero">
+<h1>Arealfunktionen</h1>
+<p>Se, hvordan en lille flytning af den højre kant ændrer arealet. Prøv et punkt inde i intervallet og de to endepunkter.</p>
+</header>
+<div class="stepbar" role="group" aria-label="Vælg trin"><button type="button" data-mode="punkt" aria-pressed="true" aria-controls="vis-punkt">Vælg <math><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></math></button><button type="button" data-mode="skridt" aria-pressed="false" aria-controls="vis-skridt">Variér <math><mrow><mi>h</mi></mrow></math></button><button type="button" data-mode="ende" aria-pressed="false" aria-controls="vis-ende">Se endepunkterne</button></div>
+<div class="workspace">
+<figure><svg id="graf" class="graph" role="img" aria-labelledby="graf-titel graf-tekst" xmlns="http://www.w3.org/2000/svg"></svg>
+<div class="legend"><span id="faelles-legend"><i class="key green" aria-hidden="true"></i><span id="areal-legend"></span></span>
+<span id="strimmel-legend" hidden><i class="key orange" aria-hidden="true"></i><span id="strimmel-tekst"></span></span></div>
+</figure>
+<div class="controls">
+<section id="vis-punkt">
+<h2>Vælg et indre punkt</h2>
+<p>Arealfunktionen er defineret på <math><mrow><mo stretchy="false">[</mo><mi>a</mi><mo>;</mo><mi>b</mi><mo stretchy="false">]</mo></mrow></math>. Vælg <math><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></math> inde i intervallet, hvor kanten kan flyttes lidt til begge sider.</p>
+<div class="range-caption"><label for="punkt">Placering af <math><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></math></label><output for="punkt" id="punkt-tal" aria-live="off"></output></div><input type="range" id="punkt" min="0.64" max="3.02" step="0.01" value="1.49">
+<p>Det grønne område viser <math><mrow><mi>A</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></math>, arealet under grafen fra <math><mrow><mi>a</mi></mrow></math> til <math><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></math>.</p>
+<button id="fasthold" type="button" class="btn primary">Fasthold punktet</button>
+</section>
+<section id="vis-skridt" hidden>
+<h2>Fasthold <math><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></math></h2>
+<p>Flyt kanten til <math><mrow><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>h</mi></mrow></mrow></math> og se, hvilken strimmel der lægges til eller trækkes fra.</p>
+<div class="segmented" role="group" aria-label="Vælg retning"><button type="button" data-direction="-1" aria-pressed="false">Mod venstre</button><button type="button" data-direction="1" aria-pressed="true">Mod højre</button></div>
+<div class="row"><div class="range-caption"><label for="skridt">Skridt <math><mrow><mi>h</mi></mrow></math></label><output for="skridt" id="skridt-tal" aria-live="off"></output></div><input type="range" id="skridt" min="0.01" max="1.55" step="0.01" value="0.72"></div>
+<div class="actions"><button id="afspil-h" type="button" class="btn primary">Lad <math><mrow><mi>h</mi></mrow></math> gå mod nul</button>
+<label><input type="checkbox" id="rammer"> Vis rektanglerne</label>
+<label><input type="checkbox" id="faelles-areal"> Vis det fælles areal</label></div>
+<div class="inspect">
+<div class="mathline" id="differenskvotient">
+<math displaystyle="true"><mfrac>
+<mrow><mi>A</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>h</mi><mo stretchy="false">)</mo><mo>−</mo><mi>A</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow>
+<mi>h</mi>
+</mfrac></math>
+</div>
+<p id="skridt-forklaring"></p>
+</div>
+</section>
+<section id="vis-ende" hidden>
+<h2>Helt ude ved kanten</h2>
+<p>Vælg et endepunkt, og flyt kanten lidt ind i intervallet.</p>
+<div class="segmented" role="group" aria-label="Vælg endepunkt"><button type="button" data-end="a" aria-pressed="true">Ved <math><mrow><mi>a</mi></mrow></math></button><button type="button" data-end="b" aria-pressed="false">Ved <math><mrow><mi>b</mi></mrow></math></button></div>
+<div class="row"><div class="range-caption"><label for="endetrin">Skridt <math><mrow><mi>h</mi></mrow></math></label><output for="endetrin" id="endetrin-tal" aria-live="off"></output></div><input type="range" id="endetrin" min="0.01" max="1.2" step="0.01" value="0.65"></div>
+<button id="afspil-ende" type="button" class="btn primary">Lad <math><mrow><mi>h</mi></mrow></math> gå mod nul</button>
+<div class="inspect"><p id="ende-forklaring"></p><div class="mathline" id="ende-graense"></div></div>
+</section>
+</div>
+</div>
+<details class="below"><summary>Fra én strimmel til den afledte</summary><p>Når <math><mrow><mi>h</mi></mrow></math> er forskellig fra nul, er differenskvotienten strimlens areal divideret med dens bredde. Ved flytning mod venstre får både arealændringen og skridtet et minustegn.</p><p>For en vilkårlig kontinuert graf ligger kvotienten mellem den mindste og største funktionsværdi på strimlen. Begge værdier nærmer sig <math><mrow><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></math>, når strimlen bliver smallere.</p><div class="mathline"><math><mrow><mfrac><mrow><mi>A</mi><mo stretchy="false">(</mo><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>h</mi></mrow><mo stretchy="false">)</mo><mo>−</mo><mi>A</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow><mrow><mi>h</mi></mrow></mfrac><mo>→</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mspace width=".7em"></mspace><mtext>for</mtext><mspace width=".32em"></mspace><mi>h</mi><mo>→</mo><mn>0</mn></mrow></math></div><p>Fordi <math><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></math> kunne vælges i hele <math><mrow><mo stretchy="false">]</mo><mi>a</mi><mo>;</mo><mi>b</mi><mo stretchy="false">[</mo></mrow></math>, gælder <math><mrow><mi>A</mi><mo>′</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> på det åbne interval.</p></details><details class="below"><summary>Fra arealfunktionen til hele arealet</summary><p>Ved <math><mrow><mi>a</mi></mrow></math> går arealet mod <math><mrow><mi>A</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow></math>, og ved <math><mrow><mi>b</mi></mrow></math> går arealet mod <math><mrow><mi>A</mi><mo stretchy="false">(</mo><mi>b</mi><mo stretchy="false">)</mo></mrow></math>. Den sidste strimmel kan gøres så smal, at dens areal går mod nul, fordi grafens højde er begrænset. Så er <math><mrow><mi>A</mi></mrow></math> kontinuert helt ud til endepunkterne.</p><p>Vi bruger <math><mrow><mi>A</mi></mrow></math> som stamfunktion i slutberegningen. Ved <math><mrow><mi>a</mi></mrow></math> er bredden nul, så <math><mrow><mi>A</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow></math> er nul. Ved <math><mrow><mi>b</mi></mrow></math> er hele området med.</p><math display="block"><mrow><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mspace width=".16em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mi>A</mi><mo stretchy="false">(</mo><mi>b</mi><mo stretchy="false">)</mo><mo>−</mo><mi>A</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>=</mo><mi>A</mi><mo stretchy="false">(</mo><mi>b</mi><mo stretchy="false">)</mo></mrow></math></details>
+<noscript>Slå JavaScript til for at bruge den interaktive figur.</noscript>
+</main>
+<script>
+'use strict';
+
+const $ = id => document.getElementById(id);
+const svg = $('graf');
+const number = new Intl.NumberFormat('da-DK', {maximumFractionDigits: 3});
+const dec = value => number.format(Math.abs(value) < 1e-10 ? 0 : value).replace('-', '−');
+const output = (id, value) => { $(id).value = typeof value === 'number' ? dec(value) : value; };
+const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const mi = letter => '<mi>' + letter + '</mi>';
+const mo = sign => '<mo>' + sign + '</mo>';
+const paren = sign => '<mo stretchy="false">' + sign + '</mo>';
+const xzero = '<msub><mi>x</mi><mn>0</mn></msub>';
+const math = inner => '<math><mrow>' + inner + '</mrow></math>';
+const apply = (name, argument) => mi(name) + paren('(') + argument + paren(')');
+const vsub = (base, sub) => base + '<tspan '+(sub === '0' ? 'class="ord" ' : '')+'font-size="69%" baseline-shift="sub">' + sub + '</tspan>';
+
+function pressed(selector, key, val) {
+  for (const button of document.querySelectorAll(selector)) {
+    button.setAttribute('aria-pressed', String(button.dataset[key] === val));
+  }
+}
+
+let frame = 0;
+let activeButton = null;
+let activeLabel = '';
+function stopPlayback() {
+  cancelAnimationFrame(frame);
+  frame = 0;
+  if (activeButton) activeButton.innerHTML = activeLabel;
+  activeButton = null;
+}
+function play(button, duration, update) {
+  if (activeButton === button) { stopPlayback(); return; }
+  stopPlayback();
+  if (reducedMotion.matches) { update(1); return; }
+  activeButton = button;
+  activeLabel = button.innerHTML;
+  button.textContent = 'Pause';
+  const start = performance.now();
+  function tick(now) {
+    const fraction = clamp((now - start) / duration, 0, 1);
+    update(fraction);
+    if (fraction < 1) frame = requestAnimationFrame(tick);
+    else stopPlayback();
+  }
+  frame = requestAnimationFrame(tick);
+}
+
+const line = (x1, y1, x2, y2, c) => '<line class="' + c + '" x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '"/>';
+const path = (d, c, style = '') => '<path class="' + c + '" d="' + d + '"' + style + '/>';
+const dot = (x, y, r, c) => '<circle class="' + c + '" cx="' + x + '" cy="' + y + '" r="' + r + '"/>';
+const label = (x, y, value, style = '') => '<text class="svg-label" x="' + x + '" y="' + y + '"' + style + '>' + value + '</text>';
+const box = (x, y, w, h, paint) => '<rect x="' + x + '" y="' + y + '" width="' + Math.max(0, w) + '" height="' + Math.max(0, h) + '" ' + paint + '/>';
+
+function plotPlane(lo, hi, ymax, bottom, reserved = 0) {
+  const w = Math.max(245, Math.round(svg.clientWidth));
+  const height = Math.max(300, Math.min(430, 0.64*w));
+  const origin = height - bottom;
+  const right = w - 28, at = -lo/(hi-lo);
+  const left = Math.max(10, (reserved - at*right)/(1-at));
+  const X = x => left + (x-lo)*(right-left)/(hi-lo);
+  const Y = y => origin - y*(origin-26)/ymax;
+  const segments = (g, p, q, n) => {
+    const pts = [];
+    for (let i = 0; i <= n; i++) {
+      const x = p + (q-p)*i/n;
+      pts.push(X(x).toFixed(3) + ',' + Y(g(x)).toFixed(3));
+    }
+    return pts.join(' L');
+  };
+  const curve = (g, p, q) => path('M' + segments(g, p, q, 130), 'curve');
+  const area = (g, p, q, color) => q-p < 1e-9 ? '' : path(
+    'M' + X(p) + ',' + origin + ' L' + segments(g, p, q, 80) + ' L' + X(q) + ',' + origin + ' Z',
+    '', ' fill="' + color + '"'
+  );
+  function axes(a, b, yText = 'y') {
+    const end = X(hi) + 5, yTop = 16, zero = X(0);
+    return line(X(lo),origin,end,origin,'axis') + line(zero,origin+4,zero,yTop,'axis')
+      + path('M'+(end-8)+','+(origin-4)+' L'+end+','+origin+' l-8,4','axis')
+      + path('M'+(zero-4)+','+(yTop+8)+' L'+zero+','+yTop+' l4,8','axis')
+      + label(end+11,origin,'x') + label(zero+13,yTop+2,yText)
+      + line(X(a),origin-3,X(a),origin+5,'tick') + label(X(a),origin+17,'a')
+      + line(X(b),origin-3,X(b),origin+5,'tick') + label(X(b),origin+17,'b');
+  }
+  function install(title, description, content) {
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + height);
+    svg.innerHTML = '<title id="graf-titel">' + title + '</title><desc id="graf-tekst">' + description + '</desc>' + content;
+  }
+  return {w,height,origin,X,Y,curve,area,axes,install};
+}
+
+function paintOnResize(render) {
+  let lastWidth = 0;
+  new ResizeObserver(() => {
+    const width = svg.clientWidth;
+    if (width > 0 && width !== lastWidth) {
+      lastWidth = width;
+      render();
+    }
+  }).observe(svg.parentElement);
+  render();
+}
+
+const a = 0.62, b = 3.04;
+const f = x => 0.95 + 0.68*(x-a) + 0.12*(x-a)**2;
+const xSlider = $('punkt');
+const hSlider = $('skridt');
+const endSlider = $('endetrin');
+const hButton = $('afspil-h');
+const endButton = $('afspil-ende');
+let mode = 'punkt', direction = 1, endpoint = 'a';
+let x0 = Number(xSlider.value);
+let distance = Number(hSlider.value);
+let endDistance = Number(endSlider.value);
+
+function setMagnitude(slider, value) {
+  const amount = clamp(Math.round(value*100)/100, Number(slider.min), Number(slider.max));
+  slider.value = amount.toFixed(2);
+  if (slider === hSlider) distance = amount;
+  else endDistance = amount;
+}
+function updateMax() {
+  const available = direction > 0 ? b-x0 : x0-a;
+  const max = Math.round(available*100)/100;
+  hSlider.max = max.toFixed(2);
+  setMagnitude(hSlider, distance);
+}
+function show(next) {
+  stopPlayback();
+  mode = next;
+  pressed('[data-mode]', 'mode', mode);
+  for (const name of ['punkt','skridt','ende']) $('vis-'+name).hidden = name !== mode;
+  render();
+}
+function chooseDirection(value) {
+  stopPlayback();
+  direction = value;
+  pressed('[data-direction]', 'direction', String(direction));
+  updateMax();
+  render();
+}
+function chooseEnd(value) {
+  stopPlayback();
+  endpoint = value;
+  pressed('[data-end]', 'end', endpoint);
+  render();
+}
+function animateDistance(isEnd) {
+  const slider = isEnd ? endSlider : hSlider;
+  const initial = isEnd ? endDistance : distance;
+  const min = Number(slider.min);
+  const start = initial > min ? initial : Math.min(0.72, Number(slider.max));
+  const button = isEnd ? endButton : hButton;
+  play(button, 2400, progress => {
+    setMagnitude(slider, start+(min-start)*progress);
+    render();
+  });
+}
+
+function render() {
+  const start = mode === 'ende' ? (endpoint === 'a' ? a : b) : x0;
+  const active = mode !== 'punkt';
+  const h = mode === 'ende' ? endDistance*(endpoint === 'a' ? 1 : -1) : distance*direction;
+  const finish = active ? clamp(start + h, a, b) : start;
+  const p = Math.min(start,finish), q = Math.max(start,finish);
+  const showCommon = mode === 'punkt' || (mode === 'skridt' && $('faelles-areal').checked);
+  const chart = plotPlane(-.94,3.58,4.04,89,70);
+  const {X,Y,origin} = chart;
+  const strip = chart.area(f,p,q,'#f2bf7b');
+  let drawing = (showCommon ? chart.area(f,a,p,'#afd0ba') : '') + strip;
+  drawing += line(X(a),origin,X(a),Y(f(a)),'guide') + line(X(b),origin,X(b),Y(f(b)),'guide');
+  if (mode !== 'ende') drawing += line(X(start),origin,X(start),Y(f(start)),'guide');
+  if (active) drawing += line(X(finish),origin,X(finish),Y(f(finish)),'guide');
+
+  if (mode === 'skridt' && active && $('rammer').checked) {
+    const low = f(p), high = f(q);
+    drawing += line(X(p),Y(low),X(q),Y(low),'frame')
+      + line(X(p),Y(high),X(q),Y(high),'frame') + line(X(p),Y(low),X(p),Y(high),'frame');
+  }
+  drawing += chart.axes(a,b) + chart.curve(f,-.79,3.20);
+  drawing += label(X(3.20)+13,Y(f(3.20))-5,'f');
+  const xa = X(start), xb = X(finish);
+  const baseLabel = mode === 'ende' ? endpoint : vsub('x','0');
+  if (mode !== 'ende') {
+    drawing += line(xa,origin-3,xa,origin+5,'tick');
+    drawing += line(xa,origin+8,xa,origin+29,'guide');
+    drawing += label(xa,origin+35,baseLabel);
+  }
+  if (active) {
+    const finishLabel = baseLabel+'<tspan class="ord"> + </tspan>h';
+    drawing += line(xb,origin-3,xb,origin+5,'tick');
+    drawing += line(xb,origin+7,xb,origin+48,'guide');
+    const shift = mode !== 'ende' && Math.abs(xa-xb)<61 ? 5*(h>0 ? 1 : -1) : 0;
+    const anchor = shift > 0 ? 'start' : shift < 0 ? 'end' : 'middle';
+    drawing += label(xb+shift,origin+51,finishLabel,' style="text-anchor:'+anchor+'"');
+    const left = X(p), right = X(q), y = origin+67;
+    drawing += line(left,y,right,y,'axis') + line(left,y-4,left,y+4,'axis') + line(right,y-4,right,y+4,'axis');
+    drawing += label((left+right)/2,origin+76,(h<0 ? '<tspan class="ord">−</tspan>' : '')+'h');
+  }
+  chart.install('Arealet under grafen og den lille strimmel',
+    active ? (showCommon ? 'Det grønne areal er med før og efter flytningen. ' : '')+
+      'Den orange strimmel '+(h>0?'lægges til.':'trækkes fra.') :
+      'Grafen viser arealet frem til den valgte kant.', drawing);
+
+  output('punkt-tal',x0);
+  output('skridt-tal',direction*distance);
+  output('endetrin-tal',endDistance*(endpoint==='a'?1:-1));
+  hSlider.setAttribute('aria-valuetext',dec(direction*distance));
+  endSlider.setAttribute('aria-valuetext',dec(endDistance*(endpoint==='a'?1:-1)));
+
+  const base = mode==='ende' ? mi(endpoint) : xzero;
+  const shifted = base + mo('+') + mi('h');
+  $('faelles-legend').hidden = !showCommon;
+  $('areal-legend').innerHTML = math(apply('A',active && h<0 ? shifted : base));
+  $('strimmel-legend').hidden = !active;
+  $('strimmel-tekst').textContent = h>0 ? 'Strimmel lægges til' : 'Strimmel trækkes fra';
+
+  $('skridt-forklaring').innerHTML = direction>0
+    ? 'Tælleren er arealet af den orange strimmel, vi lægger til. Vi dividerer med strimlens bredde '+math(mi('h'))+'.'
+    : 'Vi trækker den orange strimmel fra, så tælleren får et minustegn. '+math(mi('h'))
+      +' er også negativ. Minustegnene går ud, så brøken giver strimlens areal divideret med bredden '+math(mo('−')+mi('h'))+'.';
+  $('ende-forklaring').innerHTML = endpoint==='a'
+    ? 'Ved '+math(mi('a'))+' flyttes kanten mod højre. Hele det lille areal bliver mindre, når '+math(mi('h'))+' går mod nul.'
+    : 'Ved '+math(mi('b'))+' flyttes kanten mod venstre. Det er det manglende stykke op til hele arealet, der bliver mindre.';
+  $('ende-graense').innerHTML = math(apply('A', mi(endpoint)+mo('+')+mi('h'))+mo('→')+apply('A',mi(endpoint))
+    +(endpoint==='a' ? mo('=')+'<mn>0</mn>' : '')
+    +'<mspace width=".65em"></mspace><mtext>for</mtext><mspace width=".27em"></mspace>'+mi('h')+mo('→')+'<mn>0</mn>');
+}
+
+for (const button of document.querySelectorAll('[data-mode]')) button.addEventListener('click', () => show(button.dataset.mode));
+for (const button of document.querySelectorAll('[data-direction]')) button.addEventListener('click', () => chooseDirection(Number(button.dataset.direction)));
+for (const button of document.querySelectorAll('[data-end]')) button.addEventListener('click', () => chooseEnd(button.dataset.end));
+$('fasthold').addEventListener('click', () => show('skridt'));
+$('rammer').addEventListener('change', render);
+$('faelles-areal').addEventListener('change', render);
+hButton.addEventListener('click', () => animateDistance(false));
+endButton.addEventListener('click', () => animateDistance(true));
+xSlider.addEventListener('input', () => {stopPlayback(); x0=Number(xSlider.value);updateMax();render();});
+hSlider.addEventListener('input', () => {stopPlayback();setMagnitude(hSlider,Number(hSlider.value));render();});
+endSlider.addEventListener('input', () => {stopPlayback();setMagnitude(endSlider,Number(endSlider.value));render();});
+updateMax();
+paintOnResize(render);
+
+</script>
+</body>
+</html>
