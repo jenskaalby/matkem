@@ -150,8 +150,8 @@ path.upper-line { fill: none; }
 </section>
 <section id="vis-skridt" hidden>
 <h2>Fasthold <math><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></math></h2>
-<p>Flyt kanten til <math><mrow><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>h</mi></mrow></mrow></math> og se, hvilken strimmel der lægges til eller trækkes fra.</p>
-<div class="segmented" role="group" aria-label="Vælg retning"><button type="button" data-direction="-1" aria-pressed="false">Mod venstre</button><button type="button" data-direction="1" aria-pressed="true">Mod højre</button></div>
+<p>Vælg, fra hvilken side kanten <math><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>h</mi></mrow></math> skal nærme sig <math><msub><mi>x</mi><mn>0</mn></msub></math>.</p>
+<div class="segmented" role="group" aria-label="Vælg siden, som kanten nærmer sig fra"><button type="button" data-direction="-1" aria-pressed="false">Fra venstre</button><button type="button" data-direction="1" aria-pressed="true">Fra højre</button></div>
 <div class="row"><div class="range-caption"><label for="skridt">Skridt <math><mrow><mi>h</mi></mrow></math></label><output for="skridt" id="skridt-tal" aria-live="off"></output></div><input type="range" id="skridt" min="0.01" max="1.55" step="0.01" value="0.72"></div>
 <div class="actions"><button id="afspil-h" type="button" class="btn primary">Lad <math><mrow><mi>h</mi></mrow></math> gå mod nul</button>
 <label><input type="checkbox" id="rammer"> Vis rektanglerne</label>
@@ -291,22 +291,23 @@ const hSlider = $('skridt');
 const endSlider = $('endetrin');
 const hButton = $('afspil-h');
 const endButton = $('afspil-ende');
+const smallestStep = Number(hSlider.step);
+const endRange = Number(endSlider.max);
 let mode = 'punkt', direction = 1, endpoint = 'a';
 let x0 = Number(xSlider.value);
-let distance = Number(hSlider.value);
-let endDistance = Number(endSlider.value);
 
-function setMagnitude(slider, value) {
-  const amount = clamp(Math.round(value*100)/100, Number(slider.min), Number(slider.max));
-  slider.value = amount.toFixed(2);
-  if (slider === hSlider) distance = amount;
-  else endDistance = amount;
+function setStep(slider, value) {
+  const step = clamp(Math.round(value*100)/100, Number(slider.min), Number(slider.max));
+  slider.value = step.toFixed(2);
 }
-function updateMax() {
-  const available = direction > 0 ? b-x0 : x0-a;
-  const max = Math.round(available*100)/100;
-  hSlider.max = max.toFixed(2);
-  setMagnitude(hSlider, distance);
+function setStepRange(slider, sign, length) {
+  const step = sign*Math.abs(Number(slider.value));
+  slider.min = (sign<0 ? -length : smallestStep).toFixed(2);
+  slider.max = (sign<0 ? -smallestStep : length).toFixed(2);
+  setStep(slider, step);
+}
+function updateStepRange() {
+  setStepRange(hSlider, direction, direction>0 ? b-x0 : x0-a);
 }
 function show(next) {
   stopPlayback();
@@ -319,23 +320,25 @@ function chooseDirection(value) {
   stopPlayback();
   direction = value;
   pressed('[data-direction]', 'direction', String(direction));
-  updateMax();
+  updateStepRange();
   render();
 }
 function chooseEnd(value) {
   stopPlayback();
   endpoint = value;
   pressed('[data-end]', 'end', endpoint);
+  setStepRange(endSlider, endpoint==='a' ? 1 : -1, endRange);
   render();
 }
 function animateDistance(isEnd) {
   const slider = isEnd ? endSlider : hSlider;
-  const initial = isEnd ? endDistance : distance;
-  const min = Number(slider.min);
-  const start = initial > min ? initial : Math.min(0.72, Number(slider.max));
+  const initial = Number(slider.value);
+  const min = Number(slider.min), max = Number(slider.max);
+  const nearZero = max<0 ? max : min;
+  const start = initial===nearZero ? clamp(Math.sign(nearZero)*0.72, min, max) : initial;
   const button = isEnd ? endButton : hButton;
   play(button, 2400, progress => {
-    setMagnitude(slider, start+(min-start)*progress);
+    setStep(slider, start+(nearZero-start)*progress);
     render();
   });
 }
@@ -343,7 +346,8 @@ function animateDistance(isEnd) {
 function render() {
   const start = mode === 'ende' ? (endpoint === 'a' ? a : b) : x0;
   const active = mode !== 'punkt';
-  const h = mode === 'ende' ? endDistance*(endpoint === 'a' ? 1 : -1) : distance*direction;
+  const innerStep = Number(hSlider.value), endStep = Number(endSlider.value);
+  const h = mode === 'ende' ? endStep : innerStep;
   const finish = active ? clamp(start + h, a, b) : start;
   const p = Math.min(start,finish), q = Math.max(start,finish);
   const showCommon = mode === 'punkt' || (mode === 'skridt' && $('faelles-areal').checked);
@@ -371,11 +375,13 @@ function render() {
   }
   if (active) {
     const finishLabel = baseLabel+'<tspan class="ord"> + </tspan>h';
+    const closeLabels = Math.abs(xa-xb)<61;
+    const labelY = origin + (mode==='skridt' && !closeLabels ? 35 : 51);
     drawing += line(xb,origin-3,xb,origin+5,'tick');
-    drawing += line(xb,origin+7,xb,origin+48,'guide');
-    const shift = mode !== 'ende' && Math.abs(xa-xb)<61 ? 5*(h>0 ? 1 : -1) : 0;
+    drawing += line(xb,origin+7,xb,labelY-7,'guide');
+    const shift = mode !== 'ende' && closeLabels ? 5*(h>0 ? 1 : -1) : 0;
     const anchor = shift > 0 ? 'start' : shift < 0 ? 'end' : 'middle';
-    drawing += label(xb+shift,origin+51,finishLabel,' style="text-anchor:'+anchor+'"');
+    drawing += label(xb+shift,labelY,finishLabel,' style="text-anchor:'+anchor+'"');
     const left = X(p), right = X(q), y = origin+67;
     drawing += line(left,y,right,y,'axis') + line(left,y-4,left,y+4,'axis') + line(right,y-4,right,y+4,'axis');
     drawing += label((left+right)/2,origin+76,(h<0 ? '<tspan class="ord">−</tspan>' : '')+'h');
@@ -386,10 +392,10 @@ function render() {
       'Grafen viser arealet frem til den valgte kant.', drawing);
 
   output('punkt-tal',x0);
-  output('skridt-tal',direction*distance);
-  output('endetrin-tal',endDistance*(endpoint==='a'?1:-1));
-  hSlider.setAttribute('aria-valuetext',dec(direction*distance));
-  endSlider.setAttribute('aria-valuetext',dec(endDistance*(endpoint==='a'?1:-1)));
+  output('skridt-tal',innerStep);
+  output('endetrin-tal',endStep);
+  hSlider.setAttribute('aria-valuetext',dec(innerStep));
+  endSlider.setAttribute('aria-valuetext',dec(endStep));
 
   const base = mode==='ende' ? mi(endpoint) : xzero;
   const shifted = base + mo('+') + mi('h');
@@ -403,8 +409,8 @@ function render() {
     : 'Vi trækker den orange strimmel fra, så tælleren får et minustegn. '+math(mi('h'))
       +' er også negativ. Minustegnene går ud, så brøken giver strimlens areal divideret med bredden '+math(mo('−')+mi('h'))+'.';
   $('ende-forklaring').innerHTML = endpoint==='a'
-    ? 'Ved '+math(mi('a'))+' flyttes kanten mod højre. Hele det lille areal bliver mindre, når '+math(mi('h'))+' går mod nul.'
-    : 'Ved '+math(mi('b'))+' flyttes kanten mod venstre. Det er det manglende stykke op til hele arealet, der bliver mindre.';
+    ? 'Når '+math(mi('h'))+' går mod nul, nærmer kanten sig '+math(mi('a'))+' fra højre. Strimlens areal bliver mindre.'
+    : 'Når '+math(mi('h'))+' går mod nul, nærmer kanten sig '+math(mi('b'))+' fra venstre. Det manglende areal bliver mindre.';
   $('ende-graense').innerHTML = math(apply('A', mi(endpoint)+mo('+')+mi('h'))+mo('→')+apply('A',mi(endpoint))
     +(endpoint==='a' ? mo('=')+'<mn>0</mn>' : '')
     +'<mspace width=".65em"></mspace><mtext>for</mtext><mspace width=".27em"></mspace>'+mi('h')+mo('→')+'<mn>0</mn>');
@@ -418,10 +424,10 @@ $('rammer').addEventListener('change', render);
 $('faelles-areal').addEventListener('change', render);
 hButton.addEventListener('click', () => animateDistance(false));
 endButton.addEventListener('click', () => animateDistance(true));
-xSlider.addEventListener('input', () => {stopPlayback(); x0=Number(xSlider.value);updateMax();render();});
-hSlider.addEventListener('input', () => {stopPlayback();setMagnitude(hSlider,Number(hSlider.value));render();});
-endSlider.addEventListener('input', () => {stopPlayback();setMagnitude(endSlider,Number(endSlider.value));render();});
-updateMax();
+xSlider.addEventListener('input', () => {stopPlayback();x0=Number(xSlider.value);updateStepRange();render();});
+hSlider.addEventListener('input', () => {stopPlayback();setStep(hSlider,Number(hSlider.value));render();});
+endSlider.addEventListener('input', () => {stopPlayback();setStep(endSlider,Number(endSlider.value));render();});
+updateStepRange();
 paintOnResize(render);
 
 </script>
